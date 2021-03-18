@@ -1,0 +1,6 @@
+.cards-deck {
+    display: flex;
+    width: 22rem;
+    flex-flow: wrap;
+    justify-content: center;
+}

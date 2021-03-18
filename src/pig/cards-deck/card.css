@@ -1,0 +1,26 @@
+.card {
+    border: solid 2px #6bae6f;
+    border-radius: .2rem;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6bae6f;
+    margin: .5rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+}
+
+.card:hover {
+    position: relative;
+    top: -1px;
+    left: -1px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.82);
+}
+
+.card:active {
+    top: 0;
+    left: 0;
+}
