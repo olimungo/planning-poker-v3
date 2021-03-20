@@ -1,5 +1,6 @@
-export enum EState {
+export enum EWorkflowState {
     REGISTRATION = '/ REGISTRATION /',
+    PREPARATION = '/ PREPARATION /',
     DISCUSSION = '/ DISCUSSION /',
     VOTE = '/ VOTE /',
     PRE_REVOTE = '/ PRE VOTE /',

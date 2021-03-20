@@ -2,16 +2,11 @@ import './App.css';
 import {
   Switch,
   Route,
-  useHistory,
   Redirect
 } from 'react-router-dom';
 import firebase from 'firebase/app';
-import 'firebase/database';
-import { AppHeader } from './core'
-import { Board } from './board';
+import { Board, Pig } from './pages'
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 var firebaseConfig = {
   apiKey: "AIzaSyA_Jq10AgfGrLwlZQW9qF4xUXWZxWUx4_Q",
   authDomain: "planning-poker-test-70393.firebaseapp.com",
@@ -23,24 +18,23 @@ var firebaseConfig = {
   measurementId: "G-ZL68D26ZK3"
 };
 
+firebase.initializeApp(firebaseConfig).database();
+
 function App() {
-  // Initialize Firebase
-  if (!firebase.apps.length) {
-    const database = firebase.initializeApp(firebaseConfig).database();
-    const ref = database.ref('boards');
-
-    ref.once('value').then(val => val.forEach(x => console.log(x.key, x.val())));
-  }
-
   return (
     <div className="App">
-      <AppHeader />
-
       <Switch>
+        <Route path='/board/:key'>
+          <Board />
+        </Route>
         <Route path='/board'>
           <Board />
         </Route>
-        <Route path='/pig'>
+        <Route path='/pig/:boardKey/:key'>
+          <Pig />
+        </Route>
+        <Route path='/pig/:boardKey'>
+          <Pig />
         </Route>
         <Route path='/'>
           <Redirect to='/board' />

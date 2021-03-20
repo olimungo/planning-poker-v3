@@ -1,0 +1,93 @@
+.badge--avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: .25rem;
+    font-size: .8rem;
+}
+
+.badge--avatar:hover {
+    position: relative;
+    top: -1px;
+    left: -1px;
+}
+
+.badge--avatar:active {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.badge--image {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+}
+
+.badge--icon {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    border-radius: 50%;
+    font-size: 3rem;
+}
+
+.badge--name {
+    position: relative;
+    top: -.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    border-radius: 2px;
+    font-weight: 600;
+    padding: 0 .4rem;
+    width: 3rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.badge--icon:hover, .badge--name:hover, .badge--image:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.82);
+}
+
+.badge--vote {
+    border-radius: 50%;
+    padding: .2rem;
+    font-weight: 600;
+    position: relative;
+    top: -4.5rem;
+    left: 1.8rem;
+}
+
+.badge--theme-primary {
+    border: solid #b99216 .15rem;
+    background: #b99216;
+}
+
+.badge--theme-secondary {
+    border: solid #1c8a2b .15rem;
+    background: #1c8a2b;
+}
+
+.badge--theme-primary-name {
+    border: solid #b99216 .15rem;
+    background: #e0bc18;
+    color: #b99318;
+}
+
+.badge--theme-secondary-name {
+    border: solid #1c8a2b .15rem;
+    background: #8be898;
+    color:#1d8a2c;
+}
+
+.badge--theme-primary-vote {
+    background: #e6d481;
+    color: #b99216;
+    border: solid 3px #b99216;
+}
+
+.badge--theme-secondary-vote {
+    background: #3fcf52;
+    color: #1c8a2b;
+    border: solid 3px #1c8a2b;
+}

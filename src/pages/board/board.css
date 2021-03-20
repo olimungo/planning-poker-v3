@@ -1,0 +1,11 @@
+.board {
+    margin: 0 1rem;
+    color: #e0bc18;
+    font-size: 1.3rem;
+}
+
+.board--qrcode {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+}

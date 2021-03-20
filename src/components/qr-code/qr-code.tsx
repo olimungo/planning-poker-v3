@@ -1,4 +1,3 @@
-import React from "react";
 import { QRCode } from "react-qr-svg";
 
 type Props = { value: string };

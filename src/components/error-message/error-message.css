@@ -1,0 +1,15 @@
+.error-message {
+    background-color: #B02122;
+    color: antiquewhite;
+    margin: 2rem;
+    padding: .8rem 0 3rem 0;
+    text-align: center;
+    border-radius: .1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+}
+
+.error-message--title {
+    font-size: .9rem;
+    color: #f0a8a8;
+    margin-bottom: 2rem;
+}
