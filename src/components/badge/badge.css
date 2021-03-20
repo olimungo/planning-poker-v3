@@ -4,6 +4,7 @@
     align-items: center;
     padding: .25rem;
     font-size: .8rem;
+    cursor: pointer;
 }
 
 .badge--avatar:hover {
@@ -13,9 +14,7 @@
 }
 
 .badge--avatar:active {
-    position: relative;
-    top: 0;
-    left: 0;
+    position: initial;
 }
 
 .badge--image {
