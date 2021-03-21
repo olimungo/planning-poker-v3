@@ -4,10 +4,16 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { Badge } from '..';
 import { EBadgeTheme } from '../badge/badge';
 
-type Props = { theme?: EBadgeTheme, name?: string, email?: string, hideBadge?: boolean };
+type Props = { theme?: EBadgeTheme, name?: string, email?: string, hideBadge?: boolean, onChange?: Function };
 
 export function AppHeader(props: Props) {
-    const { theme = EBadgeTheme.PRIMARY, name, email, hideBadge = false } = props;
+    const { theme = EBadgeTheme.PRIMARY, name, email, hideBadge = false, onChange } = props;
+
+    const handleChange = (value: any) => {
+        if (onChange) {
+            onChange(value);
+        }
+    }
 
     return (
         <div className="app-header">
@@ -18,7 +24,7 @@ export function AppHeader(props: Props) {
             {
                 hideBadge
                     ? ''
-                    : <Badge name={name} email={email} theme={theme} isClickable={true} />
+                    : <Badge name={name} email={email} theme={theme} isClickable={true} onChange={handleChange} />
             }
         </div>
     );

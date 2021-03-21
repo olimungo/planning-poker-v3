@@ -5,7 +5,7 @@ import {
   Redirect
 } from 'react-router-dom';
 import firebase from 'firebase/app';
-import { Board, Pig } from './pages'
+import { BoardPage, PigPage } from './pages'
 
 var firebaseConfig = {
   apiKey: "AIzaSyA_Jq10AgfGrLwlZQW9qF4xUXWZxWUx4_Q",
@@ -25,16 +25,16 @@ function App() {
     <div className="App">
       <Switch>
         <Route path='/board/:key'>
-          <Board />
+          <BoardPage />
         </Route>
         <Route path='/board'>
-          <Board />
+          <BoardPage />
         </Route>
         <Route path='/pig/:boardKey/:key'>
-          <Pig />
+          <PigPage />
         </Route>
         <Route path='/pig/:boardKey'>
-          <Pig />
+          <PigPage />
         </Route>
         <Route path='/'>
           <Redirect to='/board' />

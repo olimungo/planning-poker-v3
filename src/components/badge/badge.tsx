@@ -1,8 +1,10 @@
 import './badge.css';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faStar } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
+import firebase from 'firebase/app';
+import 'firebase/database';
 import { Form } from './form';
 
 export enum EBadgeTheme {
@@ -10,13 +12,23 @@ export enum EBadgeTheme {
     'SECONDARY'
 }
 
-type Props = { theme?: EBadgeTheme, name?: string, email?: string, vote?: number, isClickable?: boolean };
+type Props = {
+    theme?: EBadgeTheme,
+    reference?: firebase.database.Reference,
+    scrumMasterRef?: firebase.database.Reference,
+    name?: string,
+    email?: string,
+    vote?: number,
+    isClickable?: boolean,
+    onChange?: Function
+};
 
 export function Badge(props: Props) {
-    const { theme = EBadgeTheme.PRIMARY, name, email, vote, isClickable } = props;
+    const { theme = EBadgeTheme.PRIMARY, reference, scrumMasterRef, name, email, vote, isClickable, onChange } = props;
     const [showForm, setShowForm] = useState(false);
     const [emailInput, setEmailInput] = useState('');
     const [nameInput, setNameInput] = useState('');
+    const [isScrumMaster, setIsScrumMaster] = useState(false);
 
     useEffect(() => {
         if (name) {
@@ -30,10 +42,31 @@ export function Badge(props: Props) {
         }
     }, [email]);
 
+    useEffect(() => {
+        if (reference) {
+            reference.child('name').on('value', (value) => {
+                setNameInput(value.val());
+            });
+
+            reference.child('email').on('value', (value) => {
+                setEmailInput(value.val());
+            });
+
+            if (scrumMasterRef) {
+                scrumMasterRef.on('value', (value) => setIsScrumMaster(value.val() === reference.key));
+            }
+        }
+    }, [reference, scrumMasterRef]);
+
+
     const handleOk = (result: { name: string, email: string }) => {
         setNameInput(result.name);
         setEmailInput(result.email);
         setShowForm(false);
+
+        if (onChange) {
+            onChange({ name: result.name, email: result.email });
+        }
     }
 
     return (
@@ -50,7 +83,7 @@ export function Badge(props: Props) {
                             `badge--icon ${theme === EBadgeTheme.PRIMARY
                                 ? 'badge--theme-primary'
                                 : 'badge--theme-secondary'}`}
-                            icon={faUserCircle} onClick={() => null} />
+                            icon={faUserCircle} />
                 }
 
                 {
@@ -68,6 +101,12 @@ export function Badge(props: Props) {
                             `badge--vote ${theme === EBadgeTheme.PRIMARY
                                 ? 'badge--theme-primary-vote'
                                 : 'badge--theme-secondary-vote'}`}>{vote}</div>
+                        : ''
+                }
+
+                {
+                    isScrumMaster
+                        ? <FontAwesomeIcon className='badge--star' icon={faStar} />
                         : ''
                 }
             </div>

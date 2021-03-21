@@ -8,7 +8,7 @@ type Props = { value: string };
 export function QrCode(props: Props) {
     const { value } = props;
 
-    const handleClick = () => {
+    const sendMail = () => {
         const subject = 'Your Planning Poker session is ready';
         const message = value;
         window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(message));
@@ -24,7 +24,7 @@ export function QrCode(props: Props) {
                 value={value}
             />
 
-            <button className="qr-code--button" onClick={handleClick}>
+            <button className="qr-code--button" onClick={sendMail}>
                 <FontAwesomeIcon className="card--icon" icon={faPaperPlane} />
             </button>
         </div>

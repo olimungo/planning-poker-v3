@@ -1,15 +1,5 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
-import { Observable } from 'rxjs';
-
-export function checkBoardExists(boardKey: string): Promise<boolean> {
-    return firebase.database().ref(`boards/${boardKey}`).once('value').then(value => value.val() ? true : false);
-}
-
-export function checkPigExists(boardKey: string, pigKey: string): Promise<{ name: string, email: string }> {
-    return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).once('value')
-        .then(value => ({ name: value.child('name').val(), email: value.child('email').val() }));
-}
 
 export function createPig(boardKey: string): string | null {
     const pigs = firebase.database().ref(`boards/${boardKey}/pigs`);
@@ -33,4 +23,26 @@ export function createPig(boardKey: string): string | null {
     }
 
     return null;
+}
+
+export function setPig(boardKey: string, pigKey: string, name: string, email: string | null): Promise<any> | null {
+    if (name !== '') {
+        email = email === '' ? null : email;
+        return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).set({ name, email });
+    }
+
+    return null;
+}
+
+export function checkPigExists(boardKey: string, pigKey: string): Promise<{ name: string, email: string }> {
+    return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).once('value')
+        .then(value => ({ name: value.child('name').val(), email: value.child('email').val() }));
+}
+
+export function setScrumMaster(boardKey: string, pigKey: string): Promise<any> {
+    return firebase.database().ref(`boards/${boardKey}/scrumMaster`).set(pigKey);
+}
+
+export function unsetScrumMaster(boardKey: string): Promise<any> {
+    return firebase.database().ref(`boards/${boardKey}/scrumMaster`).remove();
 }

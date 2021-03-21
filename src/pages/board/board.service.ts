@@ -2,13 +2,23 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import { Observable } from 'rxjs';
 
-export function getBoardKey(): string | null {
-    return firebase.database().ref('boards').push().key;
+export function createBoardKey(): string | null {
+    const boardKey = firebase.database().ref('boards').push().key;
+
+    if (boardKey) {
+        firebase.database().ref(`boards/${boardKey}/dateCreated`).set(new Date().getTime());
+    }
+
+    return boardKey;
 }
 
-export function getBoardDateCreated(boardKey: string): Promise<number> {
-    return firebase.database().ref(`boards/${boardKey}/dateCreated`).once('value').then(value => value.val());
-};
+export function getPigsRef(boardKey: string): firebase.database.Reference {
+    return firebase.database().ref(`boards/${boardKey}/pigs`);
+}
+
+export function getPigRef(boardKey: string, pigKey: string): firebase.database.Reference {
+    return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`);
+}
 
 export function waitForPig$(boardKey: string): Observable<boolean> {
     return new Observable(subscriber => {
@@ -20,7 +30,3 @@ export function waitForPig$(boardKey: string): Observable<boolean> {
         });
     });
 };
-
-export function setBoardDateCreated(boardKey: string): Promise<any> {
-    return firebase.database().ref(`boards/${boardKey}/dateCreated`).set(new Date().getTime());
-}

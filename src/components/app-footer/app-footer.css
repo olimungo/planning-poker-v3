@@ -1,0 +1,43 @@
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  background: #39445a;
+  font-size: 1.5rem;
+  position: fixed;
+  bottom: 0;
+  height: 3rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: .5rem 1rem;
+}
+
+.app-footer--icon {
+  font-size: 2rem;
+  border-radius: .5rem;
+  padding: .5rem;
+}
+
+.app-footer--icon:hover {
+  background-color: rgba(0,0,0,0.18);
+  position: relative;
+  top: -1px;
+  left: -1px;
+}
+
+.app-footer--icon:active {
+  background-color: rgba(0,0,0,0.18);
+  position: initial;
+}
+
+.app-footer--switch {
+  display: flex;
+  align-items: center;
+}
+
+.app-footer--switch-label {
+  margin-right: 1rem;
+  font-size: 1rem;
+}
+  

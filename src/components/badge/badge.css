@@ -20,14 +20,14 @@
 .badge--image {
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
     border-radius: 50%;
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
 }
 
 .badge--icon {
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
     border-radius: 50%;
-    font-size: 3rem;
+    font-size: 4rem;
 }
 
 .badge--name {
@@ -37,7 +37,7 @@
     border-radius: 2px;
     font-weight: 600;
     padding: 0 .4rem;
-    width: 3rem;
+    width: 5rem;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -55,6 +55,14 @@
     position: relative;
     top: -4.5rem;
     left: 1.8rem;
+}
+
+.badge--star {
+    position: relative;
+    color: #f7f02e;
+    bottom: 5.5rem;
+    left: -1.5rem;
+    font-size: 1.5rem;
 }
 
 .badge--theme-primary {

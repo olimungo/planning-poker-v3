@@ -1,0 +1,63 @@
+.switch {
+    display: flex;
+}
+
+.switch--toggle {
+    display: none;
+}
+
+.switch--toggle-background {
+    background-color: #888;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-block;
+    width: 5rem;
+    height: 2rem;
+    position: relative;
+    border: 0.1rem solid #eee;
+}
+
+.switch--toggle:checked + .switch--toggle-background {
+    background-color: rgb(73, 165, 73);
+}
+
+.switch--ball {
+    background: #e9f7ff;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    align-items: center;
+    justify-content: center;
+    animation: slideOff 0.15s linear forwards;
+}
+
+.switch--toggle:checked + .switch--toggle-background .switch--ball {
+    animation: slideOn 0.15s linear forwards;
+}
+
+@keyframes slideOn {
+    0% {
+        transform: translateX(0) scale(1);
+    }
+    25% {
+        transform: translateX(1rem) scale(1.2);
+    }
+    100% {
+        transform: translateX(3rem) scale(1);
+    }
+}
+
+@keyframes slideOff {
+    0% {
+        transform: translateX(3rem) scale(1);
+    }
+    25% {
+        transform: translateX(2rem) scale(1.2);
+    }
+    100% {
+        transform: translateX(0) scale(1);
+    }
+}
