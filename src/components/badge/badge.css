@@ -53,14 +53,17 @@
     padding: .2rem;
     font-weight: 600;
     position: relative;
-    top: -4.5rem;
+    top: -5.5rem;
     left: 1.8rem;
+    width: 1rem;
+    height: 1rem;
+    text-align: center;
 }
 
 .badge--star {
     position: relative;
     color: #f7f02e;
-    bottom: 5.5rem;
+    bottom: 7.2rem;
     left: -1.5rem;
     font-size: 1.5rem;
 }
@@ -77,7 +80,7 @@
 
 .badge--theme-primary-name {
     border: solid #b99216 .15rem;
-    background: #e0bc18;
+    background: #ece0ad;
     color: #b99318;
 }
 
@@ -97,4 +100,8 @@
     background: #3fcf52;
     color: #1c8a2b;
     border: solid 3px #1c8a2b;
+}
+
+.badge--hidden {
+    visibility: hidden;
 }

@@ -1,7 +1,7 @@
 import './badge.css';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faStar, faInfinity } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -18,39 +18,36 @@ type Props = {
     scrumMasterRef?: firebase.database.Reference,
     name?: string,
     email?: string,
-    vote?: number,
     isClickable?: boolean,
     onChange?: Function
 };
 
 export function Badge(props: Props) {
-    const { theme = EBadgeTheme.PRIMARY, reference, scrumMasterRef, name, email, vote, isClickable, onChange } = props;
+    const { theme = EBadgeTheme.PRIMARY, reference, scrumMasterRef, name, email, isClickable, onChange } = props;
     const [showForm, setShowForm] = useState(false);
-    const [emailInput, setEmailInput] = useState('');
-    const [nameInput, setNameInput] = useState('');
+    const [emailForm, setEmailForm] = useState('');
+    const [nameForm, setNameForm] = useState('');
+    const [vote, setVote] = useState('');
     const [isScrumMaster, setIsScrumMaster] = useState(false);
 
     useEffect(() => {
         if (name) {
-            setNameInput(name)
+            setNameForm(name)
         }
     }, [name]);
 
     useEffect(() => {
         if (email) {
-            setEmailInput(email)
+            setEmailForm(email)
         }
     }, [email]);
 
+    // Watch child properties of the current pig and update the display
     useEffect(() => {
         if (reference) {
-            reference.child('name').on('value', (value) => {
-                setNameInput(value.val());
-            });
-
-            reference.child('email').on('value', (value) => {
-                setEmailInput(value.val());
-            });
+            reference.child('name').on('value', (value) => setNameForm(value.val()));
+            reference.child('email').on('value', (value) => setEmailForm(value.val()));
+            reference.child('vote').on('value', (value) => setVote(value.val()));
 
             if (scrumMasterRef) {
                 scrumMasterRef.on('value', (value) => setIsScrumMaster(value.val() === reference.key));
@@ -58,10 +55,11 @@ export function Badge(props: Props) {
         }
     }, [reference, scrumMasterRef]);
 
-
+    // The pig changed his/her name or email through the form
+    // Update the display and bubble up the event to the parent component
     const handleOk = (result: { name: string, email: string }) => {
-        setNameInput(result.name);
-        setEmailInput(result.email);
+        setNameForm(result.name);
+        setEmailForm(result.email);
         setShowForm(false);
 
         if (onChange) {
@@ -73,12 +71,12 @@ export function Badge(props: Props) {
         <div className="badge">
             <div className="badge--avatar" onClick={() => isClickable ? setShowForm(!showForm) : null}>
                 {
-                    emailInput
+                    emailForm
                         ? <img className={
                             `badge--image ${theme === EBadgeTheme.PRIMARY
                                 ? 'badge--theme-primary'
                                 : 'badge--theme-secondary'}`}
-                            src={`https://www.gravatar.com/avatar/${md5(emailInput)}`} alt="gravatar" />
+                            src={`https://www.gravatar.com/avatar/${md5(emailForm)}`} alt="gravatar" />
                         : <FontAwesomeIcon className={
                             `badge--icon ${theme === EBadgeTheme.PRIMARY
                                 ? 'badge--theme-primary'
@@ -87,22 +85,21 @@ export function Badge(props: Props) {
                 }
 
                 {
-                    nameInput
+                    nameForm
                         ? <div className={
                             `badge--name ${theme === EBadgeTheme.PRIMARY
                                 ? 'badge--theme-primary-name'
-                                : 'badge--theme-secondary-name'}`}>{nameInput}</div>
+                                : 'badge--theme-secondary-name'}`}>{nameForm}</div>
                         : ''
                 }
 
-                {
-                    vote ?
-                        <div className={
-                            `badge--vote ${theme === EBadgeTheme.PRIMARY
-                                ? 'badge--theme-primary-vote'
-                                : 'badge--theme-secondary-vote'}`}>{vote}</div>
-                        : ''
-                }
+                <div className={
+                    `badge--vote ${theme === EBadgeTheme.PRIMARY
+                        ? 'badge--theme-primary-vote'
+                        : 'badge--theme-secondary-vote'}
+                        ${vote === '' || vote === null ? 'badge--hidden' : ''}`}>
+                    {vote !== 'INF' ? vote : <FontAwesomeIcon icon={faInfinity} />}
+                </div>
 
                 {
                     isScrumMaster
@@ -112,7 +109,7 @@ export function Badge(props: Props) {
             </div>
 
             {
-                showForm ? <Form name={nameInput} email={emailInput} onOk={handleOk} onCancel={() => setShowForm(false)} /> : ''
+                showForm ? <Form name={nameForm} email={emailForm} onOk={handleOk} onCancel={() => setShowForm(false)} /> : ''
             }
         </div>
     );
