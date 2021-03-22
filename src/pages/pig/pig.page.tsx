@@ -1,9 +1,20 @@
 import './pig.css';
 import { useParams, useHistory } from 'react-router-dom';
-import { AppHeader, AppFooter, ErrorMessage, WorkflowState, EWorkflowState, EBadgeTheme } from '../../components';
+import {
+    AppHeader,
+    AppFooter,
+    ErrorMessage,
+    WorkflowActions,
+    WorkflowState,
+    EWorkflowState,
+    EBadgeTheme,
+    OverviewStory,
+    OverviewTime,
+    getWorkflowStateFromString
+} from '../../components';
 import { useEffect, useState } from 'react';
-import { createPig, checkPigExists, setScrumMaster, unsetScrumMaster, setPig } from './pig.service';
-import { checkBoardExists, getScrumMasterRef } from '../common.services';
+import { createPig, checkPigExists, assignScrumMaster, unassignScrumMaster, setPig, transitionToDiscussion } from './pig.service';
+import { checkBoardExists, getScrumMasterRef, getWorkflowStateRef } from '../common.services';
 
 export function PigPage() {
     const { boardKey, key } = useParams<{ boardKey: string, key: string }>();
@@ -63,8 +74,14 @@ export function PigPage() {
 
     // Assign or unassign current pig as scrum master in the database
     useEffect(() => {
-        isScrumMaster ? setScrumMaster(boardKey, key) : !hideToggle && unsetScrumMaster(boardKey);
+        isScrumMaster ? assignScrumMaster(boardKey, key) : !hideToggle && unassignScrumMaster(boardKey);
     }, [isScrumMaster, boardKey, key]);
+
+    // Watch for the the state
+    useEffect(() => {
+        getWorkflowStateRef(boardKey)
+            .on('value', (value) => setWorkflowState(getWorkflowStateFromString(value.val())));
+    }, [boardKey])
 
     // Assign or unassign current pig as scrum master locally
     const handleToggleScrumMaster = (value: boolean) => setIsScrumMaster(value);
@@ -74,10 +91,27 @@ export function PigPage() {
         setPig(boardKey, key, value.name, value.email);
     };
 
+    const handleAction = (state: EWorkflowState) => {
+        switch (state) {
+            case EWorkflowState.DISCUSSION:
+                transitionToDiscussion(boardKey);
+                break;
+        }
+    };
+
     return (
         <div className="pig">
             <AppHeader name={name} email={email} theme={EBadgeTheme.SECONDARY} onChange={handlePigChange} />
+            <OverviewStory story={1} round={1} />
+            <OverviewTime start="11:13" end="14:26" duration="1:34" story="3" pause="0:36" />
             <WorkflowState value={workflowState} />
+
+            {
+                isScrumMaster
+                    ? <WorkflowActions currentState={workflowState} onAction={handleAction}></WorkflowActions>
+                    : ''
+            }
+
             <AppFooter hideToggle={hideToggle} toggleChecked={isScrumMaster} onToggleScrumMaster={handleToggleScrumMaster} />
 
             {

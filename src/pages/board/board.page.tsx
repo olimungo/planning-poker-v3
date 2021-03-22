@@ -2,7 +2,7 @@ import './board.css';
 import { useParams, useHistory } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/database';
-import { AppHeader, OverviewStory, OverviewTime, QrCode, WorkflowState, EWorkflowState, ErrorMessage, AppFooter, PigsList } from '../../components';
+import { AppHeader, OverviewStory, OverviewTime, QrCode, WorkflowBlock, EWorkflowState, ErrorMessage, AppFooter, PigsList, WorkflowState } from '../../components';
 import { useEffect, useState } from 'react';
 import { createBoardKey, getPigRef, getPigsRef } from './board.service';
 import { checkBoardExists } from '..';
@@ -55,7 +55,12 @@ export function BoardPage() {
             <AppHeader hideBadge={true} />
             <OverviewStory story={1} round={1} />
             <OverviewTime start="11:13" end="14:26" duration="1:34" story="3" pause="0:36" />
+
             <WorkflowState value={workflowState} />
+
+            <WorkflowBlock currentState={workflowState} displayState={EWorkflowState.REGISTRATION}>
+                <div>xxx</div>
+            </WorkflowBlock>
 
             <div className="board--qrcode">
                 <QrCode value={`${window.location.origin}/pig/${key}`} />

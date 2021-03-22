@@ -1,0 +1,13 @@
+.workflow-actions {
+    display: flex;
+}
+.workflow-actions button {
+    background-color: transparent;
+    outline: none;
+    border: solid 1px #26ac39;
+    padding: 1rem;
+    margin: 1rem;
+    color: #26ac39;
+    border-radius: .2rem;
+    width: 8rem;
+}

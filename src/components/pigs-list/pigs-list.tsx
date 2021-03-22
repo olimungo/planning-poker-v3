@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import { Badge } from '..';
 
-type Props = { pigsRef: firebase.database.Reference[], scrumMasterRef: firebase.database.Reference, onClick: Function };
+type Props = { pigsRef: firebase.database.Reference[], scrumMasterRef: firebase.database.Reference, onClick?: Function };
 
 export function PigsList(props: Props) {
     const { pigsRef, scrumMasterRef, onClick } = props;
