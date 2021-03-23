@@ -24,6 +24,10 @@ export function WorkflowActions(props: Props) {
                 <button onClick={() => onAction(EWorkflowState.PAUSE)}>PAUSE</button>
             </WorkflowBlock>
 
+            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.VOTE}>
+                <button onClick={() => onAction(EWorkflowState.DISCUSSION_POST_VOTE)}>STOP VOTES</button>
+            </WorkflowBlock>
+
             <WorkflowBlock currentState={currentState} displayState={EWorkflowState.PAUSE}>
                 <button onClick={() => onAction(EWorkflowState.UNPAUSE)}>STOP PAUSE</button>
             </WorkflowBlock>

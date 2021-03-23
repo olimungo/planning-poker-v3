@@ -10,4 +10,17 @@
     color: #26ac39;
     border-radius: .2rem;
     width: 8rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+}
+
+.workflow-actions button:hover {
+    position: relative;
+    top: -1px;
+    left: -1px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.82);
+    background-color: rgba(0,0,0,.18);
+}
+
+.workflow-actions button:active {
+    position: initial;
 }

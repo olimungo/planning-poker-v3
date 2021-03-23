@@ -1,12 +1,11 @@
 .card {
-    border: solid 2px #6bae6f;
+    border: solid 1px #26ac39;
     border-radius: .2rem;
     width: 4rem;
     height: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6bae6f;
     margin: .5rem;
     font-size: 1.3rem;
     cursor: pointer;

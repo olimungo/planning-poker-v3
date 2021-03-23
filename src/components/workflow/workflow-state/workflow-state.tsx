@@ -9,7 +9,7 @@ export function WorkflowState(props: Props) {
 
     return (
         <div className="workflow-state">
-            / {value.toString()} /
+            {`// ${value.toString()} //`}
         </div>
     );
 }

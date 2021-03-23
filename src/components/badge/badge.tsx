@@ -1,7 +1,7 @@
 import './badge.css';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faStar, faInfinity } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faStar, faInfinity, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -19,11 +19,12 @@ type Props = {
     name?: string,
     email?: string,
     isClickable?: boolean,
-    onChange?: Function
+    onChange?: Function,
+    showVotes?: boolean
 };
 
 export function Badge(props: Props) {
-    const { theme = EBadgeTheme.PRIMARY, reference, scrumMasterRef, name, email, isClickable, onChange } = props;
+    const { theme = EBadgeTheme.PRIMARY, reference, scrumMasterRef, name, email, isClickable, onChange, showVotes = false } = props;
     const [showForm, setShowForm] = useState(false);
     const [emailForm, setEmailForm] = useState('');
     const [nameForm, setNameForm] = useState('');
@@ -93,12 +94,21 @@ export function Badge(props: Props) {
                         : ''
                 }
 
-                <div className={
-                    `badge--vote ${theme === EBadgeTheme.PRIMARY
-                        ? 'badge--theme-primary-vote'
-                        : 'badge--theme-secondary-vote'}
-                        ${vote === '' || vote === null ? 'badge--hidden' : ''}`}>
-                    {vote !== 'INF' ? vote : <FontAwesomeIcon icon={faInfinity} />}
+                <div className={!vote ? 'badge--hidden' : ''}>
+                    <div className={
+                        `badge--vote ${theme === EBadgeTheme.PRIMARY
+                            ? 'badge--theme-primary-vote'
+                            : 'badge--theme-secondary-vote'}`}>
+                        {
+                            showVotes
+                                ? vote !== 'INFINITY' && vote !== 'COFFEE'
+                                    ? vote
+                                    : vote !== 'COFFEE'
+                                        ? <FontAwesomeIcon icon={faInfinity} />
+                                        : <FontAwesomeIcon icon={faCoffee} />
+                                : ''
+                        }
+                    </div>
                 </div>
 
                 {

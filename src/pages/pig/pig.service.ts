@@ -25,7 +25,7 @@ export function createPig(boardKey: string): string | null {
     return null;
 }
 
-export function setPig(boardKey: string, pigKey: string, name: string, email: string | null): Promise<any> | null {
+export function savePig(boardKey: string, pigKey: string, name: string, email: string | null): Promise<any> | null {
     if (name !== '') {
         email = email === '' ? null : email;
         return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).set({ name, email });
@@ -45,8 +45,4 @@ export function assignScrumMaster(boardKey: string, pigKey: string): Promise<any
 
 export function unassignScrumMaster(boardKey: string): Promise<any> {
     return firebase.database().ref(`boards/${boardKey}/scrumMaster`).remove();
-}
-
-export function transitionToDiscussion(boardKey: string) {
-    //return firebase.database().ref(`boards/${boardKey}/workflow/state`).set(state);
 }

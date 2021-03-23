@@ -32,7 +32,7 @@
 
 .badge--name {
     position: relative;
-    top: -.5rem;
+    top: -.8rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
     border-radius: 2px;
     font-weight: 600;
@@ -55,15 +55,17 @@
     position: relative;
     top: -5.5rem;
     left: 1.8rem;
-    width: 1rem;
-    height: 1rem;
-    text-align: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .badge--star {
     position: relative;
     color: #f7f02e;
-    bottom: 7.2rem;
+    bottom: 7.4rem;
     left: -1.8rem;
     font-size: 1.5rem;
 }

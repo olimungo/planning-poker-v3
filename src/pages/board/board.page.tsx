@@ -1,18 +1,30 @@
-import './board.css';
+import './board.page.css';
 import { useParams, useHistory } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/database';
-import { AppHeader, OverviewStory, OverviewTime, QrCode, WorkflowBlock, EWorkflowState, ErrorMessage, AppFooter, PigsList, WorkflowState } from '../../components';
+import {
+    AppHeader,
+    OverviewStory,
+    OverviewTime,
+    QrCode,
+    EWorkflowState,
+    ErrorMessage,
+    AppFooter,
+    PigsList,
+    WorkflowState,
+    getWorkflowStateFromString
+} from '../../components';
 import { useEffect, useState } from 'react';
 import { createBoardKey, getPigRef, getPigsRef } from './board.service';
 import { checkBoardExists } from '..';
-import { getScrumMasterRef } from '../common.services';
+import { getScrumMasterRef, getWorkflowStateRef, transitionTo } from '../common.services';
 
 export function BoardPage() {
     const { key } = useParams<{ key: string }>();
     const history = useHistory();
-    const [workflowState, setWorkflowState] = useState(EWorkflowState.REGISTRATION);
+    const [currentState, setCurrentState] = useState(EWorkflowState.REGISTRATION);
     const [errorMessage, setErrorMessage] = useState('');
+    const [allPigsHaveVoted, setAllPigsHaveVoted] = useState(false);
     const [pigsRef, setPigsRef] = useState<firebase.database.Reference[]>([]);
     const scrumMasterRef = getScrumMasterRef(key)
 
@@ -35,6 +47,31 @@ export function BoardPage() {
         }
     }, [key, history]);
 
+    // Watch the database for the current state
+    useEffect(() => {
+        getWorkflowStateRef(key).on('value', (value) => setCurrentState(getWorkflowStateFromString(value.val())));
+    }, [key]);
+
+    // Watch pigs for their votes
+    useEffect(() => {
+        getPigsRef(key).on('value', (pigs) => {
+            let allVoted = true;
+
+            pigs.forEach(pig => allVoted = allVoted && pig.child('vote').val());
+
+            if (allVoted) {
+                setAllPigsHaveVoted(true);
+            }
+        });
+    }, [key]);
+
+    // If all pigs have voted
+    useEffect(() => {
+        if (currentState === EWorkflowState.VOTE && allPigsHaveVoted) {
+            transitionTo(key, EWorkflowState.DISCUSSION_POST_VOTE);
+        }
+    }, [currentState, allPigsHaveVoted]);
+
     // While waiting for pigs to register
     useEffect(() => {
         if (key) {
@@ -56,17 +93,13 @@ export function BoardPage() {
             <OverviewStory story={1} round={1} />
             <OverviewTime start="11:13" end="14:26" duration="1:34" story="3" pause="0:36" />
 
-            <WorkflowState value={workflowState} />
-
-            <WorkflowBlock currentState={workflowState} displayState={EWorkflowState.REGISTRATION}>
-                <div>xxx</div>
-            </WorkflowBlock>
+            <WorkflowState value={currentState} />
 
             <div className="board--qrcode">
                 <QrCode value={`${window.location.origin}/pig/${key}`} />
             </div>
 
-            <PigsList pigsRef={pigsRef} scrumMasterRef={scrumMasterRef} onClick={() => { }} />
+            <PigsList pigsRef={pigsRef} scrumMasterRef={scrumMasterRef} onClick={() => { }} showVotes={allPigsHaveVoted} />
 
             <AppFooter hideToggle={true} />
 
