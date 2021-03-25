@@ -7,7 +7,7 @@ type Props = {
     pigKey: string
 };
 
-export function AppHeaderManager(props: Props) {
+export function AppHeaderHandler(props: Props) {
     const { boardKey, pigKey } = props;
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
@@ -15,12 +15,10 @@ export function AppHeaderManager(props: Props) {
 
     // Get a reference to the specified pig
     useEffect(() => {
-        if (boardKey && pigKey) {
-            getPigRef(boardKey, pigKey).once('value').then((value) => {
-                setName(value.child('name').val());
-                setEmail(value.child('email').val());
-            });
-        }
+        getPigRef(boardKey, pigKey).once('value').then((value) => {
+            setName(value.child('name').val());
+            setEmail(value.child('email').val());
+        });
     }, [boardKey, pigKey]);
 
     // Save the name and email to the database

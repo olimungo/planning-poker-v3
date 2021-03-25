@@ -1,11 +1,10 @@
 import { EWorkflowState, WorkflowActions } from '../../../../components';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getScrumMasterRef } from '../../../services';
 
 type Props = { boardKey: string, pigKey: string, currentState: EWorkflowState, onAction: Function };
 
 export function WorkflowActionsHandler(props: Props) {
-    const init = useRef(true);
     const { boardKey, pigKey, currentState, onAction } = props;
     const [isScrumMaster, setIsScrumMaster] = useState(false);
 
@@ -20,7 +19,7 @@ export function WorkflowActionsHandler(props: Props) {
         return () => {
             scrumMasterRef.off();
         }
-    }, [boardKey]);
+    }, [boardKey, pigKey]);
 
     return (
         <div>

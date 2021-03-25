@@ -1,6 +1,5 @@
 import './cards-deck.css';
 import { Card } from './card'
-import React from 'react';
 
 type Props = { onClick: Function };
 

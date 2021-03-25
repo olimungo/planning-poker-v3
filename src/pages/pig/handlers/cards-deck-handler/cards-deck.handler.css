@@ -1,0 +1,28 @@
+.cards-deck-handler {
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
+.pig--cards-deck {
+    display: flex;
+    justify-content: center;
+    margin: 2rem;
+}
+
+.pig--vote-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cards-deck-handler--voted {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid .5rem #26ac39;
+    font-size: 3rem;
+    border-radius: 50%;
+    width: 8rem;
+    height: 8rem;
+}

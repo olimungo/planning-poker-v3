@@ -1,2 +1,2 @@
-export * from './managers';
+export * from './handlers';
 export * from './pig.page';

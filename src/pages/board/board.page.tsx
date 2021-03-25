@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import { PigsListHandler } from './handlers';
 import { OverviewHandler } from '../common';
-import { getWorkflowStateRef, getScrumMasterRef, createBoardKey, checkBoardExists } from '../services';
+import { getWorkflowStateRef, createBoardKey, checkBoardExists } from '../services';
 
 export function BoardPage() {
     const { key } = useParams<{ key: string }>();
@@ -23,9 +23,9 @@ export function BoardPage() {
     const [currentState, setCurrentState] = useState(EWorkflowState.UNKNOWN);
     const [errorMessage, setErrorMessage] = useState('');
     const [workflowStateRef, setWorkflowStateRef] = useState<firebase.database.Reference | null>(null);
-    const [allPigsHaveVoted, setAllPigsHaveVoted] = useState(false);
-    const [pigsRef, setPigsRef] = useState<firebase.database.Reference[]>([]);
-    const scrumMasterRef = getScrumMasterRef(key)
+    // const [allPigsHaveVoted, setAllPigsHaveVoted] = useState(false);
+    // const [pigsRef, setPigsRef] = useState<firebase.database.Reference[]>([]);
+    // const scrumMasterRef = getScrumMasterRef(key)
 
     // Initialise board
     useEffect(() => {

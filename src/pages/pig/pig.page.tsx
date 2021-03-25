@@ -1,10 +1,10 @@
 import './pig.page.css';
 import { useParams, useHistory } from 'react-router-dom';
-import { WorkflowState, EWorkflowState, getWorkflowStateFromString } from '../../components';
+import { WorkflowState, EWorkflowState, getWorkflowStateFromString, ErrorMessage } from '../../components';
 import { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
-import { AppHeaderManager } from './managers/app-header-manager';
+import { AppHeaderHandler, CardsDeckHandler } from './handlers';
 import { OverviewHandler } from '../common';
 import { getWorkflowStateRef, transitionTo, transitionToDiscussion, createPig, checkPigExists, checkBoardExists } from '../services';
 import { AppFooterHandler, WorkflowActionsHandler } from '../board';
@@ -16,7 +16,6 @@ export function PigPage() {
     const [workflowStateRef, setWorkflowStateRef] = useState<firebase.database.Reference | null>(null);
     const [nextState, setNextState] = useState(EWorkflowState.UNKNOWN);
     const [errorMessage, setErrorMessage] = useState('');
-    // const [vote, setVote] = useState('');
 
     useEffect(() => {
         // Check if the params in the URL for the board key and the pig key exist in the database
@@ -79,14 +78,6 @@ export function PigPage() {
         }
     }, [boardKey, nextState])
 
-
-    // // Save vote to the database
-    // useEffect(() => {
-    //     if (vote) {
-    //         saveVote(boardKey, key, vote);
-    //     }
-    // }, [boardKey, key, vote])
-
     // // Assign or unassign current pig as scrum master locally
     // const handleToggleScrumMaster = (value: boolean) => setIsScrumMaster(value);
     // // When the pig change his/her name or email address in the badge 
@@ -98,32 +89,21 @@ export function PigPage() {
 
     return (
         <div className="pig">
-            <AppHeaderManager boardKey={boardKey} pigKey={key} />
+            <AppHeaderHandler boardKey={boardKey} pigKey={key} />
             <OverviewHandler boardKey={boardKey} />
             <WorkflowState value={currentState} />
 
             <WorkflowActionsHandler boardKey={boardKey} pigKey={key} currentState={currentState} onAction={handleAction} />
 
+            <CardsDeckHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
+
             <AppFooterHandler boardKey={boardKey} pigKey={key} />
-
-            {/*
-
-            {
-                !vote
-                    ? <WorkflowBlock currentState={currentState} displayState={EWorkflowState.VOTE}>
-                        <div className="pig--cards-deck">
-                            <CardsDeck onClick={handleVote} />
-                        </div>
-                    </WorkflowBlock>
-                    : <div className="pig--vote-container"><div className="pig--vote">{vote}</div></div>
-            }
-
 
             {
                 errorMessage
                     ? <ErrorMessage message={errorMessage} />
                     : ''
-            } */}
+            }
         </div>
     );
 }

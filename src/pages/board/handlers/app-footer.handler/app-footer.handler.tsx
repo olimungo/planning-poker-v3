@@ -16,7 +16,15 @@ export function AppFooterHandler(props: Props) {
         const scrumMasterRef = getScrumMasterRef(boardKey);
 
         scrumMasterRef.on('value', (value) => {
-            setScrumMaster(value.val());
+            const iAmScrumMaster = value.val() === pigKey;
+
+            setIsScrumMaster(iAmScrumMaster);
+
+            if (iAmScrumMaster || value.val() === null) {
+                setHideToggle(false);
+            } else {
+                setHideToggle(true);
+            }
         });
 
         return () => {
@@ -25,32 +33,14 @@ export function AppFooterHandler(props: Props) {
     }, [boardKey, pigKey]);
 
     useEffect(() => {
-        const iAmScrumMaster = Boolean(scrumMaster && scrumMaster === pigKey);
-
-        if (!scrumMaster || scrumMaster === pigKey) {
-            setHideToggle(false);
-        } else {
-            setHideToggle(true);
-        }
-
-        setIsScrumMaster((prevIsScrumMaster) => {
-            if (prevIsScrumMaster !== iAmScrumMaster) {
-                return iAmScrumMaster;
-            }
-
-            return prevIsScrumMaster;
-        });
-    }, [pigKey, scrumMaster]);
-
-    useEffect(() => {
         // Don't do anything when component starts up
         if (init.current) {
             init.current = false;
             return;
         }
 
-        isScrumMaster ? assignScrumMaster(boardKey, pigKey) : unassignScrumMaster(boardKey, pigKey);
-    }, [boardKey, pigKey, isScrumMaster]);
+        scrumMaster === pigKey ? assignScrumMaster(boardKey, pigKey) : unassignScrumMaster(boardKey, pigKey);
+    }, [boardKey, pigKey, scrumMaster]);
 
     const handleToggleScrumMaster = (value: boolean) => value ? setScrumMaster(pigKey) : setScrumMaster(null);
 
