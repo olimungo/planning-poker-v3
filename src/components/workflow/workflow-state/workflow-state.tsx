@@ -1,5 +1,5 @@
 import './workflow-state.css';
-import { EWorkflowState } from './workflow-state-enum'
+import { EWorkflowState } from './workflow-state.enum'
 import React from 'react';
 
 type Props = { value: EWorkflowState };

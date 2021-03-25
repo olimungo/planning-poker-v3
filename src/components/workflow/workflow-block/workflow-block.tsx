@@ -1,5 +1,5 @@
 import './workflow-block.css';
-import { EWorkflowState } from '../workflow-state/workflow-state-enum'
+import { EWorkflowState } from '../workflow-state/workflow-state.enum'
 import React, { useEffect, useState } from 'react';
 
 type Props = { children: React.ReactElement, currentState: EWorkflowState, displayState: EWorkflowState | EWorkflowState[] };

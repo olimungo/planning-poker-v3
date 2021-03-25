@@ -7,11 +7,11 @@ export function checkBoardExists(boardKey: string): Promise<boolean> {
         .then(value => value.val() ? true : false);
 }
 
-export function getScrumMasterRef(boardKey: string): firebase.database.Reference {
+export function getScrumMasterRef2(boardKey: string): firebase.database.Reference {
     return firebase.database().ref(`boards/${boardKey}/scrumMaster`);
 }
 
-export function getWorkflowStateRef(boardKey: string): firebase.database.Reference {
+export function getWorkflowStateRef2(boardKey: string): firebase.database.Reference {
     return firebase.database().ref(`boards/${boardKey}/workflow/state`);
 }
 

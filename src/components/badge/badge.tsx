@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faStar, faInfinity, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
-import firebase from 'firebase/app';
-import 'firebase/database';
 import { Form } from './form';
 
 export enum EBadgeTheme {
@@ -14,47 +12,30 @@ export enum EBadgeTheme {
 
 type Props = {
     theme?: EBadgeTheme,
-    reference?: firebase.database.Reference,
-    scrumMasterRef?: firebase.database.Reference,
     name?: string,
     email?: string,
+    vote?: string,
+    showVote?: boolean,
+    displayStar?: boolean,
     isClickable?: boolean,
     onChange?: Function,
-    showVotes?: boolean
 };
 
 export function Badge(props: Props) {
-    const { theme = EBadgeTheme.PRIMARY, reference, scrumMasterRef, name, email, isClickable, onChange, showVotes = false } = props;
+    const { theme = EBadgeTheme.PRIMARY, name, email, vote, showVote = false, displayStar = false, isClickable = false, onChange } = props;
     const [showForm, setShowForm] = useState(false);
     const [emailForm, setEmailForm] = useState('');
     const [nameForm, setNameForm] = useState('');
-    const [vote, setVote] = useState('');
-    const [isScrumMaster, setIsScrumMaster] = useState(false);
 
     useEffect(() => {
         if (name) {
             setNameForm(name)
         }
-    }, [name]);
 
-    useEffect(() => {
         if (email) {
             setEmailForm(email)
         }
-    }, [email]);
-
-    // Watch child properties of the current pig and update the display
-    useEffect(() => {
-        if (reference) {
-            reference.child('name').on('value', (value) => setNameForm(value.val()));
-            reference.child('email').on('value', (value) => setEmailForm(value.val()));
-            reference.child('vote').on('value', (value) => setVote(value.val()));
-
-            if (scrumMasterRef) {
-                scrumMasterRef.on('value', (value) => setIsScrumMaster(value.val() === reference.key));
-            }
-        }
-    }, [reference, scrumMasterRef]);
+    }, [name, email]);
 
     // The pig changed his/her name or email through the form
     // Update the display and bubble up the event to the parent component
@@ -100,7 +81,7 @@ export function Badge(props: Props) {
                             ? 'badge--theme-primary-vote'
                             : 'badge--theme-secondary-vote'}`}>
                         {
-                            showVotes
+                            showVote
                                 ? vote !== 'INFINITY' && vote !== 'COFFEE'
                                     ? vote
                                     : vote !== 'COFFEE'
@@ -112,7 +93,7 @@ export function Badge(props: Props) {
                 </div>
 
                 {
-                    isScrumMaster
+                    displayStar
                         ? <FontAwesomeIcon className='badge--star' icon={faStar} />
                         : ''
                 }

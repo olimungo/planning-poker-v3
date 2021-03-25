@@ -3,7 +3,7 @@ export * from './app-header';
 export * from './badge';
 export * from './cards-deck';
 export * from './error-message';
-export * from './pigs-list';
+export * from '../pages/board/handlers/pigs-list-handler';
 export * from './qr-code';
 export * from './switch';
 export * from './workflow';

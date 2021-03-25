@@ -12,11 +12,11 @@ export function createBoardKey(): string | null {
     return boardKey;
 }
 
-export function getPigsRef(boardKey: string): firebase.database.Reference {
+export function getPigsRef2(boardKey: string): firebase.database.Reference {
     return firebase.database().ref(`boards/${boardKey}/pigs`);
 }
 
-export function getPigRef(boardKey: string, pigKey: string): firebase.database.Reference {
+export function getPigRef2(boardKey: string, pigKey: string): firebase.database.Reference {
     return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`);
 }
 

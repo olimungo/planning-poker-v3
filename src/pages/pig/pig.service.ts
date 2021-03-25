@@ -39,10 +39,10 @@ export function checkPigExists(boardKey: string, pigKey: string): Promise<{ name
         .then(value => ({ name: value.child('name').val(), email: value.child('email').val() }));
 }
 
-export function assignScrumMaster(boardKey: string, pigKey: string): Promise<any> {
+export function assignScrumMaster2(boardKey: string, pigKey: string): Promise<any> {
     return firebase.database().ref(`boards/${boardKey}/scrumMaster`).set(pigKey);
 }
 
-export function unassignScrumMaster(boardKey: string): Promise<any> {
+export function unassignScrumMaster2(boardKey: string): Promise<any> {
     return firebase.database().ref(`boards/${boardKey}/scrumMaster`).remove();
 }

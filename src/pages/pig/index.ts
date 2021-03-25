@@ -1,4 +1,3 @@
-export * from './pig.class';
-export * from './pig.interface';
+export * from './managers/app-header-manager';
 export * from './pig.page';
 export * from './pig.service';

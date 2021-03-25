@@ -5,24 +5,24 @@ type Props = { name?: string, email?: string, onOk: Function, onCancel: Function
 
 export function Form(props: Props) {
     const { name, email, onOk, onCancel } = props;
-    const [nameInput, setNameInput] = useState('');
-    const [emailInput, setEmailInput] = useState('');
+    const [nameForm, setNameForm] = useState('');
+    const [emailForm, setEmailForm] = useState('');
 
     useEffect(() => {
         if (name) {
-            setNameInput(name)
+            setNameForm(name)
         }
     }, [name]);
 
     useEffect(() => {
         if (email) {
-            setEmailInput(email)
+            setEmailForm(email)
         }
     }, [email]);
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        onOk({ name: nameInput, email: emailInput });
+        onOk({ name: nameForm, email: emailForm });
     };
 
     return (
@@ -31,13 +31,13 @@ export function Form(props: Props) {
 
             <div className="email-form--input">
                 <input type="text" placeholder="Enter your name"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNameInput(event.currentTarget.value)}
-                    value={nameInput}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNameForm(event.currentTarget.value)}
+                    value={nameForm}
                     autoFocus />
 
                 <input type="text" placeholder="Enter your email address"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmailInput(event.currentTarget.value)}
-                    value={emailInput} />
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmailForm(event.currentTarget.value)}
+                    value={emailForm} />
             </div>
 
             <div className="email-form--buttons">
