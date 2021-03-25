@@ -13,11 +13,9 @@ import {
     getWorkflowStateFromString,
 } from '../../components';
 import { useEffect, useState } from 'react';
-import { createBoardKey } from './board.service';
-import { checkBoardExists } from '..';
-import { PigsListHandler } from './handlers/pigs-list-handler';
-import { OverviewHandler } from '../common/handlers';
-import { getWorkflowStateRef, getScrumMasterRef } from '../services';
+import { PigsListHandler } from './handlers';
+import { OverviewHandler } from '../common';
+import { getWorkflowStateRef, getScrumMasterRef, createBoardKey, checkBoardExists } from '../services';
 
 export function BoardPage() {
     const { key } = useParams<{ key: string }>();

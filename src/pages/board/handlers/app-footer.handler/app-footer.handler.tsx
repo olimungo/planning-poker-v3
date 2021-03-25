@@ -49,7 +49,7 @@ export function AppFooterHandler(props: Props) {
             return;
         }
 
-        isScrumMaster ? assignScrumMaster(boardKey, pigKey) : unassignScrumMaster(boardKey);
+        isScrumMaster ? assignScrumMaster(boardKey, pigKey) : unassignScrumMaster(boardKey, pigKey);
     }, [boardKey, pigKey, isScrumMaster]);
 
     const handleToggleScrumMaster = (value: boolean) => value ? setScrumMaster(pigKey) : setScrumMaster(null);

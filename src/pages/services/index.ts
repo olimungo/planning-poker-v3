@@ -1,3 +1,3 @@
-export * from './boards.service';
+export * from './board.service';
 export * from './pigs.service';
 export * from './workflow.service';

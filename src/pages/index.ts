@@ -1,3 +1,4 @@
 export * from './board';
-export * from './common.services';
+export * from './common';
 export * from './pig';
+export * from './services';

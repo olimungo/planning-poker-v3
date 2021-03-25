@@ -3,11 +3,11 @@ export enum EWorkflowState {
     REGISTRATION = 'REGISTRATION',
     PREPARATION = 'PREPARATION',
     DISCUSSION = 'DISCUSSION',
-    DISCUSSION_POST_VOTE = 'DISCUSSION POST VOTE',
+    FINAL_ESTIMATE = 'FINAL_ESTIMATE',
     VOTE = 'VOTE',
     REVOTE = 'REVOTE',
     RESULTS = 'RESULTS',
-    FINAL_RESULTS = 'FINAL RESULT',
+    FINAL_RESULTS = 'FINAL_RESULT',
     PAUSE = 'PAUSE',
     UNPAUSE = 'UNPAUSE'
 };
@@ -20,7 +20,7 @@ export function getStringFromWorkflowState(state: EWorkflowState): string {
             return 'PREPARATION';
         case EWorkflowState.DISCUSSION:
             return 'DISCUSSION';
-        case EWorkflowState.DISCUSSION_POST_VOTE:
+        case EWorkflowState.FINAL_ESTIMATE:
             return 'DISCUSSION_POST_VOTE';
         case EWorkflowState.VOTE:
             return 'VOTE';
@@ -47,8 +47,8 @@ export function getWorkflowStateFromString(state: string): EWorkflowState {
             return EWorkflowState.PREPARATION;
         case 'DISCUSSION':
             return EWorkflowState.DISCUSSION;
-        case 'DISCUSSION_POST_VOTE':
-            return EWorkflowState.DISCUSSION_POST_VOTE;
+        case 'FINAL_ESTIMATE':
+            return EWorkflowState.FINAL_ESTIMATE;
         case 'VOTE':
             return EWorkflowState.VOTE;
         case 'REVOTE':

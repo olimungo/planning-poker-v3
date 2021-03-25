@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import { Badge, EBadgeTheme } from '../../../../../components';
-import { getPigRef } from '../../../../services/pigs.service';
+import { getPigRef } from '../../../../services';
 
 type Props = {
     boardKey: string,
