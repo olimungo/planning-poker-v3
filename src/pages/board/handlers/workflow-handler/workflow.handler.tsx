@@ -29,6 +29,8 @@ export function WorkflowHandler(props: Props) {
             if (value.val()) {
                 const nextState = getWorkflowStateFromString(value.val());
                 transitionTo(boardKey, nextState);
+                setAllPigsHaveVoted(false);
+                onAllPigsHaveVoted(false)
             }
         });
 

@@ -46,10 +46,21 @@ export function CardsDeckHandler(props: Props) {
     useEffect(() => {
         if (vote) {
             saveVote(boardKey, pigKey, vote);
-            setVoted(vote);
-            setVote('');
+
+            // Delay a bit the operation for the ScrumMaster so to prevent a flashing effect
+            // by showing his own vote, and then immediately the deck when he's the last one
+            // to vote.
+            if (isScrumMaster) {
+                setTimeout(() => {
+                    setVoted(vote);
+                    setVote('');
+                }, 500);
+            } else {
+                setVoted(vote);
+                setVote('');
+            }
         }
-    }, [boardKey, pigKey, vote])
+    }, [boardKey, pigKey, vote, isScrumMaster])
 
     // Save the final estimate to the database
     useEffect(() => {

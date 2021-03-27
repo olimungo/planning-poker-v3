@@ -4,11 +4,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #313f4f;
-    border-radius: .4rem;
+    border-radius: .3rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
     width: 23rem;
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem 2rem;
 }
 
 .email-form h1 {
@@ -24,6 +24,7 @@
 
 .email-form--buttons {
     text-align: end;
+    margin-top: 1rem;
 }
 
 .email-form input[type='text'] {
@@ -38,10 +39,12 @@
     width: 5rem;
     background-color: transparent;
     border: none;
-    margin-left: .5rem;
+    margin-left: 1rem;
     width: auto;
     color: #6bae6f;
-    padding: .3rem .6rem;
+    padding: .5rem 1rem;
+    border-radius: .2rem;
+    font-size: 1rem;
 }
 
 .email-form input[type='submit']:hover, .email-form button:hover {
