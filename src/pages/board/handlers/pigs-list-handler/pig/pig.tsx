@@ -13,7 +13,7 @@ type Props = {
 };
 
 export function Pig(props: Props) {
-    const { boardKey, pigKey, showVote = true, isClickable = false, theme = EBadgeTheme.PRIMARY } = props;
+    const { boardKey, pigKey, showVote = false, isClickable = false, theme = EBadgeTheme.PRIMARY } = props;
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [vote, setVote] = useState('');

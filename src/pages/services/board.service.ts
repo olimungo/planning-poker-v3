@@ -2,10 +2,6 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import { EWorkflowState } from '../../components';
 
-export function getScrumMasterRef(boardKey: string): firebase.database.Reference {
-    return firebase.database().ref(`boards/${boardKey}/scrumMaster`);
-}
-
 export function createBoardKey(): string | null {
     const boardKey = firebase.database().ref('boards').push().key;
 

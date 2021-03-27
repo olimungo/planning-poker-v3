@@ -6,7 +6,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import { AppHeaderHandler, CardsDeckHandler } from './handlers';
 import { OverviewHandler } from '../common';
-import { getWorkflowStateRef, transitionTo, transitionToDiscussion, createPig, checkPigExists, checkBoardExists } from '../services';
+import { getWorkflowStateRef, createPig, checkPigExists, checkBoardExists } from '../services';
 import { AppFooterHandler, WorkflowActionsHandler } from '../board';
 
 export function PigPage() {
@@ -14,7 +14,6 @@ export function PigPage() {
     const history = useHistory();
     const [currentState, setCurrentState] = useState(EWorkflowState.UNKNOWN);
     const [workflowStateRef, setWorkflowStateRef] = useState<firebase.database.Reference | null>(null);
-    const [nextState, setNextState] = useState(EWorkflowState.UNKNOWN);
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
@@ -40,14 +39,7 @@ export function PigPage() {
                 setErrorMessage('The board specified in the URL doesn\'t exist');
             }
         });
-
-        // // Check if the pig is voting
-        // getVote(boardKey, key).then((value) => {
-        //     if (value) {
-        //         setVote(value);
-        //     }
-        // })
-    }, [key, boardKey, history]);
+    }, [boardKey, key, history]);
 
     // Watch the database for the current state
     useEffect(() => {
@@ -55,55 +47,23 @@ export function PigPage() {
             workflowStateRef.on('value', (value) => {
                 setCurrentState(getWorkflowStateFromString(value.val()));
             });
-        }
 
-        // The return statement is executed on ComponentWillUnmount React event
-        return () => {
-            // Stop watching the workflow state when component is discarded
-            if (workflowStateRef) {
+            return () => {
                 workflowStateRef.off();
-            }
-        };
-    }, [workflowStateRef]);
-
-    // // Transition to next state in the database
-    useEffect(() => {
-        switch (nextState) {
-            case EWorkflowState.DISCUSSION:
-                transitionToDiscussion(boardKey);
-                break;
-            case EWorkflowState.VOTE:
-                transitionTo(boardKey, EWorkflowState.VOTE);
-                break;
+            };
         }
-    }, [boardKey, nextState])
-
-    // // Assign or unassign current pig as scrum master locally
-    // const handleToggleScrumMaster = (value: boolean) => setIsScrumMaster(value);
-    // // When the pig change his/her name or email address in the badge 
-    // // Transition workflow on actions from the scrum master
-    // // Set vote for the current pig (or scrum master)
-    // const handleVote = (value: string) => setVote(value);
-
-    const handleAction = (state: EWorkflowState) => setNextState(state);
+    }, [workflowStateRef]);
 
     return (
         <div className="pig">
             <AppHeaderHandler boardKey={boardKey} pigKey={key} />
             <OverviewHandler boardKey={boardKey} />
-            <WorkflowState value={currentState} />
-
-            <WorkflowActionsHandler boardKey={boardKey} pigKey={key} currentState={currentState} onAction={handleAction} />
-
+            <WorkflowState state={currentState} />
+            <WorkflowActionsHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
             <CardsDeckHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
-
             <AppFooterHandler boardKey={boardKey} pigKey={key} />
 
-            {
-                errorMessage
-                    ? <ErrorMessage message={errorMessage} />
-                    : ''
-            }
+            <ErrorMessage message={errorMessage} />
         </div>
     );
 }

@@ -75,7 +75,7 @@ export function Badge(props: Props) {
                         : ''
                 }
 
-                <div className={!vote ? 'badge--hidden' : ''}>
+                <div className={`badge--relative ${!vote ? 'badge--hidden' : ''}`}>
                     <div className={
                         `badge--vote ${theme === EBadgeTheme.PRIMARY
                             ? 'badge--theme-primary-vote'
@@ -94,7 +94,7 @@ export function Badge(props: Props) {
 
                 {
                     displayStar
-                        ? <FontAwesomeIcon className='badge--star' icon={faStar} />
+                        ? <div className="badge--relative"><FontAwesomeIcon className='badge--star' icon={faStar} /></div>
                         : ''
                 }
             </div>

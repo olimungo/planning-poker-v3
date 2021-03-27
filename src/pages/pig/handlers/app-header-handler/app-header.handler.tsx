@@ -15,10 +15,19 @@ export function AppHeaderHandler(props: Props) {
 
     // Get a reference to the specified pig
     useEffect(() => {
-        getPigRef(boardKey, pigKey).once('value').then((value) => {
-            setName(value.child('name').val());
-            setEmail(value.child('email').val());
+        const pigRef = getPigRef(boardKey, pigKey);
+
+        pigRef.on('value', (value) => {
+            if (value.child('name').exists()) {
+                setName(value.child('name').val());
+            }
+
+            if (value.child('email').exists()) {
+                setEmail(value.child('email').val());
+            }
         });
+
+        return () => pigRef.off();
     }, [boardKey, pigKey]);
 
     // Save the name and email to the database

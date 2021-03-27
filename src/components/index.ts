@@ -5,5 +5,6 @@ export * from './cards-deck';
 export * from './error-message';
 export * from '../pages/board/handlers/pigs-list-handler';
 export * from './qr-code';
+export * from './sign';
 export * from './switch';
 export * from './workflow';

@@ -11,9 +11,10 @@ import {
     WorkflowState,
     EBadgeTheme,
     getWorkflowStateFromString,
+    WorkflowBlock,
 } from '../../components';
 import { useEffect, useState } from 'react';
-import { PigsListHandler } from './handlers';
+import { PigsListHandler, WorkflowHandler } from './handlers';
 import { OverviewHandler } from '../common';
 import { getWorkflowStateRef, createBoardKey, checkBoardExists } from '../services';
 
@@ -23,9 +24,7 @@ export function BoardPage() {
     const [currentState, setCurrentState] = useState(EWorkflowState.UNKNOWN);
     const [errorMessage, setErrorMessage] = useState('');
     const [workflowStateRef, setWorkflowStateRef] = useState<firebase.database.Reference | null>(null);
-    // const [allPigsHaveVoted, setAllPigsHaveVoted] = useState(false);
-    // const [pigsRef, setPigsRef] = useState<firebase.database.Reference[]>([]);
-    // const scrumMasterRef = getScrumMasterRef(key)
+    const [showVote, setShowVote] = useState(false);
 
     // Initialise board
     useEffect(() => {
@@ -46,6 +45,7 @@ export function BoardPage() {
                 }
             });
         }
+
     }, [key, history]);
 
     // Watch the database for the current state
@@ -58,66 +58,31 @@ export function BoardPage() {
 
         // The return statement is executed on ComponentWillUnmount React event
         return () => {
-            // Stop watching the workflow state when component is discarded
             if (workflowStateRef) {
                 workflowStateRef.off();
             }
         };
     }, [workflowStateRef]);
 
-    // // Watch pigs for their votes
-    // useEffect(() => {
-    //     getPigsRef(key).on('value', (pigs) => {
-    //         let allVoted = true;
+    const handleAllPigsHaveVoted = (value: boolean) => setShowVote(value);
 
-    //         pigs.forEach(pig => allVoted = allVoted && pig.child('vote').val());
-
-    //         if (allVoted) {
-    //             setAllPigsHaveVoted(true);
-    //         }
-    //     });
-    // }, [key]);
-
-    // // If all pigs have voted
-    // useEffect(() => {
-    //     if (currentState === EWorkflowState.VOTE && allPigsHaveVoted) {
-    //         transitionTo(key, EWorkflowState.DISCUSSION_POST_VOTE);
-    //     }
-    // }, [currentState, allPigsHaveVoted]);
-
-    // // While waiting for pigs to register
-    // useEffect(() => {
-    //     if (key) {
-    //         getPigsRef(key).on('child_added', (value) => {
-    //             if (value && value.key) {
-    //                 const pig = getPigRef(key, value.key);
-
-    //                 if (pig) {
-    //                     setPigsRef((prevState) => [...prevState, pig]);
-    //                 }
-    //             }
-    //         });
-    //     }
-    // }, [key]);
     return (
         <div className="board">
             <AppHeader hideBadge={true} />
             <OverviewHandler boardKey={key} />
-            <WorkflowState value={currentState} />
+            <WorkflowState state={currentState} />
+            <WorkflowHandler currentState={currentState} boardKey={key} onAllPigsHaveVoted={handleAllPigsHaveVoted} />
 
             <div className="board--qrcode">
-                <QrCode value={`${window.location.origin}/pig/${key}`} />
+                <WorkflowBlock currentState={currentState} displayState={EWorkflowState.REGISTRATION}>
+                    <QrCode value={`${window.location.origin}/pig/${key}`} />
+                </WorkflowBlock>
             </div>
 
-            <PigsListHandler boardKey={key} showVote={false} isClickable={false} theme={EBadgeTheme.PRIMARY} />
-
+            <PigsListHandler boardKey={key} showVote={showVote} isClickable={false} theme={EBadgeTheme.PRIMARY} />
             <AppFooter hideToggle={true} />
 
-            {
-                errorMessage
-                    ? <ErrorMessage message={errorMessage} />
-                    : ''
-            }
+            <ErrorMessage message={errorMessage} />
 
             <div className="board--spacer"></div>
         </div>

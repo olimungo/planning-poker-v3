@@ -47,16 +47,6 @@ export function getPigsRef(boardKey: string): firebase.database.Reference {
     return firebase.database().ref(`boards/${boardKey}/pigs`);
 }
 
-export function assignScrumMaster(boardKey: string, pigKey: string) {
-    firebase.database().ref(`boards/${boardKey}/scrumMaster`).set(pigKey);
-    firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}/isScrumMaster`).set(true);
-}
-
-export function unassignScrumMaster(boardKey: string, pigKey: string) {
-    firebase.database().ref(`boards/${boardKey}/scrumMaster`).remove();
-    firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}/isScrumMaster`).remove();
-}
-
 export function getVote(boardKey: string, pigKey: string): Promise<string> {
     return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}/vote`).once('value').then((value) => value.val());
 }

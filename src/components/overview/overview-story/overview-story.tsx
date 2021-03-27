@@ -1,13 +1,17 @@
 import './overview-story.css';
 
-type Props = { story: number | null, round: number | null };
+type Props = { story: number | null, round: number | null, stories: number | null };
 
 export function OverviewStory(props: Props) {
-    const { story, round } = props;
+    const { story, round, stories } = props;
 
     return (
         <div className="overview-story">
-            {`$ story ${story} | round ${round}`}
+            {
+                stories
+                    ? `$ stories ${stories}`
+                    : `$ story ${story} | round ${round}`
+            }
         </div>
     );
 }

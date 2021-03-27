@@ -21,7 +21,7 @@ export function getStringFromWorkflowState(state: EWorkflowState): string {
         case EWorkflowState.DISCUSSION:
             return 'DISCUSSION';
         case EWorkflowState.FINAL_ESTIMATE:
-            return 'DISCUSSION_POST_VOTE';
+            return 'FINAL ESTIMATE';
         case EWorkflowState.VOTE:
             return 'VOTE';
         case EWorkflowState.REVOTE:
@@ -29,7 +29,7 @@ export function getStringFromWorkflowState(state: EWorkflowState): string {
         case EWorkflowState.RESULTS:
             return 'RESULTS';
         case EWorkflowState.FINAL_RESULTS:
-            return 'FINAL_RESULTS';
+            return 'FINAL RESULTS';
         case EWorkflowState.PAUSE:
             return 'PAUSE';
         case EWorkflowState.UNPAUSE:

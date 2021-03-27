@@ -1,15 +1,24 @@
 import './workflow-state.css';
-import { EWorkflowState } from './workflow-state.enum'
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { EWorkflowState, getStringFromWorkflowState } from './workflow-state.enum'
 
-type Props = { value: EWorkflowState };
+type Props = { state: EWorkflowState };
 
 export function WorkflowState(props: Props) {
-    const { value } = props;
+    const { state } = props;
+    const [title, setTitle] = useState('');
+
+    useEffect(() => {
+        if (state === EWorkflowState.UNKNOWN) {
+            setTitle('');
+        } else {
+            setTitle(getStringFromWorkflowState(state));
+        }
+    }, [state]);
 
     return (
         <div className="workflow-state">
-            {`// ${value.toString()} //`}
+            {`>> ${title}`}
         </div>
     );
 }

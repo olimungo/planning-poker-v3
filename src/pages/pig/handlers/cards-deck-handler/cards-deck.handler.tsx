@@ -1,53 +1,89 @@
 import './cards-deck.handler.css'
 import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfinity, faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { CardsDeck, EWorkflowState, WorkflowBlock } from '../../../../components';
-import { getVote, saveVote } from '../../../services';
+import { CardsDeck, EWorkflowState, WorkflowBlock, Sign, getWorkflowStateFromString } from '../../../../components';
+import { getNextStateRef, getScrumMasterRef, getVote, getWorkflowStateRef, saveFinalEstimate, saveVote } from '../../../services';
 
-type Props = {
-    boardKey: string,
-    pigKey: string,
-    currentState: EWorkflowState
-};
+type Props = { boardKey: string, pigKey: string, currentState: EWorkflowState };
 
 export function CardsDeckHandler(props: Props) {
     const { boardKey, pigKey, currentState } = props;
     const [vote, setVote] = useState('');
     const [voted, setVoted] = useState('');
+    const [finalEstimate, setFinalEstimate] = useState('');
+    const [isScrumMaster, setIsScrumMaster] = useState(false);
 
     // Get the vote from the database
     useEffect(() => {
+        const scrumMasterRef = getScrumMasterRef(boardKey);
+        const nextStateRef = getNextStateRef(boardKey);
+
+        scrumMasterRef.on('value', (value) => {
+            setIsScrumMaster(value.val() === pigKey);
+        });
+
         getVote(boardKey, pigKey).then((value) => {
             if (value) {
                 setVoted(value);
             }
-        })
+        });
+
+        nextStateRef.on('value', (value) => {
+            if (value.val()) {
+                const nextState = getWorkflowStateFromString(value.val());
+
+                if (nextState === EWorkflowState.VOTE) {
+                    setVoted('');
+                    setVote('');
+                    setFinalEstimate('');
+                }
+            }
+        });
+
+        return () => scrumMasterRef.off();
     }, [boardKey, pigKey])
 
     // Save vote to the database
     useEffect(() => {
         if (vote) {
             saveVote(boardKey, pigKey, vote);
-            setVoted(vote)
+            setVoted(vote);
+            setVote('');
         }
     }, [boardKey, pigKey, vote])
 
-    const handleClick = (value: string) => setVote(value);
+    // Save the final estimate to the database
+    useEffect(() => {
+        if (finalEstimate) {
+            saveFinalEstimate(boardKey, finalEstimate);
+            setVoted('');
+            setFinalEstimate('')
+        }
+    }, [boardKey, finalEstimate])
+
+    const handleClickVote = (value: string) => setVote(value);
+    const handleClickFinalEstimates = (value: string) => setFinalEstimate(value);
 
     return (
-        <WorkflowBlock currentState={currentState} displayState={EWorkflowState.VOTE}>
-            <div className="cards-deck-handler">
-                {
-                    !voted
-                        ? <CardsDeck onClick={handleClick} />
-                        : voted === 'COFFEE'
-                            ? <div className="cards-deck-handler--voted"><FontAwesomeIcon icon={faCoffee} /></div>
-                            : voted === 'INFINITY'
-                                ? <div className="cards-deck-handler--voted"><FontAwesomeIcon icon={faInfinity} /></div>
-                                : <div className="cards-deck-handler--voted">{voted}</div>
-                }
-            </div>
-        </WorkflowBlock>
+        <div>
+            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.VOTE}>
+                <div className="cards-deck-handler">
+                    {
+                        !voted
+                            ? <CardsDeck onClick={handleClickVote} />
+                            : <Sign value={voted} />
+                    }
+                </div>
+            </WorkflowBlock>
+
+            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.FINAL_ESTIMATE}>
+                <div className="cards-deck-handler">
+                    {
+                        isScrumMaster
+                            ? <CardsDeck onClick={handleClickFinalEstimates} />
+                            : <Sign value={voted} />
+                    }
+                </div>
+            </WorkflowBlock>
+        </div>
     );
 };
