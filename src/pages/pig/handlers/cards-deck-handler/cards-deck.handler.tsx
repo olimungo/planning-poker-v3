@@ -1,7 +1,7 @@
 import './cards-deck.handler.css'
 import { useState, useEffect } from 'react';
 import { CardsDeck, EWorkflowState, WorkflowBlock, Sign, getWorkflowStateFromString } from '../../../../components';
-import { getNextStateRef, getScrumMasterRef, getVote, getWorkflowStateRef, saveFinalEstimate, saveVote } from '../../../services';
+import { getNextStateRef, getScrumMasterRef, getVote, saveFinalEstimate, saveVote } from '../../../services';
 
 type Props = { boardKey: string, pigKey: string, currentState: EWorkflowState };
 
@@ -31,7 +31,7 @@ export function CardsDeckHandler(props: Props) {
             if (value.val()) {
                 const nextState = getWorkflowStateFromString(value.val());
 
-                if (nextState === EWorkflowState.VOTE) {
+                if (nextState === EWorkflowState.VOTE || nextState === EWorkflowState.REVOTE) {
                     setVoted('');
                     setVote('');
                     setFinalEstimate('');

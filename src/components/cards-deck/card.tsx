@@ -14,8 +14,8 @@ export function Card(props: Props) {
                 value !== 'INFINITY' && value !== 'COFFEE'
                     ? <div>{value}</div>
                     : value !== 'COFFEE'
-                        ? <FontAwesomeIcon className="card--icon" icon={faInfinity} />
-                        : <FontAwesomeIcon className="card--icon" icon={faCoffee} />
+                        ? <FontAwesomeIcon icon={faInfinity} />
+                        : <FontAwesomeIcon icon={faCoffee} />
             }
         </div>
     );

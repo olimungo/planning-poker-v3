@@ -18,7 +18,7 @@ export function AppHeader(props: Props) {
     return (
         <div className="app-header">
             <h1>
-                <FontAwesomeIcon className="card--icon" icon={faAngleRight} /> PLANNING POKER
+                <FontAwesomeIcon icon={faAngleRight} /> PLANNING POKER
             </h1>
 
             {

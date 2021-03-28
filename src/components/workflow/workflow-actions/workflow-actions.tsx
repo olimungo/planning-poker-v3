@@ -17,7 +17,7 @@ export function WorkflowActions(props: Props) {
             </WorkflowBlock>
 
             <WorkflowBlock currentState={currentState} displayState={EWorkflowState.FINAL_ESTIMATE}>
-                <button onClick={() => onAction(EWorkflowState.VOTE)}>RE-VOTE</button>
+                <button onClick={() => onAction(EWorkflowState.REVOTE)}>RE-VOTE</button>
             </WorkflowBlock>
 
             <WorkflowBlock currentState={currentState} displayState={EWorkflowState.DISCUSSION}>

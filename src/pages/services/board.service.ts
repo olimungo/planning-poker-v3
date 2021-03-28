@@ -17,14 +17,3 @@ export function checkBoardExists(boardKey: string): Promise<boolean> {
     return firebase.database().ref(`boards/${boardKey}`).once('value')
         .then(value => value.val() ? true : false);
 }
-
-// export function waitForPig$(boardKey: string): Observable<boolean> {
-//     return new Observable(subscriber => {
-//         const pigsRef = firebase.database().ref(`boards/${boardKey}/pigs`);
-
-//         pigsRef.on('child_added', () => {
-//             subscriber.next(true);
-//             pigsRef.off();
-//         });
-//     });
-// };

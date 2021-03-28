@@ -28,6 +28,7 @@ export function WorkflowHandler(props: Props) {
         nextStateRef.on('value', (value) => {
             if (value.val()) {
                 const nextState = getWorkflowStateFromString(value.val());
+
                 transitionTo(boardKey, nextState);
                 setAllPigsHaveVoted(false);
                 onAllPigsHaveVoted(false)
@@ -38,13 +39,19 @@ export function WorkflowHandler(props: Props) {
             pigsRef.off()
             nextStateRef.off()
         };
-    }, [boardKey]);
+    }, [boardKey, onAllPigsHaveVoted]);
 
     useEffect(() => {
         if (currentState === EWorkflowState.VOTE && allPigsHaveVoted) {
             onAllPigsHaveVoted(allPigsHaveVoted);
             setAllPigsHaveVoted(false);
             transitionTo(boardKey, EWorkflowState.FINAL_ESTIMATE);
+        }
+
+        // If not all the pigs have voted but the scrum master stopped the votes
+        if (currentState === EWorkflowState.FINAL_ESTIMATE && !allPigsHaveVoted) {
+            onAllPigsHaveVoted(true);
+            setAllPigsHaveVoted(false);
         }
     }, [boardKey, currentState, allPigsHaveVoted, onAllPigsHaveVoted]);
 

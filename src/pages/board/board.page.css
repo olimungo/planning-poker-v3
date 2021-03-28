@@ -2,14 +2,11 @@
     margin: 0 1rem;
     color: #f08d26;
     font-size: 1.3rem;
-}
-
-.board--qrcode {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0 3rem 0;
+    background: #282d33;
+    padding: .5rem 2rem;
+    width: 36rem;
 }
 
 .board--spacer {
-    height: 3rem;
+    height: 4rem;
 }

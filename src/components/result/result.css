@@ -1,0 +1,15 @@
+.result {
+    display: flex;
+    font-size: 1.8rem;
+    margin-bottom: .5rem;
+}
+
+.result--story {
+    width: 4rem;
+}
+
+.result--estimate {
+    width: 4rem;
+    text-align: right;
+    margin-right: 6rem;
+}

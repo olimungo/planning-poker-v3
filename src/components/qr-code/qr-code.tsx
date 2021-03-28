@@ -25,7 +25,7 @@ export function QrCode(props: Props) {
             />
 
             <button className="qr-code--button" onClick={sendMail}>
-                <FontAwesomeIcon className="card--icon" icon={faPaperPlane} />
+                <FontAwesomeIcon icon={faPaperPlane} />
             </button>
         </div>
     );

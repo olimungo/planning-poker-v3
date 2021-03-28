@@ -2,4 +2,11 @@
     margin: 0 1rem;
     color: #25ad38;
     font-size: 1.3rem;
+    background: #282d33;
+    padding: .5rem 2rem;
+    width: 36rem;
+}
+
+.pig--spacer {
+    height: 4rem;
 }

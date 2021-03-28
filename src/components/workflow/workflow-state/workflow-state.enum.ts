@@ -7,7 +7,7 @@ export enum EWorkflowState {
     VOTE = 'VOTE',
     REVOTE = 'REVOTE',
     RESULTS = 'RESULTS',
-    FINAL_RESULTS = 'FINAL_RESULT',
+    FINAL_RESULTS = 'FINAL_RESULTS',
     PAUSE = 'PAUSE',
     UNPAUSE = 'UNPAUSE'
 };

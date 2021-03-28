@@ -10,7 +10,7 @@ export function CardsDeck(props: Props) {
     return (
         <div className="cards-deck">
             {
-                cards.map(card => <Card key={card} value={card} onClick={onClick}></Card>)
+                cards.map(card => <Card key={card} value={card} onClick={onClick} />)
             }
         </div>
     );

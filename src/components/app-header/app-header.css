@@ -5,3 +5,7 @@
     justify-content: space-between;
     padding: .5rem 1rem;
 }
+
+.app-header h1 {
+    margin-right: 4rem;
+}

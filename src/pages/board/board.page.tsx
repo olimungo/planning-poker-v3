@@ -15,7 +15,7 @@ import {
 } from '../../components';
 import { useEffect, useState } from 'react';
 import { PigsListHandler, WorkflowHandler } from './handlers';
-import { OverviewHandler } from '../common';
+import { EResultTheme, OverviewHandler, ResultsHandler } from '../common';
 import { getWorkflowStateRef, createBoardKey, checkBoardExists } from '../services';
 
 export function BoardPage() {
@@ -73,13 +73,20 @@ export function BoardPage() {
             <WorkflowState state={currentState} />
             <WorkflowHandler currentState={currentState} boardKey={key} onAllPigsHaveVoted={handleAllPigsHaveVoted} />
 
-            <div className="board--qrcode">
-                <WorkflowBlock currentState={currentState} displayState={EWorkflowState.REGISTRATION}>
-                    <QrCode value={`${window.location.origin}/pig/${key}`} />
-                </WorkflowBlock>
-            </div>
+            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.REGISTRATION}>
+                <QrCode value={`${window.location.origin}/pig/${key}`} />
+            </WorkflowBlock>
 
-            <PigsListHandler boardKey={key} showVote={showVote} isClickable={false} theme={EBadgeTheme.PRIMARY} />
+            <WorkflowBlock currentState={currentState} displayState={[
+                EWorkflowState.REGISTRATION, EWorkflowState.DISCUSSION, EWorkflowState.PAUSE,
+                EWorkflowState.VOTE, EWorkflowState.FINAL_ESTIMATE]}>
+                <PigsListHandler boardKey={key} showVote={showVote} isClickable={false} theme={EBadgeTheme.PRIMARY} />
+            </WorkflowBlock>
+
+            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.FINAL_RESULTS}>
+                <ResultsHandler boardKey={key} theme={EResultTheme.PRIMARY} />
+            </WorkflowBlock>
+
             <AppFooter hideToggle={true} />
 
             <ErrorMessage message={errorMessage} />

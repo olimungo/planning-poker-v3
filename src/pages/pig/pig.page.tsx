@@ -1,11 +1,11 @@
 import './pig.page.css';
 import { useParams, useHistory } from 'react-router-dom';
-import { WorkflowState, EWorkflowState, getWorkflowStateFromString, ErrorMessage } from '../../components';
+import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage } from '../../components';
 import { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import { AppHeaderHandler, CardsDeckHandler } from './handlers';
-import { OverviewHandler } from '../common';
+import { EResultTheme, OverviewHandler, ResultsHandler } from '../common';
 import { getWorkflowStateRef, createPig, checkPigExists, checkBoardExists } from '../services';
 import { AppFooterHandler, WorkflowActionsHandler } from '../board';
 
@@ -61,9 +61,16 @@ export function PigPage() {
             <WorkflowState state={currentState} />
             <WorkflowActionsHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
             <CardsDeckHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
+
+            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.FINAL_RESULTS}>
+                <ResultsHandler boardKey={boardKey} theme={EResultTheme.SECONDARY} />
+            </WorkflowBlock>
+
             <AppFooterHandler boardKey={boardKey} pigKey={key} />
 
             <ErrorMessage message={errorMessage} />
+
+            <div className="pig--spacer"></div>
         </div>
     );
 }
