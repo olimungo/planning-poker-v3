@@ -1,16 +1,16 @@
 import './overview-time.css';
 
-type Props = { start: string, end?: string, duration: string, pause?: string };
+type Props = { start: string | null, end: string | null, duration: string | null, pauses: string | null };
 
 export function OverviewTime(props: Props) {
-    const { start, end, duration, pause } = props;
+    const { start, end, duration, pauses } = props;
 
     return (
         <div className="overview-time">
-            {`$ start ${start} | `}
-            { end ? `end ${end} | ` : ''}
-            { `duration ${duration} | `}
-            { pause ? `pause ${pause}` : ''}
+            {`$ (start | ${start})`}
+            { end ? ` (end | ${end})` : ''}
+            { duration ? ` (duration | ${duration})` : ''}
+            { pauses ? ` (pauses | ${pauses})` : ''}
         </div>
     );
 }

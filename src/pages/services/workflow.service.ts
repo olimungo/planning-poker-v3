@@ -46,7 +46,6 @@ export function saveFinalEstimate(boardKey: string, finalEstimate: string) {
 }
 
 export function saveNextState(boardKey: string, nextState: EWorkflowState) {
-    console.log('saveNextState', nextState.toString())
     firebase.database().ref(`boards/${boardKey}/workflow/nextState`).set(nextState)
 }
 
@@ -55,29 +54,26 @@ export function transitionTo(boardKey: string, nexState: EWorkflowState) {
 
     switch (state) {
         case EWorkflowState.DISCUSSION:
-            prepareDiscussion(boardKey);
+            prepareDiscussion(boardKey, state);
             break;
         case EWorkflowState.VOTE:
-            prepareVote(boardKey);
+            setState(boardKey, state);
             break;
         case EWorkflowState.REVOTE:
-            prepareRevote(boardKey);
             state = EWorkflowState.VOTE
+            prepareRevote(boardKey, state);
             break;
         case EWorkflowState.PAUSE:
-            pauseStart(boardKey);
+            pauseStart(boardKey, state);
             break;
         case EWorkflowState.UNPAUSE:
-            pauseStop(boardKey);
+            pauseStop(boardKey, state);
             state = EWorkflowState.DISCUSSION;
             break;
         case EWorkflowState.FINAL_RESULTS:
-            prepareFinalResult(boardKey);
+            prepareFinalResult(boardKey, state);
             break;
     }
-
-    firebase.database().ref(`boards/${boardKey}/workflow/state`).set(state);
-    firebase.database().ref(`boards/${boardKey}/workflow/nextState`).remove();
 }
 
 // ==============================================================================================
@@ -87,35 +83,30 @@ function getStep(boardKey: string): Promise<{ story: number, round: number }> {
         .then(value => ({ story: value.child('story').val(), round: value.child('round').val() }));
 }
 
-function prepareDiscussion(boardKey: string) {
+function prepareDiscussion(boardKey: string, state: string) {
     getStep(boardKey).then((step) => {
         let story = 1
         const round = 1;
 
         if (step.story) {
             story = step.story + 1;
-        } else {
-            // First Story... lets also record when we started the session
-            firebase.database().ref(`boards/${boardKey}/workflow/duration/dateStarted`).set(new Date().getTime());
         }
 
         firebase.database().ref(`boards/${boardKey}/workflow/step`).set({ story, round });
+        firebase.database().ref(`boards/${boardKey}/workflow/stories/${story}/dateStarted`).set(new Date().getTime());
 
+        setState(boardKey, state);
     });
 }
 
-function prepareRevote(boardKey: string) {
+function prepareRevote(boardKey: string, state: string) {
     firebase.database().ref(`boards/${boardKey}/workflow/step/round`).once('value', (value) => {
         const round = value.val();
         firebase.database().ref(`boards/${boardKey}/workflow/step/round`).set(round + 1);
-        removeVotes(boardKey);
-    });
-}
 
-function prepareVote(boardKey: string) {
-    firebase.database().ref(`boards/${boardKey}/workflow/step/story`).once('value', (value) => {
-        const story = value.val();
-        firebase.database().ref(`boards/${boardKey}/workflow/stories/${story}/dateStarted`).set(new Date().getTime());
+        removeVotes(boardKey).then(() => {
+            setState(boardKey, state);
+        });
     });
 }
 
@@ -127,11 +118,12 @@ function removeVotes(boardKey: string): Promise<any> {
     });
 }
 
-function pauseStart(boardKey: string) {
+function pauseStart(boardKey: string, state: string) {
     firebase.database().ref(`boards/${boardKey}/workflow/duration/paused`).set(new Date().getTime());
+    setState(boardKey, state);
 }
 
-function pauseStop(boardKey: string) {
+function pauseStop(boardKey: string, state: string) {
     firebase.database().ref(`boards/${boardKey}/workflow/duration`).once('value', (value) => {
         const pauses = value.child('pauses').val() || 0;
         const paused = value.child('paused').val();
@@ -139,10 +131,17 @@ function pauseStop(boardKey: string) {
 
         firebase.database().ref(`boards/${boardKey}/workflow/duration/pauses`).set(newPauses);
         firebase.database().ref(`boards/${boardKey}/workflow/duration/paused`).remove();
+
+        setState(boardKey, state);
     });
 }
 
-function prepareFinalResult(boardKey: string) {
-    console.log('prepareFinalResult')
+function prepareFinalResult(boardKey: string, state: string) {
     firebase.database().ref(`boards/${boardKey}/workflow/duration/dateEnded`).set(new Date().getTime());
+    setState(boardKey, state);
+}
+
+function setState(boardKey: string, state: string) {
+    firebase.database().ref(`boards/${boardKey}/workflow/state`).set(state);
+    firebase.database().ref(`boards/${boardKey}/workflow/nextState`).remove();
 }

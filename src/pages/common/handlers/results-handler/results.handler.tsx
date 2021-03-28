@@ -51,7 +51,7 @@ export function ResultsHandler(props: Props) {
 
     return (
         <div className="results">
-            <div className="results--story">/* stories */</div>
+            <div className="results--story">{'/* stories */'}</div>
             <div className="results--header">
                 <div className="results--header-story">#</div>
                 <div className="results--header-estimate">&gt; | &lt;</div>
