@@ -6,7 +6,7 @@ export function createBoardKey(): string | null {
     const boardKey = firebase.database().ref('boards').push().key;
 
     if (boardKey) {
-        firebase.database().ref(`boards/${boardKey}/dateCreated`).set(new Date().getTime());
+        firebase.database().ref(`boards/${boardKey}/workflow/duration/dateCreated`).set(new Date().getTime());
         firebase.database().ref(`boards/${boardKey}/workflow/state`).set(EWorkflowState.REGISTRATION);
     }
 

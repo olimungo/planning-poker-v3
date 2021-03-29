@@ -59,6 +59,9 @@ export function transitionTo(boardKey: string, nexState: EWorkflowState) {
         case EWorkflowState.VOTE:
             setState(boardKey, state);
             break;
+        case EWorkflowState.FINAL_ESTIMATE:
+            setState(boardKey, state);
+            break;
         case EWorkflowState.REVOTE:
             state = EWorkflowState.VOTE
             prepareRevote(boardKey, state);
@@ -67,8 +70,8 @@ export function transitionTo(boardKey: string, nexState: EWorkflowState) {
             pauseStart(boardKey, state);
             break;
         case EWorkflowState.UNPAUSE:
-            pauseStop(boardKey, state);
             state = EWorkflowState.DISCUSSION;
+            pauseStop(boardKey, state);
             break;
         case EWorkflowState.FINAL_RESULTS:
             prepareFinalResult(boardKey, state);

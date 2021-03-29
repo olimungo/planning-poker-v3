@@ -5,6 +5,8 @@
     background: #282d33;
     padding: .5rem 2rem;
     width: 40rem;
+    height: 100%;
+    overflow: auto;
 }
 
 .board--spacer {

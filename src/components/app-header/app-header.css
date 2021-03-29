@@ -3,7 +3,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: .5rem 1rem;
+    padding: .5rem 1rem .5rem 0;
 }
 
 .app-header h1 {
