@@ -23,6 +23,7 @@
     position: relative;
     top: -1px;
     left: -1px;
+    background-color: #f19634;
 }
 
 .qr-code--button:active {

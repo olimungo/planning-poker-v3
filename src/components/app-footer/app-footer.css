@@ -12,9 +12,9 @@
   display: flex;
   justify-content: space-between;
   height: 3rem;
-  width: 40rem;
+  width: 42rem;
   background: #39445a;
-  padding: .5rem 2rem;
+  padding: .5rem 1rem;
 }
 
 .app-footer--icon {
@@ -42,6 +42,6 @@
 
 .app-footer--switch-label {
   margin-right: 1rem;
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
   

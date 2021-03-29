@@ -1,13 +1,13 @@
 .card {
     border: solid 1px #26ac39;
     border-radius: .2rem;
-    width: 4rem;
-    height: 4rem;
+    width: 6rem;
+    height: 6rem;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: .5rem;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
 }
@@ -17,6 +17,7 @@
     top: -1px;
     left: -1px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.82);
+    background-color: rgba(0,0,0,.30);
 }
 
 .card:active {

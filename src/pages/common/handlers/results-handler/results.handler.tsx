@@ -55,7 +55,7 @@ export function ResultsHandler(props: Props) {
             <div className="results--header">
                 <div className="results--header-story">#</div>
                 <div className="results--header-estimate">&gt; | &lt;</div>
-                <div className="results--header-duration">durat.</div>
+                <div className="results--header-duration">&lt;==&gt;</div>
             </div>
             {
                 stories.map(story => <Result key={story.key} story={story.key} estimate={story.estimate} duration={story.duration} />)

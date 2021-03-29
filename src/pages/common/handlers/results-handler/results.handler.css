@@ -64,3 +64,11 @@
     color: #1d8a2c;
     border: solid 1px #8be997;
 }
+
+.results--button-primary:hover {
+    background-color: #f19634;
+}
+
+.results--button-secondary:hover {
+    background-color: #33b647;
+}
