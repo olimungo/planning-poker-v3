@@ -22,14 +22,12 @@ export function PigsListHandler(props: Props) {
         const pigsRef = getPigsRef(boardKey);
 
         pigsRef.on('child_added', (value) => {
-            console.log('pig added')
             if (value) {
                 setPigs((prevState) => [...prevState, value]);
             }
         });
 
         return () => {
-            console.log('off')
             pigsRef.off()
         };
     }, [boardKey]);

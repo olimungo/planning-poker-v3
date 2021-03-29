@@ -11,7 +11,6 @@ export function WorkflowHandler(props: Props) {
     // Watch pigs for their votes
     useEffect(() => {
         const pigsRef = getPigsRef(boardKey);
-        const nextStateRef = getNextStateRef(boardKey);
 
         pigsRef.on('value', (pigs) => {
             let allVoted = true;
@@ -25,6 +24,14 @@ export function WorkflowHandler(props: Props) {
             }
         });
 
+        return () => {
+            pigsRef.off()
+        };
+    }, [boardKey]);
+
+    useEffect(() => {
+        const nextStateRef = getNextStateRef(boardKey);
+
         nextStateRef.on('value', (value) => {
             if (value.val()) {
                 const nextState = getWorkflowStateFromString(value.val());
@@ -36,7 +43,6 @@ export function WorkflowHandler(props: Props) {
         });
 
         return () => {
-            pigsRef.off()
             nextStateRef.off()
         };
     }, [boardKey, onAllPigsHaveVoted]);
