@@ -1,6 +1,6 @@
 .pigs-list {
     display: flex;
     justify-content: center;
-    margin: 1rem;
+    margin: 4rem 0;
     flex-wrap: wrap;
 }

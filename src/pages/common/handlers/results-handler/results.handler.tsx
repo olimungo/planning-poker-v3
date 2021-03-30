@@ -33,9 +33,14 @@ export function ResultsHandler(props: Props) {
     }, [boardKey]);
 
     const formatDuration = (duration: number): string => {
-        const inMinutes = Math.floor(duration / 1000 / 60);
-        const hours = Math.floor((inMinutes / 60));
-        const minutes = inMinutes % 60;
+        const inSeconds = Math.floor(duration / 1000);
+        let minutes = Math.floor(inSeconds / 60);
+        const hours = Math.floor((minutes / 60));
+        const seconds = inSeconds % 60;
+
+        if (seconds > 0) {
+            minutes += 1;
+        }
 
         return `${('0' + hours).slice(-2)}:${('0' + minutes).slice(-2)}`;
     }

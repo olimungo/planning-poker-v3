@@ -39,6 +39,7 @@ export function QrCode(props: Props) {
             {
                 qrCodeWidth
                     ? <QRCode
+                        className="qr-code--border"
                         bgColor="#FFFFFF"
                         fgColor="#000000"
                         level="Q"

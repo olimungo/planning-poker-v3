@@ -7,7 +7,7 @@
 
 .qr-code--button {
     margin-top: 2rem;
-    width: 16rem;
+    width: 17rem;
     height: 4rem;
     font-size: 2rem;
     box-shadow: 0 2px 4px rgb(0 0 0 / 18%);
@@ -28,4 +28,9 @@
 
 .qr-code--button:active {
     position: initial;
+}
+
+.qr-code--border {
+    border: 0.3rem solid rgb(239, 143, 38);
+    border-radius: 0.5rem;
 }

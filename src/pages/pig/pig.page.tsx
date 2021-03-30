@@ -1,6 +1,6 @@
 import './pig.page.css';
 import { useParams, useHistory } from 'react-router-dom';
-import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage } from '../../components';
+import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote } from '../../components';
 import { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -57,6 +57,9 @@ export function PigPage() {
     return (
         <div className="pig">
             <AppHeaderHandler boardKey={boardKey} pigKey={key} />
+
+            <Quote />
+
             <OverviewHandler boardKey={boardKey} />
             <WorkflowState state={currentState} />
             <WorkflowActionsHandler boardKey={boardKey} pigKey={key} currentState={currentState} />

@@ -12,8 +12,8 @@ export function OverviewHandler(props: Props) {
     const [story, setStory] = useState<number | null>(null);
     const [stories, setStories] = useState<number | null>(null);
     const [round, setRound] = useState<number | null>(null);
-    const [start, setStart] = useState<string | null>(null);
-    const [end, setEnd] = useState<string | null>(null);
+    const [started, setStarted] = useState<string | null>(null);
+    const [ended, setEnd] = useState<string | null>(null);
     const [duration, setDuration] = useState<string | null>(null);
     const [pauses, setPauses] = useState<string | null>(null);
     const [finalEstimate, setFinalEstimate] = useState(false);
@@ -38,19 +38,24 @@ export function OverviewHandler(props: Props) {
                 setStoryStarted(true);
             }
         });
-
-        return () => {
-            workflowRef.child('step/story').off();
-            workflowRef.child('step/round').off();
-            workflowRef.child('state').off();
-        };
     }, [boardKey]);
 
     useEffect(() => {
         if (finalEstimate && story) {
-            setStories(story - 1);
+            getWorkflowRef(boardKey).once('value', (value) => {
+                const lastStory = value.child('step/story').val()
+                const started = value.child(`stories/1/dateStarted`).val();
+                const ended = value.child(`stories/${lastStory}/dateEnded`).val();
+                const pauses = value.child(`step/pauses`).val();
+
+                setStories(story);
+                setStarted(formatDate(started));
+                setEnd(formatDate(ended));
+                setDuration(formatDuration(ended - started));
+                setPauses(formatDuration(pauses));
+            });
         }
-    }, [finalEstimate, story]);
+    }, [boardKey, finalEstimate, story]);
 
     useEffect(() => {
         if (storyStarted) {
@@ -58,17 +63,21 @@ export function OverviewHandler(props: Props) {
                 const story = value.child('step/story').val();
                 const dateStarted = value.child(`stories/${story}/dateStarted`).val();
 
-                console.log(story, dateStarted)
-                setStart(formatDate(dateStarted));
+                setStarted(formatDate(dateStarted));
                 setStoryStarted(false);
             })
         }
     }, [boardKey, storyStarted]);
 
     const formatDuration = (duration: number): string => {
-        const inMinutes = Math.floor(duration / 1000 / 60);
-        const hours = Math.floor((inMinutes / 60));
-        const minutes = inMinutes % 60;
+        const inSeconds = Math.floor(duration / 1000);
+        let minutes = Math.floor(inSeconds / 60);
+        const hours = Math.floor((minutes / 60));
+        const seconds = inSeconds % 60;
+
+        if (seconds > 0) {
+            minutes += 1;
+        }
 
         return `${('0' + hours).slice(-2)}:${('0' + minutes).slice(-2)}`;
     }
@@ -84,7 +93,7 @@ export function OverviewHandler(props: Props) {
     return (
         <div className={`overview-hanlder ${hideOverview ? 'overview-handler--hidden' : ''}`}>
             <OverviewStory story={story} round={round} stories={stories} />
-            <OverviewTime start={start} end={end} duration={duration} pauses={pauses} />
+            <OverviewTime start={started} end={ended} duration={duration} pauses={pauses} />
         </div>
     );
 };

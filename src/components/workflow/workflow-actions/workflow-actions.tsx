@@ -20,12 +20,12 @@ export function WorkflowActions(props: Props) {
                 <button onClick={() => onAction(EWorkflowState.REVOTE)}>RE-VOTE</button>
             </WorkflowBlock>
 
-            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.DISCUSSION}>
-                <button onClick={() => onAction(EWorkflowState.PAUSE)}>PAUSE</button>
-            </WorkflowBlock>
-
             <WorkflowBlock currentState={currentState} displayState={EWorkflowState.VOTE}>
                 <button onClick={() => onAction(EWorkflowState.FINAL_ESTIMATE)}>STOP VOTES</button>
+            </WorkflowBlock>
+
+            <WorkflowBlock currentState={currentState} displayState={[EWorkflowState.DISCUSSION, EWorkflowState.VOTE]}>
+                <button onClick={() => onAction(EWorkflowState.PAUSE)}>PAUSE</button>
             </WorkflowBlock>
 
             <WorkflowBlock currentState={currentState} displayState={EWorkflowState.PAUSE}>

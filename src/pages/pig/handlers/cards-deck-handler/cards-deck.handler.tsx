@@ -81,7 +81,7 @@ export function CardsDeckHandler(props: Props) {
                     {
                         !voted
                             ? <CardsDeck onClick={handleClickVote} />
-                            : <Sign value={voted} />
+                            : <div className="cards-deck--sign"><Sign value={voted} /></div>
                     }
                 </div>
             </WorkflowBlock>
@@ -90,8 +90,8 @@ export function CardsDeckHandler(props: Props) {
                 <div className="cards-deck-handler">
                     {
                         isScrumMaster
-                            ? <CardsDeck onClick={handleClickFinalEstimates} />
-                            : <Sign value={voted} />
+                            ? <CardsDeck showCoffe={false} onClick={handleClickFinalEstimates} />
+                            : <div className="cards-deck--sign"><Sign value={voted} /></div>
                     }
                 </div>
             </WorkflowBlock>
