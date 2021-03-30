@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - run: npm ci && npm test && npm run build
+      - run: npm ci && npm run build
