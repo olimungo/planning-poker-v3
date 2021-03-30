@@ -9,6 +9,7 @@ export function ProgressBar(props: Props) {
     const { duration, onClose } = props;
     const [percentage, setPercentage] = useState('0%');
     const [timer, setTimer] = useState<NodeJS.Timeout>();
+    const [close, setClose] = useState(false);
 
     useEffect(() => {
         if (duration) {
@@ -20,7 +21,7 @@ export function ProgressBar(props: Props) {
             const interval = setInterval(() => {
                 if (percent >= 100) {
                     clearInterval(interval);
-                    close();
+                    setClose(true);
                 }
 
                 setPercentage(percent + '%');
@@ -30,16 +31,22 @@ export function ProgressBar(props: Props) {
 
             setTimer(interval);
         }
-    }, [duration]);
+    }, [duration, close]);
 
-    const pause = () => {
+    useEffect(() => {
+        if (close) {
+            onClose();
+        }
+    }, [close, onClose]);
+
+    const handlePause = () => {
         if (timer) {
             clearInterval(timer);
             setTimer(undefined);
         }
     };
 
-    const close = () => onClose();
+    const handleClose = () => setClose(true);
 
     return (
         <div className="progress-bar">
@@ -53,8 +60,8 @@ export function ProgressBar(props: Props) {
             </div>
 
             <div className="progress-bar--buttons">
-                <button className={!timer ? 'progress-bar--hidden' : ''} onClick={pause}><FontAwesomeIcon icon={faPause} /></button>
-                <button onClick={close} ><FontAwesomeIcon icon={faTimes} /></button>
+                <button className={!timer ? 'progress-bar--hidden' : ''} onClick={handlePause}><FontAwesomeIcon icon={faPause} /></button>
+                <button onClick={handleClose} ><FontAwesomeIcon icon={faTimes} /></button>
             </div>
         </div>
     );
