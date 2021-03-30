@@ -1,0 +1,36 @@
+.quote {
+    position: fixed;
+    background-color: #292e32;
+    height: 100%;
+    width: 40rem;
+    padding-top: 10rem;
+    text-align: center;
+}
+
+.quote--number {
+    font-size: 2rem;
+}
+
+.quote--quote {
+    font-size: 1.5rem;
+    padding: 4rem;
+    color: #8be997;
+}
+
+.quote--hidden {
+    visibility: hidden;
+}
+
+.quote--a {
+    padding: .5rem 1rem;
+    border-radius: .3rem;
+    margin-bottom: 10rem;
+}
+
+.quote a {
+    color: #26ac39;
+}
+
+.quote a:hover {
+    background-color: rgba(0,0,0,.3);
+}

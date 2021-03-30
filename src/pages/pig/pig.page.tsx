@@ -1,35 +1,20 @@
 import './pig.page.css';
 import { useParams, useHistory } from 'react-router-dom';
-import {
-    AppHeader,
-    AppFooter,
-    ErrorMessage,
-    WorkflowActions,
-    WorkflowState,
-    WorkflowBlock,
-    EWorkflowState,
-    EBadgeTheme,
-    OverviewStory,
-    OverviewTime,
-    CardsDeck,
-    getWorkflowStateFromString
-} from '../../components';
+import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote } from '../../components';
 import { useEffect, useState } from 'react';
-import { createPig, checkPigExists, assignScrumMaster, unassignScrumMaster, savePig } from './pig.service';
-import { checkBoardExists, getScrumMasterRef, getWorkflowStateRef, transitionToDiscussion, transitionTo, saveVote, getVote } from '../common.services';
+import firebase from 'firebase/app';
+import 'firebase/database';
+import { AppHeaderHandler, CardsDeckHandler } from './handlers';
+import { EResultTheme, OverviewHandler, ResultsHandler } from '../common';
+import { getWorkflowStateRef, createPig, checkPigExists, checkBoardExists } from '../services';
+import { AppFooterHandler, WorkflowActionsHandler } from '../board';
 
 export function PigPage() {
     const { boardKey, key } = useParams<{ boardKey: string, key: string }>();
     const history = useHistory();
     const [currentState, setCurrentState] = useState(EWorkflowState.UNKNOWN);
-    const [nextState, setNextState] = useState(EWorkflowState.UNKNOWN);
+    const [workflowStateRef, setWorkflowStateRef] = useState<firebase.database.Reference | null>(null);
     const [errorMessage, setErrorMessage] = useState('');
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [isScrumMaster, setIsScrumMaster] = useState(false);
-    const [hideToggle, setHideToggle] = useState(true);
-    const [vote, setVote] = useState('');
-    const [pigChanges, setPigChanges] = useState<{ name: string, email: string } | null>(null);
 
     useEffect(() => {
         // Check if the params in the URL for the board key and the pig key exist in the database
@@ -46,11 +31,7 @@ export function PigPage() {
                         if (!result.name) {
                             setErrorMessage('The pig specified in the URL doesn\'t exist');
                         } else {
-                            setName(result.name);
-
-                            if (result.email) {
-                                setEmail(result.email);
-                            }
+                            setWorkflowStateRef(getWorkflowStateRef(boardKey));
                         }
                     });
                 }
@@ -58,108 +39,41 @@ export function PigPage() {
                 setErrorMessage('The board specified in the URL doesn\'t exist');
             }
         });
-
-        // Check if the pig is voting
-        getVote(boardKey, key).then((value) => {
-            if (value) {
-                setVote(value);
-            }
-        })
-    }, [key, boardKey, history]);
-
-    // Watch the database for a scrum master to be assigned or unassigned
-    useEffect(() => {
-        getScrumMasterRef(boardKey).on('value', (value) => {
-            const scrumMaster = value.val();
-
-            if (!scrumMaster || scrumMaster === key) {
-                setHideToggle(false);
-
-                if (scrumMaster === key && isScrumMaster === false) {
-                    setIsScrumMaster(true);
-                }
-            } else {
-                setHideToggle(true);
-            }
-        });
-    }, [boardKey, key, isScrumMaster]);
-
-    // Assign or unassign current pig as scrum master in the database
-    useEffect(() => {
-        isScrumMaster ? assignScrumMaster(boardKey, key) : !hideToggle && unassignScrumMaster(boardKey);
-    }, [boardKey, key, isScrumMaster, hideToggle]);
+    }, [boardKey, key, history]);
 
     // Watch the database for the current state
     useEffect(() => {
-        getWorkflowStateRef(boardKey)
-            .on('value', (value) => setCurrentState(getWorkflowStateFromString(value.val())));
-    }, [boardKey])
+        if (workflowStateRef) {
+            workflowStateRef.on('value', (value) => {
+                setCurrentState(getWorkflowStateFromString(value.val()));
+            });
 
-    // Transition to next state in the database
-    useEffect(() => {
-        switch (nextState) {
-            case EWorkflowState.DISCUSSION:
-                transitionToDiscussion(boardKey);
-                break;
-            case EWorkflowState.VOTE:
-                transitionTo(boardKey, EWorkflowState.VOTE);
-                break;
+            return () => {
+                workflowStateRef.off();
+            };
         }
-    }, [boardKey, nextState])
-
-    // Save any change in name or email to the database
-    useEffect(() => {
-        if (pigChanges && pigChanges.name) {
-            savePig(boardKey, key, pigChanges.name, pigChanges.email);
-        }
-    }, [boardKey, key, pigChanges])
-
-    // Save vote to the database
-    useEffect(() => {
-        if (vote) {
-            saveVote(boardKey, key, vote);
-        }
-    }, [boardKey, key, vote])
-
-    // Assign or unassign current pig as scrum master locally
-    const handleToggleScrumMaster = (value: boolean) => setIsScrumMaster(value);
-    // When the pig change his/her name or email address in the badge 
-    const handlePigChanges = (value: { name: string, email: string }) => setPigChanges(value);
-    // Transition workflow on actions from the scrum master
-    const handleAction = (state: EWorkflowState) => setNextState(state);
-    // Set vote for the current pig (or scrum master)
-    const handleVote = (value: string) => setVote(value);
+    }, [workflowStateRef]);
 
     return (
         <div className="pig">
-            <AppHeader name={name} email={email} theme={EBadgeTheme.SECONDARY} onChange={handlePigChanges} />
-            <OverviewStory story={1} round={1} />
-            <OverviewTime start="11:13" end="14:26" duration="1:34" story="3" pause="0:36" />
-            <WorkflowState value={currentState} />
+            <AppHeaderHandler boardKey={boardKey} pigKey={key} />
 
-            {
-                isScrumMaster
-                    ? <WorkflowActions currentState={currentState} onAction={handleAction}></WorkflowActions>
-                    : ''
-            }
+            <Quote />
 
-            {
-                !vote
-                    ? <WorkflowBlock currentState={currentState} displayState={EWorkflowState.VOTE}>
-                        <div className="pig--cards-deck">
-                            <CardsDeck onClick={handleVote} />
-                        </div>
-                    </WorkflowBlock>
-                    : <div className="pig--vote-container"><div className="pig--vote">{vote}</div></div>
-            }
+            <OverviewHandler boardKey={boardKey} />
+            <WorkflowState state={currentState} />
+            <WorkflowActionsHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
+            <CardsDeckHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
 
-            <AppFooter hideToggle={hideToggle} toggleChecked={isScrumMaster} onToggleScrumMaster={handleToggleScrumMaster} />
+            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.FINAL_RESULTS}>
+                <ResultsHandler boardKey={boardKey} theme={EResultTheme.SECONDARY} />
+            </WorkflowBlock>
 
-            {
-                errorMessage
-                    ? <ErrorMessage message={errorMessage} />
-                    : ''
-            }
+            <AppFooterHandler boardKey={boardKey} pigKey={key} />
+
+            <ErrorMessage message={errorMessage} />
+
+            <div className="pig--spacer"></div>
         </div>
     );
 }

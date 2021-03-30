@@ -15,18 +15,20 @@ export function AppFooter(props: Props) {
   };
 
   return (
-    <div className='app-footer'>
-      <FontAwesomeIcon className="app-footer--icon" icon={faGithub} onClick={() => window.open('https://github.com/olimungo/planning-poker', '_blank')} />
+    <div className="app-footer">
+      <div className="app-footer--container">
+        <FontAwesomeIcon className="app-footer--icon" icon={faGithub} onClick={() => window.open('https://github.com/olimungo/planning-poker', '_blank')} />
 
-      {
-        !hideToggle
-          ?
-          <div className="app-footer--switch">
-            <div className="app-footer--switch-label">SCRUM MASTER</div>
-            <Switch value={toggleChecked} onToggle={handleToggle} />
-          </div>
-          : ''
-      }
+        {
+          !hideToggle
+            ?
+            <div className="app-footer--switch">
+              <div className="app-footer--switch-label">SCRUM MASTER</div>
+              <Switch value={toggleChecked} onToggle={handleToggle} />
+            </div>
+            : ''
+        }
+      </div>
     </div>
   );
 }

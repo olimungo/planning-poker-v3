@@ -1,0 +1,57 @@
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.progress-bar--hidden {
+    visibility: hidden;
+}
+
+.progress-bar--container {
+    display: flex;
+    justify-content: center;
+}
+
+.progress-bar--border {
+    padding: .3rem;
+    background-color: #3a455a;
+    border-radius: .5rem;
+}
+
+.progress-bar--back-bar {
+    width: 20rem;
+    height: 0.5rem;
+    background-color: gray;
+  }
+
+  .progress-bar--bar {
+    background-color:   green;
+    height: 100%;
+    width: 0%;
+  }
+
+  .progress-bar--buttons button {
+    background-color: transparent;
+    outline: none;
+    border: solid 1px #26ac39;
+    padding: 1rem;
+    margin: 2rem 2rem;
+    color: #26ac39;
+    border-radius: .2rem;
+    width: 5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    font-size: 1.1rem;
+}
+
+.progress-bar--buttons button:hover {
+    position: relative;
+    top: -1px;
+    left: -1px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.82);
+    background-color: rgba(0,0,0,.18);
+}
+
+.progress-bar--buttons button:active {
+    position: initial;
+}

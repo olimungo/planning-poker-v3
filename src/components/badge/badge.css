@@ -49,12 +49,12 @@
 }
 
 .badge--vote {
+    position: absolute;
+    left: 1rem;
+    bottom: 3.3rem;
     border-radius: 50%;
     padding: .2rem;
     font-weight: 600;
-    position: relative;
-    top: -5.5rem;
-    left: 1.8rem;
     width: 1.3rem;
     height: 1.3rem;
     display: flex;
@@ -63,16 +63,16 @@
 }
 
 .badge--star {
-    position: relative;
+    position: absolute;
+    bottom: 3.8rem;
+    left: -2.7rem;
     color: #f7f02e;
-    bottom: 7.4rem;
-    left: -1.8rem;
     font-size: 1.5rem;
 }
 
 .badge--theme-primary {
-    border: solid #b99216 .15rem;
-    background: #b99216;
+    border: solid #bd5c2d .15rem;
+    background: #bd5c2c;
 }
 
 .badge--theme-secondary {
@@ -81,9 +81,9 @@
 }
 
 .badge--theme-primary-name {
-    border: solid #b99216 .15rem;
-    background: #ece0ad;
-    color: #b99318;
+    border: solid #bd5c2d .15rem;
+    background: #ffb86c;
+    color: #bd5c2d;
 }
 
 .badge--theme-secondary-name {
@@ -93,9 +93,9 @@
 }
 
 .badge--theme-primary-vote {
-    background: #e6d481;
-    color: #b99216;
-    border: solid 3px #b99216;
+    background: #ef8e26;
+    color: #bd5c2d;
+    border: solid 3px #bd5c2d;
 }
 
 .badge--theme-secondary-vote {
@@ -106,4 +106,10 @@
 
 .badge--hidden {
     visibility: hidden;
+}
+
+.badge--relative {
+    position: relative;
+    width: 0;
+    height: 0
 }

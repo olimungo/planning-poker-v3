@@ -1,4 +1,13 @@
 .App {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    background: #202326;
+    height: 100%;
 }
+
+@media screen and (min-width: 700px) {
+    html {
+        font-size: 15px;
+    }
+  }

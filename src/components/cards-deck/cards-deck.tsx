@@ -1,17 +1,27 @@
 import './cards-deck.css';
 import { Card } from './card'
-import React from 'react';
+import { useEffect, useState } from 'react';
 
-type Props = { onClick: Function };
+type Props = { showCoffe?: boolean, onClick: Function };
 
 export function CardsDeck(props: Props) {
-    const { onClick } = props;
-    const cards = ['?', '0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', 'INFINITY', 'COFFEE'];
+    const { showCoffe = true, onClick } = props;
+    const [deck, setDeck] = useState<string[]>([]);
+
+    useEffect(() => {
+        const cards = ['?', '0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', 'INFINITY'];
+
+        if (showCoffe) {
+            setDeck([...cards, 'COFFEE']);
+        } else {
+            setDeck(cards);
+        }
+    }, [showCoffe]);
 
     return (
         <div className="cards-deck">
             {
-                cards.map(card => <Card key={card} value={card} onClick={onClick}></Card>)
+                deck.map(card => <Card key={card} value={card} onClick={onClick} />)
             }
         </div>
     );

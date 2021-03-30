@@ -9,8 +9,9 @@
     margin: 1rem;
     color: #26ac39;
     border-radius: .2rem;
-    width: 8rem;
+    width: 10rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    font-size: 1.1rem;
 }
 
 .workflow-actions button:hover {

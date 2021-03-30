@@ -1,0 +1,10 @@
+.sign {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid .8rem #26ac39;
+    font-size: 8rem;
+    border-radius: 50%;
+    width: 15rem;
+    height: 15rem;
+}
