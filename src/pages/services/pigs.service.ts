@@ -3,7 +3,8 @@ import 'firebase/database';
 
 export function createPig(boardKey: string): string | null {
     const pigs = firebase.database().ref(`boards/${boardKey}/pigs`);
-    const newPig = pigs.push({ 'dateCreated': new Date().getTime(), 'isActive': true });
+
+    const newPig = pigs.push({ dateCreated: new Date().getTime() });
 
     if (newPig.key) {
         pigs.orderByChild('dateCreated').once('value').then((values) => {
@@ -13,10 +14,9 @@ export function createPig(boardKey: string): string | null {
                 index++;
 
                 if (value.key === newPig.key) {
-                    newPig.set({ name: `Pig${index}` });
+                    newPig.update({ name: `Pig${index}` });
                 }
             });
-
         });
 
         return newPig.key;
