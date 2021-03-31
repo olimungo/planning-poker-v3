@@ -22,22 +22,24 @@ export function OverviewHandler(props: Props) {
 
     //Watch the workflow and update the display
     useEffect(() => {
-        const workflowRef = getWorkflowRef(boardKey);
+        if (boardKey) {
+            const workflowRef = getWorkflowRef(boardKey);
 
-        workflowRef.child('step/story').on('value', (value) => setStory(value.val()));
-        workflowRef.child('step/round').on('value', (value) => setRound(value.val()));
+            workflowRef.child('step/story').on('value', (value) => setStory(value.val()));
+            workflowRef.child('step/round').on('value', (value) => setRound(value.val()));
 
-        workflowRef.child('state').on('value', (value) => {
-            if (value.val() === EWorkflowState.FINAL_RESULTS) {
-                setFinalEstimate(true);
-            }
+            workflowRef.child('state').on('value', (value) => {
+                if (value.val() === EWorkflowState.FINAL_RESULTS) {
+                    setFinalEstimate(true);
+                }
 
-            setHideOverview(value.val() === EWorkflowState.REGISTRATION);
+                setHideOverview(value.val() === EWorkflowState.REGISTRATION);
 
-            if (value.val() === EWorkflowState.DISCUSSION) {
-                setStoryStarted(true);
-            }
-        });
+                if (value.val() === EWorkflowState.DISCUSSION) {
+                    setStoryStarted(true);
+                }
+            });
+        }
     }, [boardKey]);
 
     useEffect(() => {

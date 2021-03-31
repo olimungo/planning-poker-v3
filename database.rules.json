@@ -6,7 +6,10 @@
             "$board": {
                 "pigs": {
                     "$pig": {
-                        ".validate": "newData.hasChild('name')",
+                        ".validate": "newData.hasChild('dateCreated')",
+                        "dateCreated": {
+                            ".validate": "newData.isNumber()"
+                        },
                         "name": {
                             ".validate": "newData.isString()"
                         },
@@ -49,6 +52,9 @@
                         },
                         "pauses": {
                             ".validate": "newData.isNumber()"
+                        },
+                        "afterPause": {
+                            ".validate": "newData.isString()"
                         },
                         "$other": {
                             ".validate": false
