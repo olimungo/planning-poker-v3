@@ -1,0 +1,86 @@
+{
+    "rules": {
+        ".read": true,
+        ".write": true,
+        "boards": {
+            "$board": {
+                "pigs": {
+                    "$pig": {
+                        ".validate": "newData.hasChild('name')",
+                        "name": {
+                            ".validate": "newData.isString()"
+                        },
+                        "email": {
+                            ".validate": "newData.isString()"
+                        },
+                        "isScrumMaster": {
+                            ".validate": "newData.isBoolean()"
+                        },
+                        "vote": {
+                            ".validate": "newData.isString()"
+                        },
+                        "$other": {
+                            ".validate": false
+                        }
+                    }
+                },
+                "workflow": {
+                    "dateCreated": {
+                        ".validate": "newData.isNumber()"
+                    },
+                    "state": {
+                        ".validate": "newData.isString()"
+                    },
+                    "nextState": {
+                        ".validate": "newData.isString()"
+                    },
+                    "scrumMaster": {
+                        ".validate": "newData.isString()"
+                    },
+                    "step": {
+                        "story": {
+                            ".validate": "newData.isNumber()"
+                        },
+                        "round": {
+                            ".validate": "newData.isNumber()"
+                        },
+                        "paused": {
+                            ".validate": "newData.isNumber()"
+                        },
+                        "pauses": {
+                            ".validate": "newData.isNumber()"
+                        },
+                        "$other": {
+                            ".validate": false
+                        }
+                    },
+                    "stories": {
+                        "$story": {
+                            "dateStarted": {
+                                ".validate": "newData.isNumber()"
+                            },
+                            "dateEnded": {
+                                ".validate": "newData.isNumber()"
+                            },
+                            "finalEstimate": {
+                                ".validate": "newData.isString()"
+                            },
+                            "$other": {
+                                ".validate": false
+                            }
+                        }
+                    },
+                    "$others": {
+                        ".validate": false
+                    }
+                },
+                "$others": {
+                    ".validate": false
+                }
+            }
+        },
+        "$others": {
+            ".validate": false
+        }
+    }
+}

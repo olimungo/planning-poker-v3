@@ -25,6 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy-rules": "firebase deploy --only database",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
