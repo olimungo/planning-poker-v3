@@ -11,4 +11,5 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - run: npm ci && npm run build
+      - name: Install dependencies and build application
+        run: npm ci && npm run build
