@@ -1,6 +1,35 @@
-# Getting Started with Create React App
+# > PlanningPoker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Planning Poker is a Web application build as a tool for estimating users' requests as described by the Scrum toolbox.
+
+The app includes 2 main views which are automatically synchronised:
+
+- Board: which displays the overview of the planning poker session. Can be a beamer, a laptop, a tablet or any mobile phone.
+- Pig: each participant of the planning poker session uses his own device for selecting the story's estimate.
+
+There's no login, the app is based on a unique session id.
+
+Web site: http://pp.mungo.eu
+
+## $ User's guide
+
+[Check out the Wiki section](https://github.com/olimungo/planning-poker/wiki/User's-guide)
+
+## $ Technologies
+
+It's a React application scaffolded with [Create React App](https://github.com/facebook/create-react-app).
+
+### `npx create-react-app planning-poker --template typescript`
+
+There's no back-end, it's a reactive application directly connected to a Firebase database through web services.
+
+The site is totally responsive and can adapt to any device's size.
+
+Techno summary: React 17 using hooks State and Effect, TypeScript, Firebase, and Font-awesome. **No CSS library**.
+
+Continuous integration and automatic deployments to the hosting service of Firebase thanks to the GitHub actions.
+
+NTDD: No Test Driven Development. :-(
 
 ## Available Scripts
 
