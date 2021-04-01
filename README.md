@@ -9,7 +9,7 @@ The app includes 2 main views which are automatically synchronised:
 
 There's no login, the app is based on a unique session id.
 
-Web site: http://pp.mungo.eu
+Web site: https://planning-poker-af648.web.app/
 
 ## $ User's guide
 
