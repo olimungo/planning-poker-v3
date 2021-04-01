@@ -1,11 +1,11 @@
 # > PlanningPoker
 
-Planning Poker is a Web application build as a tool for estimating users' requests as described by the Scrum toolbox.
+Planning Poker is a Web application built as a tool for estimating users' requests as described by the Scrum toolbox.
 
 The app includes 2 main views which are automatically synchronised:
 
 - Board: displays the overview of the planning poker session. It could be a laptop, a tablet or any mobile phone.
-- Pig: each participant of the planning poker session uses its own device for selecting the story's estimate.
+- Pig: each participant of the planning poker session uses its own device for selecting the stories' estimate.
 
 There's no login, the app is based on a unique session id.
 
@@ -23,7 +23,7 @@ It's a React application scaffolded with [Create React App](https://github.com/f
 
 There's no back-end, it's a reactive application directly connected to a Firebase Real-time Database through web sockets.
 
-The site is totally responsive and can adapt to any device's size.
+The application is responsive and can adapt to any device's size.
 
 Techno summary: React 17 using hooks State and Effect, TypeScript, Firebase and Font-awesome. **No CSS library**.
 
