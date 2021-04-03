@@ -6,18 +6,6 @@ export function getWorkflowRef(boardKey: string): firebase.database.Reference {
     return firebase.database().ref(`boards/${boardKey}/workflow`);
 }
 
-export function getScrumMasterRef(boardKey: string): firebase.database.Reference {
-    return firebase.database().ref(`boards/${boardKey}/workflow/scrumMaster`);
-}
-
-export function getNextStateRef(boardKey: string): firebase.database.Reference {
-    return firebase.database().ref(`boards/${boardKey}/workflow/nextState`);
-}
-
-export function getStoriesRef(boardKey: string): firebase.database.Reference {
-    return firebase.database().ref(`boards/${boardKey}/workflow/stories`);
-}
-
 export function assignScrumMaster(boardKey: string, pigKey: string) {
     firebase.database().ref(`boards/${boardKey}//workflow/scrumMaster`).set(pigKey);
     firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}/isScrumMaster`).set(true);
@@ -26,10 +14,6 @@ export function assignScrumMaster(boardKey: string, pigKey: string) {
 export function unassignScrumMaster(boardKey: string, pigKey: string) {
     firebase.database().ref(`boards/${boardKey}/workflow/scrumMaster`).remove();
     firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}/isScrumMaster`).remove();
-}
-
-export function getWorkflowStateRef(boardKey: string): firebase.database.Reference {
-    return firebase.database().ref(`boards/${boardKey}/workflow/state`);
 }
 
 export function saveFinalEstimate(boardKey: string, finalEstimate: string) {
@@ -75,8 +59,6 @@ export function transitionTo(boardKey: string, nextState: EWorkflowState) {
             break;
     }
 }
-
-// ==============================================================================================
 
 function getStep(boardKey: string): Promise<{ story: number, round: number }> {
     return firebase.database().ref(`boards/${boardKey}/workflow/step`).once('value')

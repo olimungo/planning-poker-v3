@@ -1,98 +1,78 @@
 import './cards-deck.handler.css'
-import { useState, useEffect } from 'react';
-import { CardsDeck, EWorkflowState, WorkflowBlock, Sign, getWorkflowStateFromString } from '../../../../components';
-import { getNextStateRef, getScrumMasterRef, getVote, saveFinalEstimate, saveVote } from '../../../services';
+import { useState, useEffect, useContext } from 'react';
+import { CardsDeck, EWorkflowState, WorkflowBlock, getWorkflowStateFromString } from '../../../../components';
+import { saveFinalEstimate, saveVote } from '../../../services';
+import { AppContext } from '../../..';
 
-type Props = { boardKey: string, pigKey: string, currentState: EWorkflowState };
-
-export function CardsDeckHandler(props: Props) {
-    const { boardKey, pigKey, currentState } = props;
-    const [vote, setVote] = useState('');
-    const [voted, setVoted] = useState('');
-    const [finalEstimate, setFinalEstimate] = useState('');
+export function CardsDeckHandler() {
+    const appContext = useContext(AppContext);
+    const [vote, setVote] = useState<string | undefined>(undefined);
+    const [voted, setVoted] = useState<string | undefined>(undefined);
+    const [finalEstimate, setFinalEstimate] = useState<string | undefined>(undefined);
     const [isScrumMaster, setIsScrumMaster] = useState(false);
 
-    // Get the vote from the database
     useEffect(() => {
-        const scrumMasterRef = getScrumMasterRef(boardKey);
-        const nextStateRef = getNextStateRef(boardKey);
+        if (appContext.workflow?.scrumMaster) {
+            setIsScrumMaster(appContext.workflow.scrumMaster === appContext.pigKey);
+        } else {
+            setIsScrumMaster(false);
+        }
+    }, [appContext.pigKey, appContext.workflow?.scrumMaster]);
 
-        scrumMasterRef.on('value', (value) => {
-            setIsScrumMaster(value.val() === pigKey);
-        });
+    useEffect(() => {
+        const pigKey = appContext.pigKey || '';
 
-        getVote(boardKey, pigKey).then((value) => {
-            if (value) {
-                setVoted(value);
-            }
-        });
-
-        nextStateRef.on('value', (value) => {
-            if (value.val()) {
-                const nextState = getWorkflowStateFromString(value.val());
-
-                if (nextState === EWorkflowState.VOTE || nextState === EWorkflowState.REVOTE) {
-                    setVoted('');
-                    setVote('');
-                    setFinalEstimate('');
+        if (appContext.pigs && appContext.pigs[pigKey]) {
+            setTimeout(() => {
+                if (appContext.pigs && appContext.pigs[pigKey]) {
+                    setVoted(appContext.pigs[pigKey].vote);
                 }
-            }
-        });
+            }, 250);
+        }
+    }, [appContext.pigKey, appContext.pigs]);
 
-        return () => scrumMasterRef.off();
-    }, [boardKey, pigKey])
+    useEffect(() => {
+        if (appContext.workflow?.nextState) {
+            const nextState = getWorkflowStateFromString(appContext.workflow.nextState);
+
+            if (nextState === EWorkflowState.VOTE || nextState === EWorkflowState.REVOTE) {
+                setVoted(undefined);
+                setVote(undefined);
+                setFinalEstimate(undefined);
+            }
+        }
+    }, [appContext.workflow?.nextState]);
 
     // Save vote to the database
     useEffect(() => {
-        if (vote) {
-            saveVote(boardKey, pigKey, vote);
-
-            // Delay a bit the operation for the ScrumMaster so to prevent a flashing effect
-            // by showing his own vote, and then immediately the deck when he's the last one
-            // to vote.
-            if (isScrumMaster) {
-                setTimeout(() => {
-                    setVoted(vote);
-                    setVote('');
-                }, 500);
-            } else {
-                setVoted(vote);
-                setVote('');
-            }
+        if (vote && appContext.boardKey && appContext.pigKey) {
+            saveVote(appContext.boardKey, appContext.pigKey, vote);
         }
-    }, [boardKey, pigKey, vote, isScrumMaster])
+    }, [appContext.boardKey, appContext.pigKey, vote])
 
     // Save the final estimate to the database
     useEffect(() => {
-        if (finalEstimate) {
-            saveFinalEstimate(boardKey, finalEstimate);
-            setVoted('');
-            setFinalEstimate('')
+        if (finalEstimate && appContext.boardKey) {
+            saveFinalEstimate(appContext.boardKey, finalEstimate);
+            setVoted(undefined);
+            setFinalEstimate(undefined)
         }
-    }, [boardKey, finalEstimate])
+    }, [appContext.boardKey, finalEstimate])
 
     const handleClickVote = (value: string) => setVote(value);
     const handleClickFinalEstimates = (value: string) => setFinalEstimate(value);
 
     return (
         <div>
-            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.VOTE}>
+            <WorkflowBlock state={getWorkflowStateFromString(appContext.workflow?.state || EWorkflowState.UNKNOWN)} displayState={EWorkflowState.VOTE}>
                 <div className="cards-deck-handler">
-                    {
-                        !voted
-                            ? <CardsDeck onClick={handleClickVote} />
-                            : <div className="cards-deck--sign"><Sign value={voted} /></div>
-                    }
+                    {!voted ? <CardsDeck onClick={handleClickVote} /> : ''}
                 </div>
             </WorkflowBlock>
 
-            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.FINAL_ESTIMATE}>
+            <WorkflowBlock state={getWorkflowStateFromString(appContext.workflow?.state || EWorkflowState.UNKNOWN)} displayState={EWorkflowState.FINAL_ESTIMATE}>
                 <div className="cards-deck-handler">
-                    {
-                        isScrumMaster
-                            ? <CardsDeck showCoffe={false} onClick={handleClickFinalEstimates} />
-                            : <div className="cards-deck--sign"><Sign value={voted} /></div>
-                    }
+                    {isScrumMaster ? <CardsDeck showCoffe={false} onClick={handleClickFinalEstimates} /> : ''}
                 </div>
             </WorkflowBlock>
         </div>

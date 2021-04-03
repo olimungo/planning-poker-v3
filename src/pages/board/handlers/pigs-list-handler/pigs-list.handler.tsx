@@ -1,41 +1,40 @@
 import './pigs-list.handler.css';
-import firebase from 'firebase/app';
-import 'firebase/database';
-import { Pig } from './pig';
-import { EBadgeTheme } from '../../../../components';
-import { useEffect, useState } from 'react';
-import { getPigsRef } from '../../../services';
+import { Badge } from '../../../../components';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext, PigListType } from '../../../common';
 
-type Props = {
-    boardKey: string,
-    showVote?: boolean,
-    isClickable?: boolean,
-    theme?: EBadgeTheme
-};
+type Props = { showVote?: boolean, isClickable?: boolean, };
 
 export function PigsListHandler(props: Props) {
-    const { boardKey, showVote = false, isClickable = false, theme = EBadgeTheme.PRIMARY } = props;
-    const [pigs, setPigs] = useState<firebase.database.DataSnapshot[]>([]);
+    const { showVote = false, isClickable = false } = props;
+    const appContext = useContext(AppContext);
+    const [pigs, setPigs] = useState<PigListType[]>([]);
 
     // Watch when pigs register and update the display
     useEffect(() => {
-        const pigsRef = getPigsRef(boardKey);
+        if (appContext.pigs) {
+            const pigs: PigListType[] = [];
 
-        pigsRef.on('child_added', (value) => {
-            if (value) {
-                setPigs((prevState) => [...prevState, value]);
+            for (let key in appContext.pigs) {
+                const dateCreated = appContext.pigs[key].dateCreated;
+                const name = appContext.pigs[key].name;
+                const email = appContext.pigs[key].email;
+                const isScrumMaster = appContext.pigs[key].isScrumMaster;
+                const vote = appContext.pigs[key].vote;
+                pigs.push({ key, dateCreated, name, email, isScrumMaster, vote });
             }
-        });
 
-        return () => {
-            pigsRef.off()
-        };
-    }, [boardKey]);
+            setPigs(pigs);
+        }
+    }, [appContext.pigs]);
 
     return (
         <div className="pigs-list">
             {
-                pigs.map(pig => <Pig key={pig.key} boardKey={boardKey} pigKey={pig.key} showVote={showVote} isClickable={isClickable} theme={theme} />)
+                pigs.map(pig =>
+                    <Badge key={pig.key} name={pig.name} email={pig.email} vote={pig.vote} displayStar={pig.isScrumMaster} showVote={showVote}
+                        isClickable={isClickable} theme={appContext.theme} />
+                )
             }
         </div>
     );

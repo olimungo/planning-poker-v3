@@ -1,45 +1,36 @@
-import { useState, useEffect } from 'react';
-import { AppHeader, EBadgeTheme } from '../../../../components';
-import { getPigRef } from '../../../services';
+import { useState, useEffect, useContext } from 'react';
+import { AppHeader, AppTheme } from '../../../../components';
+import { AppContext } from '../../../common';
+import { savePig } from '../../../services';
 
-type Props = {
-    boardKey: string,
-    pigKey: string
-};
+export function AppHeaderHandler() {
+    const appContext = useContext(AppContext);
+    const [email, setEmail] = useState<string | undefined>(undefined);
+    const [name, setName] = useState<string | undefined>(undefined);
+    const [vote, setVote] = useState<string | undefined>(undefined);
+    const [pigChanges, setPigChanges] = useState<{ name: string, email: string }>({ name: '', email: '' });
 
-export function AppHeaderHandler(props: Props) {
-    const { boardKey, pigKey } = props;
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [pigChanges, setPigChanges] = useState<{ name: string, email: string } | null>(null);
-
-    // Get a reference to the specified pig
+    // When context for the pigs changes
     useEffect(() => {
-        const pigRef = getPigRef(boardKey, pigKey);
+        const key = appContext.pigKey || '';
 
-        pigRef.on('value', (value) => {
-            if (value.child('name').exists()) {
-                setName(value.child('name').val());
-            }
-
-            if (value.child('email').exists()) {
-                setEmail(value.child('email').val());
-            }
-        });
-
-        return () => pigRef.off();
-    }, [boardKey, pigKey]);
+        if (appContext.pigs && appContext.pigs[key]) {
+            setName(appContext.pigs[key].name);
+            setEmail(appContext.pigs[key].email);
+            setVote(appContext.pigs[key].vote);
+        }
+    }, [appContext.pigKey, appContext.pigs]);
 
     // Save the name and email to the database
     useEffect(() => {
-        if (pigChanges?.name) {
-            getPigRef(boardKey, pigKey).update({ name: pigChanges.name, email: pigChanges.email });
-        }
-    }, [boardKey, pigKey, pigChanges]);
+        const boardKey = appContext.boardKey || '';
+        const pigKey = appContext.pigKey || '';
+        savePig(boardKey, pigKey, pigChanges.name, pigChanges.email)
+    }, [appContext.boardKey, appContext.pigKey, pigChanges]);
 
     const handleChange = (value: { name: string, email: string }) => setPigChanges({ name: value.name, email: value.email });
 
     return (
-        <AppHeader name={name} email={email} theme={EBadgeTheme.SECONDARY} onChange={handleChange} />
+        <AppHeader name={name} email={email} vote={vote} theme={AppTheme.SECONDARY} onChange={handleChange} />
     );
 };

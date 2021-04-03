@@ -2,12 +2,12 @@ import './app-header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { Badge } from '..';
-import { EBadgeTheme } from '../badge/badge';
+import { AppTheme } from '../app-theme';
 
-type Props = { theme?: EBadgeTheme, name?: string, email?: string, hideBadge?: boolean, onChange?: Function };
+type Props = { theme?: AppTheme, name?: string, email?: string, vote?: string, hideBadge?: boolean, onChange?: Function };
 
 export function AppHeader(props: Props) {
-    const { theme = EBadgeTheme.PRIMARY, name, email, hideBadge = false, onChange } = props;
+    const { theme = AppTheme.PRIMARY, name, email, vote, hideBadge = false, onChange } = props;
 
     const handleChange = (value: any) => {
         if (onChange) {
@@ -24,7 +24,7 @@ export function AppHeader(props: Props) {
             {
                 hideBadge
                     ? ''
-                    : <Badge name={name} email={email} theme={theme} isClickable={true} onChange={handleChange} />
+                    : <Badge name={name} email={email} vote={vote} showVote={true} theme={theme} isClickable={true} onChange={handleChange} />
             }
         </div>
     );

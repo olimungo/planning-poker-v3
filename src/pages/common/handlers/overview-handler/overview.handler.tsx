@@ -1,14 +1,10 @@
 import './overview.handler.css';
-import { useEffect, useState } from 'react';
-import { EWorkflowState, OverviewStory, OverviewTime } from '../../../../components';
-import { getWorkflowRef } from '../../../services'
+import { useContext, useEffect, useState } from 'react';
+import { EWorkflowState, getWorkflowStateFromString, OverviewStory, OverviewTime } from '../../../../components';
+import { AppContext } from '../../../common';
 
-type Props = {
-    boardKey: string
-};
-
-export function OverviewHandler(props: Props) {
-    const { boardKey } = props;
+export function OverviewHandler() {
+    const appContext = useContext(AppContext);
     const [story, setStory] = useState<number | null>(null);
     const [stories, setStories] = useState<number | null>(null);
     const [round, setRound] = useState<number | null>(null);
@@ -20,56 +16,56 @@ export function OverviewHandler(props: Props) {
     const [hideOverview, setHideOverview] = useState(true);
     const [storyStarted, setStoryStarted] = useState(false);
 
-    //Watch the workflow and update the display
+    // When context for the step changes
     useEffect(() => {
-        if (boardKey) {
-            const workflowRef = getWorkflowRef(boardKey);
-
-            workflowRef.child('step/story').on('value', (value) => setStory(value.val()));
-            workflowRef.child('step/round').on('value', (value) => setRound(value.val()));
-
-            workflowRef.child('state').on('value', (value) => {
-                if (value.val() === EWorkflowState.FINAL_RESULTS) {
-                    setFinalEstimate(true);
-                }
-
-                setHideOverview(value.val() === EWorkflowState.REGISTRATION);
-
-                if (value.val() === EWorkflowState.DISCUSSION) {
-                    setStoryStarted(true);
-                }
-            });
+        if (appContext.workflow && appContext.workflow.step) {
+            setStory(appContext.workflow.step.story);
+            setRound(appContext.workflow.step.round);
         }
-    }, [boardKey]);
+    }, [appContext.workflow]);
 
+    // When context for the state changes
     useEffect(() => {
-        if (finalEstimate && story) {
-            getWorkflowRef(boardKey).once('value', (value) => {
-                const lastStory = value.child('step/story').val()
-                const started = value.child(`stories/1/dateStarted`).val();
-                const ended = value.child(`stories/${lastStory}/dateEnded`).val();
-                const pauses = value.child(`step/pauses`).val();
+        if (appContext.workflow?.state) {
+            const state = getWorkflowStateFromString(appContext.workflow.state);
 
-                setStories(story);
-                setStarted(formatDate(started));
-                setEnd(formatDate(ended));
-                setDuration(formatDuration(ended - started));
-                setPauses(formatDuration(pauses));
-            });
+            setHideOverview(state === EWorkflowState.REGISTRATION);
+
+            if (state === EWorkflowState.FINAL_RESULTS) {
+                setFinalEstimate(true);
+            }
+
+            if (state === EWorkflowState.DISCUSSION || state === EWorkflowState.VOTE ||
+                state === EWorkflowState.FINAL_ESTIMATE) {
+                setStoryStarted(true);
+            }
         }
-    }, [boardKey, finalEstimate, story]);
+    }, [appContext.workflow?.state]);
 
     useEffect(() => {
-        if (storyStarted) {
-            getWorkflowRef(boardKey).once('value', (value) => {
-                const story = value.child('step/story').val();
-                const dateStarted = value.child(`stories/${story}/dateStarted`).val();
+        if (finalEstimate && story && appContext.workflow) {
+            const lastStory = appContext.workflow.step ? appContext.workflow.step.story : 0;
+            const started = appContext.workflow.stories ? appContext.workflow.stories[1].dateStarted : 0;
+            const ended = appContext.workflow.stories ? appContext.workflow.stories[lastStory].dateStarted : 0;
+            const pauses = appContext.workflow.step && appContext.workflow.step.pauses ? appContext.workflow.step.pauses : 0;
 
-                setStarted(formatDate(dateStarted));
-                setStoryStarted(false);
-            })
+            setStories(story);
+            setStarted(formatDate(started));
+            setEnd(formatDate(ended));
+            setDuration(formatDuration(ended - started));
+            setPauses(formatDuration(pauses));
         }
-    }, [boardKey, storyStarted]);
+    }, [finalEstimate, story, appContext.workflow]);
+
+    useEffect(() => {
+        if (storyStarted && appContext.workflow) {
+            const story = appContext.workflow.step ? appContext.workflow.step.story : 0;
+            const dateStarted = appContext.workflow.stories ? appContext.workflow.stories[story].dateStarted : 0;
+
+            setStarted(formatDate(dateStarted));
+            setStoryStarted(false);
+        }
+    }, [storyStarted, appContext.workflow]);
 
     const formatDuration = (duration: number): string => {
         const inSeconds = Math.floor(duration / 1000);

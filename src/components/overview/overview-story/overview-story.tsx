@@ -10,7 +10,9 @@ export function OverviewStory(props: Props) {
             {
                 stories
                     ? `$ stories ${stories}`
-                    : `$ story ${story} > round ${round}`
+                    : story
+                        ? `$ story ${story} > round ${round}`
+                        : ''
             }
         </div>
     );

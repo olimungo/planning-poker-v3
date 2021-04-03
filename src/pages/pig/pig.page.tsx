@@ -1,20 +1,19 @@
 import './pig.page.css';
 import { useParams, useHistory } from 'react-router-dom';
-import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote } from '../../components';
+import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote, AppTheme } from '../../components';
 import { useEffect, useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/database';
 import { AppHeaderHandler, CardsDeckHandler } from './handlers';
-import { EResultTheme, OverviewHandler, ResultsHandler } from '../common';
-import { getWorkflowStateRef, createPig, checkPigExists, checkBoardExists } from '../services';
+import { AppContext, PigType, OverviewHandler, ResultsHandler, workflowTypeInit, WorkflowType } from '../common';
+import { createPig, checkPigExists, checkBoardExists, getPigRef, getWorkflowRef } from '../services';
 import { AppFooterHandler, WorkflowActionsHandler } from '../board';
 
 export function PigPage() {
     const { boardKey, key } = useParams<{ boardKey: string, key: string }>();
     const history = useHistory();
-    const [currentState, setCurrentState] = useState(EWorkflowState.UNKNOWN);
-    const [workflowStateRef, setWorkflowStateRef] = useState<firebase.database.Reference | null>(null);
+    const [state, setState] = useState(EWorkflowState.UNKNOWN);
     const [errorMessage, setErrorMessage] = useState('');
+    const [pigs, setPigs] = useState<PigType>({});
+    const [workflow, setWorkflow] = useState<WorkflowType>(workflowTypeInit);
 
     useEffect(() => {
         // Check if the params in the URL for the board key and the pig key exist in the database
@@ -28,10 +27,19 @@ export function PigPage() {
                     }
                 } else {
                     checkPigExists(boardKey, key).then(result => {
-                        if (!result.name) {
+                        if (!result) {
                             setErrorMessage('The pig specified in the URL doesn\'t exist');
                         } else {
-                            setWorkflowStateRef(getWorkflowStateRef(boardKey));
+                            // Watch the database for the workflow
+                            getWorkflowRef(boardKey).on('value', (value) => {
+                                setState(getWorkflowStateFromString(value.child('state').val()));
+                                setWorkflow(value.val());
+                            });
+
+                            // Watch the database for the current pig
+                            getPigRef(boardKey, key).on('value', (value) => {
+                                setPigs((prev) => ({ ...prev, [key]: value.val() }));
+                            });
                         }
                     });
                 }
@@ -41,39 +49,31 @@ export function PigPage() {
         });
     }, [boardKey, key, history]);
 
-    // Watch the database for the current state
-    useEffect(() => {
-        if (workflowStateRef) {
-            workflowStateRef.on('value', (value) => {
-                setCurrentState(getWorkflowStateFromString(value.val()));
-            });
-
-            return () => {
-                workflowStateRef.off();
-            };
-        }
-    }, [workflowStateRef]);
-
     return (
         <div className="pig">
-            <AppHeaderHandler boardKey={boardKey} pigKey={key} />
+            <AppContext.Provider value={{ pigs, workflow, boardKey, pigKey: key, theme: AppTheme.SECONDARY }}>
+                <AppHeaderHandler />
 
-            <Quote />
+                <Quote />
 
-            <OverviewHandler boardKey={boardKey} />
-            <WorkflowState state={currentState} />
-            <WorkflowActionsHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
-            <CardsDeckHandler boardKey={boardKey} pigKey={key} currentState={currentState} />
+                <OverviewHandler />
 
-            <WorkflowBlock currentState={currentState} displayState={EWorkflowState.FINAL_RESULTS}>
-                <ResultsHandler boardKey={boardKey} theme={EResultTheme.SECONDARY} />
-            </WorkflowBlock>
+                <WorkflowState />
 
-            <AppFooterHandler boardKey={boardKey} pigKey={key} />
+                <WorkflowActionsHandler />
 
-            <ErrorMessage message={errorMessage} />
+                <CardsDeckHandler />
 
-            <div className="pig--spacer"></div>
+                <WorkflowBlock state={state} displayState={EWorkflowState.FINAL_RESULTS}>
+                    <ResultsHandler />
+                </WorkflowBlock>
+
+                <AppFooterHandler />
+
+                <ErrorMessage message={errorMessage} />
+
+                <div className="pig--spacer"></div>
+            </AppContext.Provider>
         </div>
     );
 }

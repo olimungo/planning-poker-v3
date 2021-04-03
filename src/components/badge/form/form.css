@@ -5,10 +5,11 @@
     transform: translate(-50%, -50%);
     background-color: #313f4f;
     border-radius: .3rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
-    width: 23rem;
+    box-shadow: 0 2px 4px rgb(0 0 0);
+    width: 27rem;
     text-align: center;
     padding: 1.5rem 2rem;
+    border: solid .2rem #1d8a2c;
 }
 
 .email-form h1 {
