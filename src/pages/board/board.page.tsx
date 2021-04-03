@@ -60,7 +60,7 @@ export function BoardPage() {
                             const pigsRef = getPigsRef(key);
 
                             pigsRef.on('value', (value) => {
-                                setPigs((prev) => ({ ...prev, ...value.val() }));
+                                setPigs(value.val());
                             });
 
                             return () => {
