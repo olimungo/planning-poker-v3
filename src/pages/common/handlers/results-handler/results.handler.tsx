@@ -1,10 +1,9 @@
 import './results.handler.css';
 import { useContext, useEffect, useState } from "react";
-import { Result } from "../../../../components";
+import { Result, AppTheme } from "../../../../components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../../common';
-import { Theme } from '../../app-context';
 
 type Story = { key: number, estimate: string, duration: string };
 
@@ -66,7 +65,7 @@ export function ResultsHandler() {
             }
 
             <button className={`results--button 
-                ${appContext.theme === Theme.PRIMARY
+                ${appContext.theme === AppTheme.PRIMARY
                     ? 'results--button-primary'
                     : 'results--button-secondary'}`}
                 onClick={handleClick}>

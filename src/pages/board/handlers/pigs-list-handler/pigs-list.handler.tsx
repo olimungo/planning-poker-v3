@@ -1,18 +1,14 @@
 import './pigs-list.handler.css';
-import { BadgeTheme, Badge } from '../../../../components';
+import { Badge } from '../../../../components';
 import { useContext, useEffect, useState } from 'react';
-import { AppContext, PigListType, Theme } from '../../../common';
+import { AppContext, PigListType } from '../../../common';
 
-type Props = {
-    showVote?: boolean,
-    isClickable?: boolean,
-};
+type Props = { showVote?: boolean, isClickable?: boolean, };
 
 export function PigsListHandler(props: Props) {
     const { showVote = false, isClickable = false } = props;
     const appContext = useContext(AppContext);
     const [pigs, setPigs] = useState<PigListType[]>([]);
-    const [theme, setTheme] = useState(BadgeTheme.PRIMARY);
 
     // Watch when pigs register and update the display
     useEffect(() => {
@@ -32,16 +28,12 @@ export function PigsListHandler(props: Props) {
         }
     }, [appContext.pigs]);
 
-    useEffect(() => {
-        appContext.theme === Theme.PRIMARY ? setTheme(BadgeTheme.PRIMARY) : setTheme(BadgeTheme.SECONDARY);
-    }, [appContext.theme]);
-
     return (
         <div className="pigs-list">
             {
                 pigs.map(pig =>
                     <Badge key={pig.key} name={pig.name} email={pig.email} vote={pig.vote} displayStar={pig.isScrumMaster} showVote={showVote}
-                        isClickable={isClickable} theme={theme} />
+                        isClickable={isClickable} theme={appContext.theme} />
                 )
             }
         </div>

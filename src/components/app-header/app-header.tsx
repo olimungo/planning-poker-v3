@@ -2,12 +2,12 @@ import './app-header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { Badge } from '..';
-import { BadgeTheme } from '../badge/badge';
+import { AppTheme } from '../app-theme';
 
-type Props = { theme?: BadgeTheme, name?: string, email?: string, vote?: string, hideBadge?: boolean, onChange?: Function };
+type Props = { theme?: AppTheme, name?: string, email?: string, vote?: string, hideBadge?: boolean, onChange?: Function };
 
 export function AppHeader(props: Props) {
-    const { theme = BadgeTheme.PRIMARY, name, email, vote, hideBadge = false, onChange } = props;
+    const { theme = AppTheme.PRIMARY, name, email, vote, hideBadge = false, onChange } = props;
 
     const handleChange = (value: any) => {
         if (onChange) {

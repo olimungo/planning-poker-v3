@@ -9,11 +9,12 @@ import {
     WorkflowState,
     WorkflowBlock,
     getWorkflowStateFromString,
+    AppTheme,
 } from '../../components';
 import { useEffect, useState } from 'react';
 import { PigsListHandler, WorkflowHandler } from './handlers';
-import { AppContext, OverviewHandler, PigType, ResultsHandler, Theme, WorkflowType, workflowTypeInit } from '../common';
-import { createBoardKey, checkBoardExists, getWorkflowRef, getPigsRef } from '../services';
+import { AppContext, OverviewHandler, PigType, ResultsHandler, WorkflowType, workflowTypeInit } from '../common';
+import { createBoardKey, checkBoardExists, getWorkflowRef, getPigsRef, lockBoard, getLock } from '../services';
 
 export function BoardPage() {
     const { key } = useParams<{ key: string }>();
@@ -32,31 +33,44 @@ export function BoardPage() {
             if (boardKey) {
                 history.push(`/board/${boardKey}`);
             } else {
-                setErrorMessage('A mystic error occured while creating a board')
+                setErrorMessage('A mystic error occured while creating a board');
             }
         } else {
             checkBoardExists(key).then(boardExists => {
                 if (!boardExists) {
-                    setErrorMessage('The board referenced in the URL doesn\'t exist.')
+                    setErrorMessage('The board referenced in the URL doesn\'t exist.');
                 } else {
-                    // Watch the database for the workflow
-                    const workflowRef = getWorkflowRef(key);
+                    const lock = getLock(key);
 
-                    workflowRef.on('value', (value) => {
-                        setState(getWorkflowStateFromString(value.child('state').val()));
-                        setWorkflow(value.val());
-                    });
+                    if (lock) {
+                        lockBoard(key, lock).then(() => {
+                            setInterval(() => {
+                                lockBoard(key, lock);
+                            }, 10000);
 
-                    // Watch the database for the current pig
-                    const pigsRef = getPigsRef(key);
+                            // Watch the database for the workflow
+                            const workflowRef = getWorkflowRef(key);
 
-                    pigsRef.on('value', (value) => {
-                        setPigs((prev) => ({ ...prev, ...value.val() }));
-                    });
+                            workflowRef.on('value', (value) => {
+                                setState(getWorkflowStateFromString(value.child('state').val()));
+                                setWorkflow(value.val());
+                            });
 
-                    return () => {
-                        workflowRef.off();
-                        pigsRef.off();
+                            // Watch the database for the current pig
+                            const pigsRef = getPigsRef(key);
+
+                            pigsRef.on('value', (value) => {
+                                setPigs((prev) => ({ ...prev, ...value.val() }));
+                            });
+
+                            return () => {
+                                workflowRef.off();
+                                pigsRef.off();
+                            }
+
+                        }, () => {
+                            setErrorMessage('Another instance of the board is running. Wait 15 seconds and retry.');
+                        });
                     }
                 }
             });
@@ -67,7 +81,7 @@ export function BoardPage() {
 
     return (
         <div className="board">
-            <AppContext.Provider value={{ pigs, workflow, boardKey: key, theme: Theme.PRIMARY }}>
+            <AppContext.Provider value={{ pigs, workflow, boardKey: key, theme: AppTheme.PRIMARY }}>
                 <AppHeader hideBadge={true} />
 
                 <OverviewHandler />

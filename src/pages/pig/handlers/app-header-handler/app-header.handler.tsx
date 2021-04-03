@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { AppHeader, BadgeTheme } from '../../../../components';
+import { AppHeader, AppTheme } from '../../../../components';
 import { AppContext } from '../../../common';
 import { savePig } from '../../../services';
 
@@ -31,6 +31,6 @@ export function AppHeaderHandler() {
     const handleChange = (value: { name: string, email: string }) => setPigChanges({ name: value.name, email: value.email });
 
     return (
-        <AppHeader name={name} email={email} vote={vote} theme={BadgeTheme.SECONDARY} onChange={handleChange} />
+        <AppHeader name={name} email={email} vote={vote} theme={AppTheme.SECONDARY} onChange={handleChange} />
     );
 };

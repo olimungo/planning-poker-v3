@@ -4,6 +4,18 @@
         ".write": true,
         "boards": {
             "$board": {
+                "lock": {
+                    "timeStamp": {
+                        ".validate": "newData.isNumber()"
+                    },
+                    "key": {
+                        ".validate": "newData.isString()"
+                    },
+                    "$other": {
+                        ".validate": false
+                    },
+                    ".validate": "newData.hasChildren(['timeStamp', 'key']) && (data.child('key').val() == null || data.child('key').val() == newData.child('key').val() || data.child('timeStamp').val() + 15000 < now)"
+                },
                 "pigs": {
                     "$pig": {
                         ".validate": "newData.hasChild('dateCreated')",

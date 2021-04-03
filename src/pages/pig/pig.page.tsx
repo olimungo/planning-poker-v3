@@ -1,9 +1,9 @@
 import './pig.page.css';
 import { useParams, useHistory } from 'react-router-dom';
-import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote } from '../../components';
+import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote, AppTheme } from '../../components';
 import { useEffect, useState } from 'react';
 import { AppHeaderHandler, CardsDeckHandler } from './handlers';
-import { AppContext, PigType, OverviewHandler, ResultsHandler, workflowTypeInit, WorkflowType, Theme } from '../common';
+import { AppContext, PigType, OverviewHandler, ResultsHandler, workflowTypeInit, WorkflowType } from '../common';
 import { createPig, checkPigExists, checkBoardExists, getPigRef, getWorkflowRef } from '../services';
 import { AppFooterHandler, WorkflowActionsHandler } from '../board';
 
@@ -51,7 +51,7 @@ export function PigPage() {
 
     return (
         <div className="pig">
-            <AppContext.Provider value={{ pigs, workflow, boardKey, pigKey: key, theme: Theme.SECONDARY }}>
+            <AppContext.Provider value={{ pigs, workflow, boardKey, pigKey: key, theme: AppTheme.SECONDARY }}>
                 <AppHeaderHandler />
 
                 <Quote />

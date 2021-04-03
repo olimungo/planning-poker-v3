@@ -2,10 +2,10 @@
     background-color: #B02122;
     color: antiquewhite;
     margin: 2rem;
-    padding: .8rem 0 3rem 0;
+    padding: 2rem;
     text-align: center;
-    border-radius: .1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    border-radius: .2rem;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 60%);
 }
 
 .error-message--title {

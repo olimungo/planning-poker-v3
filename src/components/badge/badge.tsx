@@ -4,14 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faStar, faInfinity, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import { Form } from './form';
-
-export enum BadgeTheme {
-    'PRIMARY',
-    'SECONDARY'
-}
+import { AppTheme } from '..';
 
 type Props = {
-    theme?: BadgeTheme,
+    theme?: AppTheme,
     name?: string,
     email?: string,
     vote?: string,
@@ -22,7 +18,7 @@ type Props = {
 };
 
 export function Badge(props: Props) {
-    const { theme = BadgeTheme.PRIMARY, name, email, vote, showVote = false, displayStar = false, isClickable = false, onChange } = props;
+    const { theme = AppTheme.PRIMARY, name, email, vote, showVote = false, displayStar = false, isClickable = false, onChange } = props;
     const [showForm, setShowForm] = useState(false);
     const [emailForm, setEmailForm] = useState('');
     const [nameForm, setNameForm] = useState('');
@@ -55,12 +51,12 @@ export function Badge(props: Props) {
                 {
                     emailForm
                         ? <img className={
-                            `badge--image ${theme === BadgeTheme.PRIMARY
+                            `badge--image ${theme === AppTheme.PRIMARY
                                 ? 'badge--theme-primary'
                                 : 'badge--theme-secondary'}`}
                             src={`https://www.gravatar.com/avatar/${md5(emailForm)}`} alt="gravatar" />
                         : <FontAwesomeIcon className={
-                            `badge--icon ${theme === BadgeTheme.PRIMARY
+                            `badge--icon ${theme === AppTheme.PRIMARY
                                 ? 'badge--theme-primary'
                                 : 'badge--theme-secondary'}`}
                             icon={faUserCircle} />
@@ -69,7 +65,7 @@ export function Badge(props: Props) {
                 {
                     nameForm
                         ? <div className={
-                            `badge--name ${theme === BadgeTheme.PRIMARY
+                            `badge--name ${theme === AppTheme.PRIMARY
                                 ? 'badge--theme-primary-name'
                                 : 'badge--theme-secondary-name'}`}>{nameForm}</div>
                         : ''
@@ -77,7 +73,7 @@ export function Badge(props: Props) {
 
                 <div className={`badge--relative ${!vote ? 'badge--hidden' : ''}`}>
                     <div className={
-                        `badge--vote ${theme === BadgeTheme.PRIMARY
+                        `badge--vote ${theme === AppTheme.PRIMARY
                             ? 'badge--theme-primary-vote'
                             : 'badge--theme-secondary-vote'}`}>
                         {

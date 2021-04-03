@@ -1,6 +1,6 @@
 import './overview.handler.css';
 import { useContext, useEffect, useState } from 'react';
-import { EWorkflowState, OverviewStory, OverviewTime } from '../../../../components';
+import { EWorkflowState, getWorkflowStateFromString, OverviewStory, OverviewTime } from '../../../../components';
 import { AppContext } from '../../../common';
 
 export function OverviewHandler() {
@@ -18,31 +18,36 @@ export function OverviewHandler() {
 
     // When context for the step changes
     useEffect(() => {
-        if (appContext.workflow?.step) {
+        if (appContext.workflow && appContext.workflow.step) {
             setStory(appContext.workflow.step.story);
             setRound(appContext.workflow.step.round);
         }
-    }, [appContext.workflow?.step]);
+    }, [appContext.workflow]);
 
     // When context for the state changes
     useEffect(() => {
-        setHideOverview(appContext.workflow?.state === EWorkflowState.REGISTRATION.toString());
+        if (appContext.workflow?.state) {
+            const state = getWorkflowStateFromString(appContext.workflow.state);
 
-        if (appContext.workflow?.state === EWorkflowState.FINAL_RESULTS.toString()) {
-            setFinalEstimate(true);
-        }
+            setHideOverview(state === EWorkflowState.REGISTRATION);
 
-        if (appContext.workflow?.state === EWorkflowState.DISCUSSION.toString()) {
-            setStoryStarted(true);
+            if (state === EWorkflowState.FINAL_RESULTS) {
+                setFinalEstimate(true);
+            }
+
+            if (state === EWorkflowState.DISCUSSION || state === EWorkflowState.VOTE ||
+                state === EWorkflowState.FINAL_ESTIMATE) {
+                setStoryStarted(true);
+            }
         }
     }, [appContext.workflow?.state]);
 
     useEffect(() => {
-        if (finalEstimate && story) {
-            const lastStory = appContext.workflow?.step ? appContext.workflow.step.story : 0;
-            const started = appContext.workflow?.stories ? appContext.workflow.stories[1].dateStarted : 0;
-            const ended = appContext.workflow?.stories ? appContext.workflow.stories[lastStory].dateStarted : 0;
-            const pauses = appContext.workflow?.step && appContext.workflow.step.pauses ? appContext.workflow.step.pauses : 0;
+        if (finalEstimate && story && appContext.workflow) {
+            const lastStory = appContext.workflow.step ? appContext.workflow.step.story : 0;
+            const started = appContext.workflow.stories ? appContext.workflow.stories[1].dateStarted : 0;
+            const ended = appContext.workflow.stories ? appContext.workflow.stories[lastStory].dateStarted : 0;
+            const pauses = appContext.workflow.step && appContext.workflow.step.pauses ? appContext.workflow.step.pauses : 0;
 
             setStories(story);
             setStarted(formatDate(started));
@@ -53,9 +58,9 @@ export function OverviewHandler() {
     }, [finalEstimate, story, appContext.workflow]);
 
     useEffect(() => {
-        if (storyStarted) {
-            const story = appContext.workflow?.step ? appContext.workflow.step.story : 0;
-            const dateStarted = appContext.workflow?.stories ? appContext.workflow.stories[story].dateStarted : 0;
+        if (storyStarted && appContext.workflow) {
+            const story = appContext.workflow.step ? appContext.workflow.step.story : 0;
+            const dateStarted = appContext.workflow.stories ? appContext.workflow.stories[story].dateStarted : 0;
 
             setStarted(formatDate(dateStarted));
             setStoryStarted(false);

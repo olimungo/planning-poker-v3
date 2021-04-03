@@ -1,10 +1,5 @@
-import { createContext } from "react";
-import { EWorkflowState } from "../../../components"
-
-export enum Theme {
-    'PRIMARY',
-    'SECONDARY'
-}
+import { createContext } from 'react';
+import { AppTheme, EWorkflowState } from '../../../components'
 
 export type PigType = {
     [key: string]: {
@@ -57,7 +52,7 @@ export type AppContextType = {
     pigKey?: string,
     pigs?: PigType,
     workflow?: WorkflowType,
-    theme?: Theme
+    theme?: AppTheme
 };
 
 export const AppContextInit: AppContextType = {};
