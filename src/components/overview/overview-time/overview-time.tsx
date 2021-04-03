@@ -7,7 +7,7 @@ export function OverviewTime(props: Props) {
 
     return (
         <div className="overview-time">
-            {`$ (start | ${start})`}
+            { start ? `$ (start | ${start})` : ''}
             { end ? ` (end | ${end})` : ''}
             { duration ? ` (duration | ${duration})` : ''}
             { pauses ? ` (pauses | ${pauses})` : ''}

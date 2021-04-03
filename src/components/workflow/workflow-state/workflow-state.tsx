@@ -1,20 +1,25 @@
 import './workflow-state.css';
-import { useEffect, useState } from 'react';
-import { EWorkflowState, getStringFromWorkflowState } from './workflow-state.enum'
+import { useContext, useEffect, useState } from 'react';
+import { EWorkflowState, getStringFromWorkflowState, getWorkflowStateFromString } from './workflow-state.enum'
+import { AppContext } from '../../../pages';
 
-type Props = { state: EWorkflowState };
-
-export function WorkflowState(props: Props) {
-    const { state } = props;
+export function WorkflowState() {
+    const appContext = useContext(AppContext);
     const [title, setTitle] = useState('');
 
     useEffect(() => {
-        if (state === EWorkflowState.UNKNOWN) {
-            setTitle('');
-        } else {
-            setTitle(getStringFromWorkflowState(state));
+        if (appContext.workflow?.state) {
+            const stateDb = appContext.workflow.state;
+
+            if (stateDb === EWorkflowState.UNKNOWN.toString()) {
+                setTitle('');
+            } else {
+                const state = getWorkflowStateFromString(stateDb)
+                const sateString = getStringFromWorkflowState(state);
+                setTitle(sateString);
+            }
         }
-    }, [state]);
+    }, [appContext.workflow?.state]);
 
     return (
         <div className="workflow-state">

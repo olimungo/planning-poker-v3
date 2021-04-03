@@ -1,65 +1,48 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { EWorkflowState, getWorkflowStateFromString } from "../../../../components";
-import { getNextStateRef, getPigsRef, transitionTo } from "../../../services";
+import { AppContext } from "../../../common";
+import { transitionTo } from "../../../services";
 
-type Props = { boardKey: string, currentState: EWorkflowState, onAllPigsHaveVoted: Function };
+type Props = { onAllPigsHaveVoted: Function };
 
 export function WorkflowHandler(props: Props) {
-    const { boardKey, currentState, onAllPigsHaveVoted } = props;
-    const [allPigsHaveVoted, setAllPigsHaveVoted] = useState(false)
+    const { onAllPigsHaveVoted } = props;
+    const appContext = useContext(AppContext);
 
     // Watch pigs for their votes
     useEffect(() => {
-        const pigsRef = getPigsRef(boardKey);
-
-        pigsRef.on('value', (pigs) => {
+        if (appContext.pigs) {
             let allVoted = true;
+            let keyCount = 0;
 
-            pigs.forEach(pig => {
-                allVoted = allVoted && Boolean(pig.child('vote').val())
-            });
-
-            if (allVoted) {
-                setAllPigsHaveVoted(true);
+            for (let key in appContext.pigs) {
+                keyCount++;
+                allVoted = allVoted && Boolean(appContext.pigs[key].vote);
             }
-        });
 
-        return () => {
-            pigsRef.off()
-        };
-    }, [boardKey]);
+            allVoted = keyCount > 0 && allVoted;
 
-    useEffect(() => {
-        const nextStateRef = getNextStateRef(boardKey);
-
-        nextStateRef.on('value', (value) => {
-            if (value.val()) {
-                const nextState = getWorkflowStateFromString(value.val());
-
-                transitionTo(boardKey, nextState);
-                setAllPigsHaveVoted(false);
-                onAllPigsHaveVoted(false)
+            if (allVoted && appContext.boardKey) {
+                transitionTo(appContext.boardKey, EWorkflowState.FINAL_ESTIMATE);
             }
-        });
-
-        return () => {
-            nextStateRef.off()
-        };
-    }, [boardKey, onAllPigsHaveVoted]);
-
-    useEffect(() => {
-        if (currentState === EWorkflowState.VOTE && allPigsHaveVoted) {
-            onAllPigsHaveVoted(allPigsHaveVoted);
-            setAllPigsHaveVoted(false);
-            transitionTo(boardKey, EWorkflowState.FINAL_ESTIMATE);
         }
+    }, [appContext.boardKey, appContext.pigs]);
 
-        // If not all the pigs have voted but the scrum master stopped the votes
-        if (currentState === EWorkflowState.FINAL_ESTIMATE && !allPigsHaveVoted) {
+    // Watch for transitioning to next state
+    useEffect(() => {
+        if (appContext.workflow?.nextState && appContext.boardKey) {
+            transitionTo(appContext.boardKey, getWorkflowStateFromString(appContext.workflow.nextState));
+        }
+    }, [appContext.boardKey, appContext.workflow?.nextState]);
+
+    // Watch for the final estimate state so to notify to show the votes
+    useEffect(() => {
+        const state = getWorkflowStateFromString(appContext.workflow?.state || EWorkflowState.UNKNOWN);
+
+        if (state === EWorkflowState.FINAL_ESTIMATE) {
             onAllPigsHaveVoted(true);
-            setAllPigsHaveVoted(false);
         }
-    }, [boardKey, currentState, allPigsHaveVoted, onAllPigsHaveVoted]);
+    }, [appContext.workflow?.state, onAllPigsHaveVoted]);
 
     return (
         <div></div>

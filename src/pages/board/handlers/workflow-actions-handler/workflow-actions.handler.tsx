@@ -1,42 +1,29 @@
-import { useEffect, useState } from 'react';
-import { EWorkflowState, WorkflowActions } from '../../../../components';
-import { getNextStateRef, getScrumMasterRef, saveNextState } from '../../../services';
+import { useContext, useEffect, useState } from 'react';
+import { EWorkflowState, getWorkflowStateFromString, WorkflowActions } from '../../../../components';
+import { AppContext } from '../../../common';
+import { saveNextState } from '../../../services';
 
-type Props = { boardKey: string, pigKey: string, currentState: EWorkflowState };
-
-export function WorkflowActionsHandler(props: Props) {
-    const { boardKey, pigKey, currentState } = props;
+export function WorkflowActionsHandler() {
+    const appContext = useContext(AppContext);
     const [nextState, setNextState] = useState(EWorkflowState.UNKNOWN);
     const [isScrumMaster, setIsScrumMaster] = useState(false);
 
     // Watch the database for a scrum master to be assigned or unassigned
     useEffect(() => {
-        const scrumMasterRef = getScrumMasterRef(boardKey);
-
-        scrumMasterRef.on('value', (value) => {
-            setIsScrumMaster(value.val() === pigKey);
-        });
-
-        return () => scrumMasterRef.off();
-    }, [boardKey, pigKey]);
-
-    // Watch next state
-    useEffect(() => {
-        const nextStateRef = getNextStateRef(boardKey);
-
-        nextStateRef.on('value', (value) => {
-            setNextState(EWorkflowState.UNKNOWN);
-        });
-
-        return () => nextStateRef.off();
-    }, [boardKey])
+        if (appContext.workflow?.scrumMaster) {
+            setIsScrumMaster(appContext.workflow.scrumMaster === appContext.pigKey);
+        } else {
+            setIsScrumMaster(false);
+        }
+    }, [appContext.pigKey, appContext.workflow?.scrumMaster]);
 
     // Transition to next state in the database
     useEffect(() => {
-        if (nextState !== EWorkflowState.UNKNOWN) {
-            saveNextState(boardKey, nextState);
+        if (nextState !== EWorkflowState.UNKNOWN && appContext.boardKey) {
+            saveNextState(appContext.boardKey, nextState);
+            setNextState(EWorkflowState.UNKNOWN);
         }
-    }, [boardKey, nextState])
+    }, [appContext.boardKey, nextState])
 
     const handleAction = (value: EWorkflowState) => setNextState(value);
 
@@ -44,7 +31,7 @@ export function WorkflowActionsHandler(props: Props) {
         <div>
             {
                 isScrumMaster
-                    ? <WorkflowActions currentState={currentState} onAction={handleAction}></WorkflowActions>
+                    ? <WorkflowActions state={getWorkflowStateFromString(appContext.workflow?.state || EWorkflowState.UNKNOWN)} onAction={handleAction}></WorkflowActions>
                     : ''
             }
         </div>

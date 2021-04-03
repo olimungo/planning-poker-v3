@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     padding: .25rem;
-    font-size: .8rem;
+    font-size: 1rem;
     cursor: pointer;
 }
 
@@ -20,24 +20,24 @@
 .badge--image {
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
     border-radius: 50%;
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
 }
 
 .badge--icon {
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
     border-radius: 50%;
-    font-size: 4rem;
+    font-size: 5rem;
 }
 
 .badge--name {
     position: relative;
     top: -.8rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.18);
-    border-radius: 2px;
+    border-radius: .5rem;
     font-weight: 600;
     padding: 0 .4rem;
-    width: 5rem;
+    width: 6rem;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -50,13 +50,13 @@
 
 .badge--vote {
     position: absolute;
-    left: 1rem;
-    bottom: 3.3rem;
+    left: 1.2rem;
+    bottom: 4.3rem;
     border-radius: 50%;
     padding: .2rem;
     font-weight: 600;
-    width: 1.3rem;
-    height: 1.3rem;
+    width: 1.7rem;
+    height: 1.7rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,10 +64,10 @@
 
 .badge--star {
     position: absolute;
-    bottom: 3.8rem;
-    left: -2.7rem;
+    bottom: 4.8rem;
+    left: -3.3rem;
     color: #f7f02e;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
 }
 
 .badge--theme-primary {
@@ -93,13 +93,13 @@
 }
 
 .badge--theme-primary-vote {
-    background: #ef8e26;
+    background: #ffb86b;
     color: #bd5c2d;
     border: solid 3px #bd5c2d;
 }
 
 .badge--theme-secondary-vote {
-    background: #3fcf52;
+    background: #8be997;
     color: #1c8a2b;
     border: solid 3px #1c8a2b;
 }

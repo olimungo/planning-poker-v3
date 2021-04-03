@@ -1,36 +1,35 @@
 import './results.handler.css';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Result } from "../../../../components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { getStoriesRef } from "../../../services";
+import { AppContext } from '../../../common';
+import { Theme } from '../../app-context';
 
-export enum EResultTheme {
-    'PRIMARY',
-    'SECONDARY'
-}
-
-type Props = { boardKey: string, theme: EResultTheme };
 type Story = { key: number, estimate: string, duration: string };
 
-export function ResultsHandler(props: Props) {
-    const { boardKey, theme } = props;
+export function ResultsHandler() {
+    const appContext = useContext(AppContext);
     const [stories, setStories] = useState<Story[]>([]);
 
     useEffect(() => {
-        getStoriesRef(boardKey).once('value', (value) => {
-            value.forEach(story => {
-                const key = parseInt(story.key || '');
-                const estimate = story.child('finalEstimate').val()
-                const dateStarted = parseInt(story.child('dateStarted').val());
-                const dateEnded = parseInt(story.child('dateEnded').val());
+        if (appContext.workflow?.stories) {
+            const storiesTemp: Story[] = [];
+
+            for (let keyString in appContext.workflow.stories) {
+                const key = parseInt(keyString);
+                const dateStarted = appContext.workflow.stories[key].dateStarted;
+                const dateEnded = appContext.workflow.stories[key].dateEnded || 0;
+                const estimate = appContext.workflow.stories[key].finalEstimate || '';
                 const duration = formatDuration(dateEnded - dateStarted);
                 const newStory: Story = { key, estimate, duration }
 
-                setStories((prevStories) => [...prevStories, newStory]);
-            });
-        });
-    }, [boardKey]);
+                storiesTemp.push(newStory);
+            }
+
+            setStories(storiesTemp);
+        }
+    }, [appContext.workflow?.stories]);
 
     const formatDuration = (duration: number): string => {
         const inSeconds = Math.floor(duration / 1000);
@@ -67,7 +66,7 @@ export function ResultsHandler(props: Props) {
             }
 
             <button className={`results--button 
-                ${theme === EResultTheme.PRIMARY
+                ${appContext.theme === Theme.PRIMARY
                     ? 'results--button-primary'
                     : 'results--button-secondary'}`}
                 onClick={handleClick}>

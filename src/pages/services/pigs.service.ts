@@ -1,6 +1,11 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
 
+export function checkPigExists(boardKey: string, pigKey: string): Promise<Boolean> {
+    return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).once('value')
+        .then(value => value.exists());
+}
+
 export function createPig(boardKey: string): string | null {
     const pigs = firebase.database().ref(`boards/${boardKey}/pigs`);
 
@@ -25,30 +30,21 @@ export function createPig(boardKey: string): string | null {
     return null;
 }
 
-export function savePig(boardKey: string, pigKey: string, name: string, email: string | null): Promise<any> | null {
-    if (name !== '') {
+export function getPigRef(boardKey: string, pigKey: string): firebase.database.Reference {
+    return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`);
+}
+
+export function savePig(boardKey: string, pigKey: string, name: string | null, email: string | null): Promise<any> | null {
+    if (name && name !== '') {
         email = email === '' ? null : email;
-        return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).set({ name, email });
+        return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).update({ name, email });
     }
 
     return null;
 }
 
-export function checkPigExists(boardKey: string, pigKey: string): Promise<{ name: string, email: string }> {
-    return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).once('value')
-        .then(value => ({ name: value.child('name').val(), email: value.child('email').val() }));
-}
-
-export function getPigRef(boardKey: string, pigKey: string): firebase.database.Reference {
-    return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`);
-}
-
 export function getPigsRef(boardKey: string): firebase.database.Reference {
     return firebase.database().ref(`boards/${boardKey}/pigs`);
-}
-
-export function getVote(boardKey: string, pigKey: string): Promise<string> {
-    return firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}/vote`).once('value').then((value) => value.val());
 }
 
 export function saveVote(boardKey: string, pigKey: string, vote: string) {
