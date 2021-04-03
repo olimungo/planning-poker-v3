@@ -11,7 +11,7 @@ import {
     getWorkflowStateFromString,
     AppTheme,
 } from '../../components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PigsListHandler, WorkflowHandler } from './handlers';
 import { AppContext, OverviewHandler, PigType, ResultsHandler, WorkflowType, workflowTypeInit } from '../common';
 import { createBoardKey, checkBoardExists, getWorkflowRef, getPigsRef, lockBoard, getLock } from '../services';
@@ -24,6 +24,40 @@ export function BoardPage() {
     const [showVote, setShowVote] = useState(false);
     const [pigs, setPigs] = useState<PigType>({});
     const [workflow, setWorkflow] = useState<WorkflowType>(workflowTypeInit);
+
+    const initApp = useCallback(() => {
+        const lock = getLock(key);
+        if (lock) {
+            lockBoard(key, lock).then(() => {
+                setInterval(() => {
+                    lockBoard(key, lock);
+                }, 10000);
+
+                // Watch the database for the workflow
+                const workflowRef = getWorkflowRef(key);
+
+                workflowRef.on('value', (value) => {
+                    setState(getWorkflowStateFromString(value.child('state').val()));
+                    setWorkflow(value.val());
+                });
+
+                // Watch the database for the current pig
+                const pigsRef = getPigsRef(key);
+
+                pigsRef.on('value', (value) => {
+                    setPigs(value.val());
+                });
+
+                return () => {
+                    workflowRef.off();
+                    pigsRef.off();
+                }
+
+            }, () => {
+                setErrorMessage('Another instance of the board is running. Wait 15 seconds and retry.');
+            });
+        }
+    }, [key]);
 
     // Initialise board
     useEffect(() => {
@@ -40,42 +74,11 @@ export function BoardPage() {
                 if (!boardExists) {
                     setErrorMessage('The board referenced in the URL doesn\'t exist.');
                 } else {
-                    const lock = getLock(key);
-
-                    if (lock) {
-                        lockBoard(key, lock).then(() => {
-                            setInterval(() => {
-                                lockBoard(key, lock);
-                            }, 10000);
-
-                            // Watch the database for the workflow
-                            const workflowRef = getWorkflowRef(key);
-
-                            workflowRef.on('value', (value) => {
-                                setState(getWorkflowStateFromString(value.child('state').val()));
-                                setWorkflow(value.val());
-                            });
-
-                            // Watch the database for the current pig
-                            const pigsRef = getPigsRef(key);
-
-                            pigsRef.on('value', (value) => {
-                                setPigs(value.val());
-                            });
-
-                            return () => {
-                                workflowRef.off();
-                                pigsRef.off();
-                            }
-
-                        }, () => {
-                            setErrorMessage('Another instance of the board is running. Wait 15 seconds and retry.');
-                        });
-                    }
+                    initApp();
                 }
             });
         }
-    }, [key, history]);
+    }, [key, history, initApp]);
 
     const handleAllPigsHaveVoted = (value: boolean) => setShowVote(value);
 
