@@ -1,0 +1,45 @@
+.remove-pig-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #313f4f;
+    border-radius: .3rem;
+    box-shadow: 0 2px 4px rgb(0 0 0);
+    width: 27rem;
+    text-align: center;
+    padding: 1.5rem 2rem;
+    border: solid .1rem #ef8e26;
+}
+
+.remove-pig-form h1 {
+    color: #ffc281;
+    font-size: 1.2rem;
+    margin: 0 0 1.5rem 0;
+}
+
+.remove-pig-form--buttons {
+    text-align: end;
+    margin-top: 1rem;
+}
+
+
+.remove-pig-form input[type='submit'], .remove-pig-form button {
+    width: 5rem;
+    background-color: transparent;
+    border: none;
+    margin-left: 1rem;
+    width: auto;
+    color: #ef8e26;
+    padding: .5rem 1rem;
+    border-radius: .2rem;
+    font-size: 1.1rem;
+}
+
+.remove-pig-form input[type='submit']:hover, .remove-pig-form button:hover {
+    background-color: rgba(0,0,0,.3);
+}
+
+.remove-pig-form input[type='submit']:focus, .remove-pig-form button:focus {
+    outline: none;
+}
