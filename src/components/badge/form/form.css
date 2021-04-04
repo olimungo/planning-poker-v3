@@ -9,7 +9,7 @@
     width: 27rem;
     text-align: center;
     padding: 1.5rem 2rem;
-    border: solid .2rem #1d8a2c;
+    border: solid .1rem #1d8a2c;
 }
 
 .email-form h1 {
@@ -45,7 +45,7 @@
     color: #6bae6f;
     padding: .5rem 1rem;
     border-radius: .2rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 .email-form input[type='submit']:hover, .email-form button:hover {

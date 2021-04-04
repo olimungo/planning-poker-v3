@@ -26,37 +26,40 @@ export function BoardPage() {
     const [workflow, setWorkflow] = useState<WorkflowType>(workflowTypeInit);
 
     const initApp = useCallback(() => {
-        const lock = getLock(key);
-        if (lock) {
-            lockBoard(key, lock).then(() => {
-                setInterval(() => {
-                    lockBoard(key, lock);
-                }, 10000);
+        getLock(key);
 
-                // Watch the database for the workflow
-                const workflowRef = getWorkflowRef(key);
+        lockBoard(key).then(() => {
+            setInterval(() => {
+                lockBoard(key);
+            }, 10000);
 
-                workflowRef.on('value', (value) => {
-                    setState(getWorkflowStateFromString(value.child('state').val()));
-                    setWorkflow(value.val());
-                });
+            // Watch the database for the workflow
+            const workflowRef = getWorkflowRef(key);
 
-                // Watch the database for the current pig
-                const pigsRef = getPigsRef(key);
-
-                pigsRef.on('value', (value) => {
-                    setPigs(value.val());
-                });
-
-                return () => {
-                    workflowRef.off();
-                    pigsRef.off();
-                }
-
-            }, () => {
-                setErrorMessage('Another instance of the board is running. Wait 15 seconds and retry.');
+            workflowRef.on('value', (value) => {
+                setState(getWorkflowStateFromString(value.child('state').val()));
+                setWorkflow(value.val());
             });
-        }
+
+            // Watch the database for the current pig
+            const pigsRef = getPigsRef(key);
+
+            pigsRef.on('value', (value) => {
+                if (value.val()) {
+                    setPigs(value.val());
+                } else {
+                    setPigs({});
+                }
+            });
+
+            return () => {
+                workflowRef.off();
+                pigsRef.off();
+            }
+
+        }, () => {
+            setErrorMessage('Another instance of the board is running. Wait 15 seconds and retry.');
+        });
     }, [key]);
 
     // Initialise board

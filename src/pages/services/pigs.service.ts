@@ -50,3 +50,15 @@ export function getPigsRef(boardKey: string): firebase.database.Reference {
 export function saveVote(boardKey: string, pigKey: string, vote: string) {
     firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}/vote`).set(vote);
 }
+
+export function removePig(boardKey: string, pigKey: string) {
+    const scrumMaster = firebase.database().ref(`boards/${boardKey}/workflow/scrumMaster`);
+
+    scrumMaster.once('value').then((value) => {
+        if (value.val() === pigKey) {
+            scrumMaster.remove();
+        }
+    });
+
+    firebase.database().ref(`boards/${boardKey}/pigs/${pigKey}`).remove();
+}

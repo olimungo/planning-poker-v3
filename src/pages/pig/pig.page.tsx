@@ -14,6 +14,7 @@ export function PigPage() {
     const [errorMessage, setErrorMessage] = useState('');
     const [pigs, setPigs] = useState<PigType>({});
     const [workflow, setWorkflow] = useState<WorkflowType>(workflowTypeInit);
+    const [removedFromSession, setRemovedFromSession] = useState(false);
 
     const initApp = useCallback(() => {
         if (!key) {
@@ -26,6 +27,7 @@ export function PigPage() {
             checkPigExists(boardKey, key).then(result => {
                 if (!result) {
                     setErrorMessage('The pig specified in the URL doesn\'t exist');
+                    setRemovedFromSession(true);
                 } else {
                     // Watch the database for the workflow
                     getWorkflowRef(boardKey).on('value', (value) => {
@@ -35,7 +37,12 @@ export function PigPage() {
 
                     // Watch the database for the current pig
                     getPigRef(boardKey, key).on('value', (value) => {
-                        setPigs((prev) => ({ ...prev, [key]: value.val() }));
+                        if (value.val()) {
+                            setPigs((prev) => ({ ...prev, [key]: value.val() }));
+                        } else {
+                            setErrorMessage('You\'ve been removed from the session');
+                            setRemovedFromSession(true);
+                        }
                     });
                 }
             });
@@ -56,7 +63,7 @@ export function PigPage() {
     return (
         <div className="pig">
             <AppContext.Provider value={{ pigs, workflow, boardKey, pigKey: key, theme: AppTheme.SECONDARY }}>
-                <AppHeaderHandler />
+                <AppHeaderHandler hideBadge={removedFromSession} />
 
                 <Quote />
 
@@ -72,7 +79,7 @@ export function PigPage() {
                     <ResultsHandler />
                 </WorkflowBlock>
 
-                <AppFooterHandler />
+                <AppFooterHandler hideToggle={removedFromSession} />
 
                 <ErrorMessage message={errorMessage} />
 
