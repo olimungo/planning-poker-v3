@@ -6,6 +6,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 200;
 }
 
 .app-footer--container {
@@ -24,14 +25,14 @@
 }
 
 .app-footer--icon:hover {
-  background-color: rgba(0,0,0,0.18);
+  background-color: rgba(0, 0, 0, 0.18);
   position: relative;
   top: -1px;
   left: -1px;
 }
 
 .app-footer--icon:active {
-  background-color: rgba(0,0,0,0.18);
+  background-color: rgba(0, 0, 0, 0.18);
   position: initial;
 }
 
@@ -44,4 +45,3 @@
   margin-right: 1rem;
   font-size: 1.4rem;
 }
-  

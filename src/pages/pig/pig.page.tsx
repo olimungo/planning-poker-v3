@@ -1,6 +1,6 @@
 import './pig.page.css';
 import { useParams, useHistory } from 'react-router-dom';
-import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote, AppTheme } from '../../components';
+import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote, AppTheme, DeckSelector, DeckType } from '../../components';
 import { useCallback, useEffect, useState } from 'react';
 import { AppHeaderHandler, CardsDeckHandler } from './handlers';
 import { AppContext, PigType, OverviewHandler, ResultsHandler, workflowTypeInit, WorkflowType } from '../common';
@@ -15,6 +15,7 @@ export function PigPage() {
     const [pigs, setPigs] = useState<PigType>({});
     const [workflow, setWorkflow] = useState<WorkflowType>(workflowTypeInit);
     const [removedFromSession, setRemovedFromSession] = useState(false);
+    const [deckType, setDeckType] = useState(DeckType.FIBONACCI);
 
     const initApp = useCallback(() => {
         if (!key) {
@@ -73,7 +74,11 @@ export function PigPage() {
 
                 <WorkflowActionsHandler />
 
-                <CardsDeckHandler />
+                <WorkflowBlock state={state} displayState={EWorkflowState.DISCUSSION}>
+                    <DeckSelector onChange={(value: number) => setDeckType(value)} />
+                </WorkflowBlock>
+
+                <CardsDeckHandler deckType={deckType} />
 
                 <WorkflowBlock state={state} displayState={EWorkflowState.FINAL_RESULTS}>
                     <ResultsHandler />
