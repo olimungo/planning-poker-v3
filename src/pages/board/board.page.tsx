@@ -45,7 +45,11 @@ export function BoardPage() {
                 const pigsRef = getPigsRef(key);
 
                 pigsRef.on('value', (value) => {
-                    setPigs(value.val());
+                    if (value.val()) {
+                        setPigs(value.val());
+                    } else {
+                        setPigs({});
+                    }
                 });
 
                 return () => {

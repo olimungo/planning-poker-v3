@@ -35,7 +35,11 @@ export function PigPage() {
 
                     // Watch the database for the current pig
                     getPigRef(boardKey, key).on('value', (value) => {
-                        setPigs((prev) => ({ ...prev, [key]: value.val() }));
+                        if (value.val()) {
+                            setPigs((prev) => ({ ...prev, [key]: value.val() }));
+                        } else {
+                            setErrorMessage('You\'ve been removed from the session');
+                        }
                     });
                 }
             });
