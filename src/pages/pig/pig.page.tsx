@@ -66,7 +66,7 @@ export function PigPage() {
             <AppContext.Provider value={{ pigs, workflow, boardKey, pigKey: key, theme: AppTheme.SECONDARY }}>
                 <AppHeaderHandler hideBadge={removedFromSession} />
 
-                {/* <Quote /> */}
+                <Quote />
 
                 <OverviewHandler />
 
