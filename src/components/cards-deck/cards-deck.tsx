@@ -15,8 +15,6 @@ export function CardsDeck(props: Props) {
         const animals = ['?', 'SPIDER', 'FISH', 'CAT', 'HORSE', 'HIPPO', 'DRAGON', 'INFINITY'];
         const sizes = ['?', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'INFINITY'];
 
-        console.log(deckType)
-
         switch (deckType) {
             case DeckType.FIBONACCI:
                 setCards(fibonacci);
