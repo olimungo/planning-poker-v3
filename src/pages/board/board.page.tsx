@@ -27,6 +27,7 @@ export function BoardPage() {
 
     const initApp = useCallback(() => {
         const lock = getLock(key);
+
         if (lock) {
             lockBoard(key, lock).then(() => {
                 setInterval(() => {
