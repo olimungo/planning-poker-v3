@@ -23,6 +23,9 @@ export function getLock(boardKey: string): string | null {
 }
 
 export function lockBoard(boardKey: string, key: string): Promise<any> {
-    // return firebase.database().ref(`boards/${boardKey}/lock`).set({ timeStamp: new Date().getTime(), key });
-    return new Promise((resolve) => resolve(123));
+    if (window.location.hostname === 'localhost') {
+        return new Promise((resolve) => resolve(1));
+    } else {
+        return firebase.database().ref(`boards/${boardKey}/lock`).set({ timeStamp: new Date().getTime(), key });
+    }
 }

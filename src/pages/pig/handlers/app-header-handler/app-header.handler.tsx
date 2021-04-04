@@ -3,7 +3,10 @@ import { AppHeader, AppTheme } from '../../../../components';
 import { AppContext } from '../../../common';
 import { savePig } from '../../../services';
 
-export function AppHeaderHandler() {
+type Props = { hideBadge?: boolean };
+
+export function AppHeaderHandler(props: Props) {
+    const { hideBadge } = props;
     const appContext = useContext(AppContext);
     const [email, setEmail] = useState<string | undefined>(undefined);
     const [name, setName] = useState<string | undefined>(undefined);
@@ -31,6 +34,6 @@ export function AppHeaderHandler() {
     const handleChange = (value: { name: string, email: string }) => setPigChanges({ name: value.name, email: value.email });
 
     return (
-        <AppHeader name={name} email={email} vote={vote} theme={AppTheme.SECONDARY} onChange={handleChange} />
+        <AppHeader name={name} email={email} vote={vote} theme={AppTheme.SECONDARY} hideBadge={hideBadge} onChange={handleChange} />
     );
 };
