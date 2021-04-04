@@ -3,6 +3,7 @@ export * from './app-theme';
 export * from './app-header';
 export * from './badge';
 export * from './cards-deck';
+export * from './deck-type';
 export * from './error-message';
 export * from './progress-bar';
 export * from './qr-code';

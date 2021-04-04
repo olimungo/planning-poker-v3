@@ -1,7 +1,10 @@
 import './badge.css';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faStar, faInfinity, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import {
+    faUserCircle, faStar, faInfinity, faCoffee, faSpider, faFish, faCat,
+    faHorse, faHippo, faDragon, IconDefinition
+} from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import { Form } from './form';
 import { AppTheme } from '..';
@@ -17,11 +20,24 @@ type Props = {
     onChange?: Function,
 };
 
+const iconsMap = [
+    { value: 'COFFEE', icon: faCoffee },
+    { value: 'INFINITY', icon: faInfinity },
+    { value: 'SPIDER', icon: faSpider },
+    { value: 'FISH', icon: faFish },
+    { value: 'CAT', icon: faCat },
+    { value: 'HORSE', icon: faHorse },
+    { value: 'HIPPO', icon: faHippo },
+    { value: 'DRAGON', icon: faDragon }
+];
+
 export function Badge(props: Props) {
-    const { theme = AppTheme.PRIMARY, name, email, vote, showVote = false, displayStar = false, isClickable = false, onChange } = props;
+    const { theme = AppTheme.PRIMARY, name, email, vote, showVote = false, displayStar = false,
+        isClickable = false, onChange } = props;
     const [showForm, setShowForm] = useState(false);
     const [emailForm, setEmailForm] = useState('');
     const [nameForm, setNameForm] = useState('');
+    const [icon, setIcon] = useState<IconDefinition | null>(null);
 
     useEffect(() => {
         if (name) {
@@ -32,6 +48,16 @@ export function Badge(props: Props) {
             setEmailForm(email)
         }
     }, [name, email]);
+
+    useEffect(() => {
+        const elem = iconsMap.filter((icon) => icon.value === vote);
+
+        if (elem.length > 0) {
+            setIcon(elem[0].icon);
+        } else {
+            setIcon(null);
+        }
+    }, [vote]);
 
     // The pig changed his/her name or email through the form
     // Update the display and bubble up the event to the parent component
@@ -78,11 +104,9 @@ export function Badge(props: Props) {
                             : 'badge--theme-secondary-vote'}`}>
                         {
                             showVote
-                                ? vote !== 'INFINITY' && vote !== 'COFFEE'
-                                    ? vote
-                                    : vote !== 'COFFEE'
-                                        ? <FontAwesomeIcon icon={faInfinity} />
-                                        : <FontAwesomeIcon icon={faCoffee} />
+                                ? icon
+                                    ? <FontAwesomeIcon icon={icon} />
+                                    : vote
                                 : ''
                         }
                     </div>

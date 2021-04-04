@@ -5,6 +5,7 @@
     width: 40rem;
     padding-top: 10rem;
     text-align: center;
+    z-index: 100;
 }
 
 .quote--number {
@@ -32,5 +33,5 @@
 }
 
 .quote a:hover {
-    background-color: rgba(0,0,0,.3);
+    background-color: rgba(0, 0, 0, .3);
 }
