@@ -31,8 +31,8 @@ export function DeckSelector(props: Props) {
             {
                 isScrumMaster
                     ? <div>
-                        <h1>{t('**deck-type')}</h1>
-                        <div className="container">
+                        <h1>{t('**deck_type')}</h1>
+                        <div className="deck-type--container">
                             <ul>
                                 <li>
                                     <input data-type={DeckType.FIBONACCI} type="radio" id="fibonacci" name="selector"

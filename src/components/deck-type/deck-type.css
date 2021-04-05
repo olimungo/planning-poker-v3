@@ -4,17 +4,13 @@
 
 .deck-type h1 {
 	font-weight: 100;
-	font-size: 2rem;
+	font-size: 2.8rem;
 	color: #26ac39;
 }
 
 .deck-type--container {
-	display: block;
-	position: relative;
-	margin: 40px auto;
-	height: auto;
-	width: 500px;
-	padding: 20px;
+	width: 30rem;
+	margin-left: 5rem;
 }
 
 deck-type--h2 {
@@ -34,7 +30,7 @@ deck-type--h2 {
 	position: relative;
 	float: left;
 	width: 100%;
-	height: 100px;
+	height: 7rem;
 	border-bottom: 1px solid #333;
 }
 
@@ -47,10 +43,9 @@ deck-type--h2 {
 	display: block;
 	position: relative;
 	font-weight: 300;
-	font-size: 1.7rem;
-	padding: 25px 25px 25px 80px;
-	margin: 10px auto;
-	height: 30px;
+	font-size: 2.3rem;
+	padding: 1.25rem 0rem 2rem 7rem;
+	margin: .7rem auto;
 	z-index: 9;
 	cursor: pointer;
 	transition: all 0.25s linear;
@@ -63,19 +58,19 @@ deck-type--h2 {
 .deck-type ul li .check {
 	display: block;
 	position: absolute;
-	border: 5px solid #AAAAAA;
+	border: .4rem solid #AAAAAA;
 	border-radius: 100%;
-	height: 25px;
-	width: 25px;
-	top: 30px;
-	left: 20px;
+	height: 2.04rem;
+	width: 2.04rem;
+	top: 2rem;
+	left: 2rem;
 	z-index: 5;
 	transition: border .25s linear;
 	transition: border .25s linear;
 }
 
 .deck-type ul li:hover .check {
-	border: 5px solid #FFFFFF;
+	border: .4rem solid #FFFFFF;
 }
 
 .deck-type ul li .check::before {
@@ -83,17 +78,17 @@ deck-type--h2 {
 	position: absolute;
 	content: '';
 	border-radius: 100%;
-	height: 15px;
-	width: 15px;
-	top: 5px;
-	left: 5px;
+	height: 1.5rem;
+	width: 1.5rem;
+	top: .28rem;
+	left: .28rem;
 	margin: auto;
 	transition: background 0.25s linear;
 	transition: background 0.25s linear;
 }
 
 .deck-type input[type=radio]:checked~.check {
-	border: 5px solid #26ac39;
+	border: .4rem solid #26ac39;
 }
 
 .deck-type input[type=radio]:checked~.check::before {

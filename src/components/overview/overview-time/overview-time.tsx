@@ -9,10 +9,10 @@ export function OverviewTime(props: Props) {
 
     return (
         <div className="overview-time">
-            { start ? `$ (${t('overview:start')} | ${start})` : ''}
-            { end ? ` (${t('overview:end')} | ${end})` : ''}
-            { duration ? ` (${t('overview:duration')} | ${duration})` : ''}
-            { pauses ? ` (${t('overview:pauses')} | ${pauses})` : ''}
+            <div>{start ? `$ (${t('overview:start')} | ${start})` : ''}</div>
+            <div className="overview-time--item">{end ? `$ (${t('overview:end')} | ${end})` : ''}</div>
+            <div className="overview-time--item">{duration ? `$ (${t('overview:duration')} | ${duration})` : ''}</div>
+            <div className="overview-time--item">{pauses ? `$ (${t('overview:pauses')} | ${pauses})` : ''}</div>
         </div>
     );
 }

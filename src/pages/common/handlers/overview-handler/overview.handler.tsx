@@ -89,7 +89,7 @@ export function OverviewHandler() {
     }
 
     return (
-        <div className={`overview-hanlder ${hideOverview ? 'overview-handler--hidden' : ''}`}>
+        <div className={`overview-handler ${hideOverview ? 'overview-handler--hidden' : ''}`}>
             <OverviewStory story={story} round={round} stories={stories} />
             <OverviewTime start={started} end={ended} duration={duration} pauses={pauses} />
         </div>

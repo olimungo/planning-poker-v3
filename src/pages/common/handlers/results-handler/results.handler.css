@@ -5,37 +5,36 @@
 }
 
 .results--story {
-    font-size: 2.2rem;
+    font-size: 2.8rem;
     margin-bottom: 2rem;
 }
 
 .results--header {
     display: flex;
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
 }
 
 .results--header-story {
-    width: 3.5rem;
-    margin-left: 0.5rem;
+    width: 6rem;
+    text-align: center;
 }
 
 .results--header-estimate {
-    width: 8rem;
+    width: 15rem;
     text-align: center;
-    margin-right: 2rem;
 }
 
 .results--header-duration {
-    width: 5.5rem;
+    width: 9rem;
     text-align: center;
 }
 
 .results--button {
-    margin-top: 2rem;
-    width: 15rem;
-    height: 4rem;
+    margin-top: 4rem;
+    width: 25rem;
+    height: 6rem;
     font-size: 2rem;
     box-shadow: 0 2px 4px rgb(0 0 0 / 18%);
     border: none;

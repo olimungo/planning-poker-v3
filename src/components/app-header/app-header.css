@@ -3,9 +3,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: .5rem 1rem .5rem 0;
+    padding: 0;
+    margin: 0;
 }
 
 .app-header h1 {
-    margin-right: 4rem;
+    margin: 0;
+    padding: 0;
+    font-size: 2.8rem;
 }

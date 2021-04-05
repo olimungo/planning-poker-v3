@@ -1,25 +1,41 @@
-import { useEffect, useState } from 'react';
-import { ProgressBar } from '../progress-bar';
 import './quote.css';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ProgressBar } from '../progress-bar';
 import quotes from './quotes.json';
 
 export function Quote() {
+    const { t } = useTranslation();
     const [quote, setQuote] = useState('');
-    const [index, setIndex] = useState(-1);
+    const [principleNumber, setPrincipleNumber] = useState(-1);
     const [hidden, setHidden] = useState(false);
 
-    useEffect(() => {
-        if (index === -1) {
-            const idx = Math.floor(Math.random() * 12);
+    const pickQuote = useCallback(() => {
+        const idx = Math.floor(Math.random() * 12);
 
-            setIndex(idx + 1);
-            setQuote(quotes[idx]);
+        setPrincipleNumber(idx + 1);
 
-            if (window.location.hostname === 'localhost') {
-                setHidden(true);
-            }
+        if (window.location.hostname === 'localhost') {
+            setHidden(true);
         }
-    }, [index]);
+    }, []);
+
+    const translateQuote = useCallback(() => {
+        let tmpQuote = t(`agile-manifesto:${principleNumber}`);
+
+        // If no translation, then take the english one from the quotes.json file
+        tmpQuote = tmpQuote === principleNumber.toString() ? quotes[principleNumber] : tmpQuote;
+
+        setQuote(tmpQuote);
+    }, [principleNumber, t]);
+
+    useEffect(() => {
+        pickQuote();
+    }, [pickQuote]);
+
+    useEffect(() => {
+        translateQuote();
+    }, [translateQuote]);
 
     const handleCloseQuote = () => setHidden(true);
 
@@ -28,9 +44,9 @@ export function Quote() {
             {
                 !hidden
                     ? <div className="quote">
-                        <div className="quote--number">
-                            Agile Manifesto Principle #{index}<br />
-                        </div>
+                        <h1>
+                            Agile Manifesto {t('agile-manifesto:Principle')} #{principleNumber}<br />
+                        </h1>
 
                         <div className="quote--quote">
                             {quote}

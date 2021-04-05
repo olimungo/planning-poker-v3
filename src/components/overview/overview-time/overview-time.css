@@ -1,3 +1,7 @@
 .overview-time {
     margin: .5rem 0;
 }
+
+.overview-time--item {
+    margin: .6rem 0;
+}

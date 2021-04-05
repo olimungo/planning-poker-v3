@@ -6,8 +6,8 @@
     height: 100%;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 550px) {
     html {
-        font-size: 15px;
+        font-size: 12px;
     }
-  }
+}

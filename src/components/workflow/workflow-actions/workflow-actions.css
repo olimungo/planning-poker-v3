@@ -1,25 +1,26 @@
 .workflow-actions {
     display: flex;
 }
+
 .workflow-actions button {
     background-color: transparent;
     outline: none;
     border: solid 1px #26ac39;
-    padding: 1rem;
     margin: 1rem;
     color: #26ac39;
     border-radius: .2rem;
-    width: 10rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
-    font-size: 1.1rem;
+    width: 11rem;
+    height: 5.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+    font-size: 1.4rem;
 }
 
 .workflow-actions button:hover {
     position: relative;
     top: -1px;
     left: -1px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.82);
-    background-color: rgba(0,0,0,.18);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.82);
+    background-color: rgba(0, 0, 0, .18);
 }
 
 .workflow-actions button:active {
