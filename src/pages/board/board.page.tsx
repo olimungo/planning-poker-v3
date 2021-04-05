@@ -26,11 +26,11 @@ export function BoardPage() {
     const [workflow, setWorkflow] = useState<WorkflowType>(workflowTypeInit);
 
     const initApp = useCallback(() => {
-        getLock(key);
+        const lock = getLock(key) || '';
 
-        lockBoard(key).then(() => {
+        lockBoard(key, lock).then(() => {
             setInterval(() => {
-                lockBoard(key);
+                lockBoard(key, lock);
             }, 10000);
 
             // Watch the database for the workflow
