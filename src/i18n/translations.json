@@ -4,7 +4,7 @@
             "The pig specified in the URL doesn't exist": "Le cochon spécifié dans l'URL n'existe pas",
             "You've been removed from the session": "Vous avez été éjecté de la session",
             "The board specified in the URL doesn't exist": "Le tableau spécifié dans l'URL n'existe pas",
-            "**deck-type": "**type-jeu-de-carte",
+            "**deck_type": "**type_jeu_de_carte",
             "fibonacci-like": "à-la-fibonacci",
             "animals": "animaux",
             "sizes": "tailles",
@@ -40,6 +40,21 @@
             "stories": "histoires",
             "story": "histoire",
             "round": "tour"
+        },
+        "agile-manifesto": {
+            "Principle": "Principe",
+            "0": "Notre plus haute priorité est de satisfaire le client en livrant rapidement et régulièrement des fonctionnalités à grande valeur ajoutée.",
+            "1": "Accueillez positivement les changements de besoins, même tard dans le projet. Les processus Agiles exploitent le changement pour donner un avantage compétitif au client.",
+            "2": "Livrez fréquemment un logiciel opérationnel avec des cycles de quelques semaines à quelques mois et une préférence pour les plus courts.",
+            "3": "Les utilisateurs ou leurs représentants et les développeurs doivent travailler ensemble quotidiennement tout au long du projet.",
+            "4": "Réalisez les projets avec des personnes motivées. Fournissez-leur l’environnement et le soutien dont ils ont besoin et faites-leur confiance pour atteindre les objectifs fixés.",
+            "5": "La méthode la plus simple et la plus efficace pour transmettre de l’information à l'équipe de développement et à l’intérieur de celle-ci est le dialogue en face à face.",
+            "6": "Un logiciel opérationnel est la principale mesure d’avancement.",
+            "7": "Les processus Agiles encouragent un rythme de développement soutenable. Ensemble, les commanditaires, les développeurs et les utilisateurs devraient être capables de maintenir indéfiniment un rythme constant.",
+            "8": "Une attention continue à l'excellence technique et à une bonne conception renforce l’Agilité.",
+            "9": "La simplicité – c’est-à-dire l’art de minimiser la quantité de travail inutile – est essentielle.",
+            "10": "Les meilleures architectures, spécifications et conceptions émergent d'équipes autoorganisées.",
+            "11": "À intervalles réguliers, l'équipe réfléchit aux moyens de devenir plus efficace, puis règle et modifie son comportement en conséquence."
         }
     }
 }

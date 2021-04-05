@@ -11,7 +11,7 @@ export function OverviewStory(props: Props) {
         <div className="overview-story">
             {
                 stories
-                    ? `$ ${t('overview:stories')} ${stories}`
+                    ? `$ (${t('overview:stories')} | ${stories})`
                     : story
                         ? `$ ${t('overview:story')} ${story} > ${t('overview:round')} ${round}`
                         : ''

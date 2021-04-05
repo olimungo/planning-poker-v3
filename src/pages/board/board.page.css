@@ -7,7 +7,7 @@
     width: 40rem;
     height: 100%;
     overflow: auto;
-    border-top: .2rem solid #ef8f26;
+    border-top: .5rem solid #ef8f26;
 }
 
 .board--spacer {

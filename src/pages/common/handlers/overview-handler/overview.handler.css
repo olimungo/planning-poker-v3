@@ -1,3 +1,7 @@
+.overview-handler {
+    font-size: 2rem;
+}
+
 .overview-handler--hidden {
     visibility: hidden;
 }

@@ -24,7 +24,7 @@ export function Form(props: Props) {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        onOk({ name: nameForm, email: emailForm });
+        onOk({ name: nameForm.toLowerCase(), email: emailForm.toLowerCase() });
     };
 
     return (

@@ -19,8 +19,8 @@ export function QrCode(props: Props) {
     const setWidth = () => {
         const width = window.innerWidth;
 
-        if (width < 700) {
-            setQrCodeWidth(256 / 700 * width);
+        if (width < 550) {
+            setQrCodeWidth(256 / 550 * width);
         } else {
             setQrCodeWidth(256);
         }

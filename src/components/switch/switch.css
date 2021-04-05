@@ -11,30 +11,30 @@
     border-radius: 50px;
     cursor: pointer;
     display: inline-block;
-    width: 5rem;
-    height: 2rem;
+    width: 9rem;
+    height: 3.5rem;
     position: relative;
     border: 0.1rem solid #eee;
 }
 
-.switch--toggle:checked + .switch--toggle-background {
+.switch--toggle:checked+.switch--toggle-background {
     background-color: rgb(73, 165, 73);
 }
 
 .switch--ball {
     background: #e9f7ff;
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 3rem;
+    width: 3rem;
     border-radius: 50%;
     position: absolute;
-    top: 0.25rem;
-    left: 0.25rem;
+    top: 0.20rem;
+    left: 0.20rem;
     align-items: center;
     justify-content: center;
     animation: slideOff 0.15s linear forwards;
 }
 
-.switch--toggle:checked + .switch--toggle-background .switch--ball {
+.switch--toggle:checked+.switch--toggle-background .switch--ball {
     animation: slideOn 0.15s linear forwards;
 }
 
@@ -43,19 +43,19 @@
         transform: translateX(0) scale(1);
     }
     25% {
-        transform: translateX(1rem) scale(1.2);
+        transform: translateX(2rem) scale(1.2);
     }
     100% {
-        transform: translateX(3rem) scale(1);
+        transform: translateX(5.5rem) scale(1);
     }
 }
 
 @keyframes slideOff {
     0% {
-        transform: translateX(3rem) scale(1);
+        transform: translateX(5.5rem) scale(1);
     }
     25% {
-        transform: translateX(2rem) scale(1.2);
+        transform: translateX(3.5rem) scale(1.2);
     }
     100% {
         transform: translateX(0) scale(1);

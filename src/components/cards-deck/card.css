@@ -1,13 +1,13 @@
 .card {
     border: solid 1px #26ac39;
     border-radius: .2rem;
-    width: 6rem;
-    height: 6rem;
+    width: 6.5rem;
+    height: 6.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: .5rem;
-    font-size: 2rem;
+    margin: 1rem;
+    font-size: 2.3rem;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
 }

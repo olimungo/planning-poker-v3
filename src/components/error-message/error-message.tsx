@@ -11,7 +11,7 @@ export function ErrorMessage(props: Props) {
                 message
                     ? <div className="error-message">
                         <div className="error-message--title">Software failure: Guru medidation #00000000003.00C06560</div>
-                        {message}
+                        <div className="error-message--message">{message}</div>
                     </div>
                     : ''
             }
