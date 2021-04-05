@@ -10,6 +10,10 @@
     border-top: .5rem solid #ef8f26;
 }
 
+.board--margin-top {
+    margin-top: 2rem;
+}
+
 .board--spacer {
     height: 4rem;
 }

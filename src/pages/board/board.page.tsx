@@ -87,9 +87,9 @@ export function BoardPage() {
     return (
         <div className="board">
             <AppContext.Provider value={{ pigs, workflow, boardKey: key, theme: AppTheme.PRIMARY }}>
-                <AppHeader hideBadge={true} />
+                <div className="board--margin-top"><AppHeader hideBadge={true} /></div>
 
-                <OverviewHandler />
+                <div className="board--margin-top"><OverviewHandler /></div>
 
                 <WorkflowState />
 
