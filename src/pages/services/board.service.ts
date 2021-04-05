@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
-import { EWorkflowState } from '../../components';
+import { DeckType, EWorkflowState } from '../../components';
 
 export function createBoardKey(): string | null {
     const boardKey = firebase.database().ref('boards').push().key;
@@ -8,6 +8,7 @@ export function createBoardKey(): string | null {
     if (boardKey) {
         firebase.database().ref(`boards/${boardKey}/workflow/dateCreated`).set(new Date().getTime());
         firebase.database().ref(`boards/${boardKey}/workflow/state`).set(EWorkflowState.REGISTRATION);
+        firebase.database().ref(`boards/${boardKey}/workflow/deckType`).set(DeckType.FIBONACCI);
     }
 
     return boardKey;

@@ -1,8 +1,8 @@
 import './pig.page.css';
 import { useParams, useHistory } from 'react-router-dom';
-import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote, AppTheme, DeckSelector, DeckType } from '../../components';
+import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote, AppTheme, DeckType } from '../../components';
 import { useCallback, useEffect, useState } from 'react';
-import { AppHeaderHandler, CardsDeckHandler } from './handlers';
+import { AppHeaderHandler, CardsDeckHandler, DeckSelectorHandler } from './handlers';
 import { AppContext, PigType, OverviewHandler, ResultsHandler, workflowTypeInit, WorkflowType } from '../common';
 import { createPig, checkPigExists, checkBoardExists, getPigRef, getWorkflowRef } from '../services';
 import { AppFooterHandler, WorkflowActionsHandler } from '../board';
@@ -75,7 +75,7 @@ export function PigPage() {
                 <WorkflowActionsHandler />
 
                 <WorkflowBlock state={state} displayState={EWorkflowState.DISCUSSION}>
-                    <DeckSelector onChange={(value: number) => setDeckType(value)} />
+                    <DeckSelectorHandler onChange={(value: number) => setDeckType(value)} />
                 </WorkflowBlock>
 
                 <CardsDeckHandler deckType={deckType} />

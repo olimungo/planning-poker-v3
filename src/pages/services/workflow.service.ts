@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
-import { EWorkflowState } from '../../components';
+import { DeckType, EWorkflowState } from '../../components';
 
 export function getWorkflowRef(boardKey: string): firebase.database.Reference {
     return firebase.database().ref(`boards/${boardKey}/workflow`);
@@ -58,6 +58,10 @@ export function transitionTo(boardKey: string, nextState: EWorkflowState) {
             prepareFinalResult(boardKey, nextState);
             break;
     }
+}
+
+export function saveDeckType(boardKey: string, deckType: DeckType) {
+    firebase.database().ref(`boards/${boardKey}/workflow/deckType`).set(deckType);
 }
 
 function getStep(boardKey: string): Promise<{ story: number, round: number }> {
