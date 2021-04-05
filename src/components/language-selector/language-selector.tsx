@@ -37,7 +37,7 @@ export function LanguageSelector(props: Props) {
 
     return (
         <form className={`language-selector ${border}`}>
-            <h1>Select a language</h1>
+            <h1>{t('form:Select a language')}</h1>
 
             <ul>
                 {

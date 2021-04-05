@@ -30,7 +30,8 @@
         "form": {
             "CANCEL": "ANNULER",
             "Remove": "Retirer",
-            "from the session?": "de la session ?"
+            "from the session?": "de la session ?",
+            "Select a language": "Choisissez votre langue"
         },
         "overview": {
             "start": "démarrage",
