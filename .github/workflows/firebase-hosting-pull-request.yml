@@ -4,7 +4,7 @@
 name: Build on pull request and deploy to TEST
 'on': pull_request
 jobs:
-  build_and_preview:
+  build_and_deploy_to_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
