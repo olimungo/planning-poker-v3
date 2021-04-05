@@ -52,6 +52,9 @@
                     "scrumMaster": {
                         ".validate": "newData.isString()"
                     },
+                    "deckType": {
+                        ".validate": "newData.isNumber()"
+                    },
                     "step": {
                         "story": {
                             ".validate": "newData.isNumber()"

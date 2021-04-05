@@ -33,6 +33,7 @@ export type WorkflowType = {
     state: string,
     nextState?: string,
     scrumMaster?: string,
+    deckType?: number,
     step?: {
         story: number,
         round: number,
