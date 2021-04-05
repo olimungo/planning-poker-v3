@@ -16,7 +16,7 @@ export function DeckSelectorHandler(props: Props) {
             setDeckType(appContext.workflow.deckType);
             onChange(appContext.workflow.deckType);
         }
-    }, [appContext.workflow?.deckType]);
+    }, [appContext.workflow?.deckType, onChange]);
 
     const handleChange = (value: number) => {
         if (appContext.boardKey) {
