@@ -6,10 +6,12 @@ import { AppHeaderHandler, CardsDeckHandler, DeckSelectorHandler } from './handl
 import { AppContext, PigType, OverviewHandler, ResultsHandler, workflowTypeInit, WorkflowType } from '../common';
 import { createPig, checkPigExists, checkBoardExists, getPigRef, getWorkflowRef } from '../services';
 import { AppFooterHandler, WorkflowActionsHandler } from '../board';
+import { useTranslation } from 'react-i18next';
 
 export function PigPage() {
     const { boardKey, key } = useParams<{ boardKey: string, key: string }>();
     const history = useHistory();
+    const { t } = useTranslation();
     const [state, setState] = useState(EWorkflowState.UNKNOWN);
     const [errorMessage, setErrorMessage] = useState('');
     const [pigs, setPigs] = useState<PigType>({});
@@ -27,7 +29,7 @@ export function PigPage() {
         } else {
             checkPigExists(boardKey, key).then(result => {
                 if (!result) {
-                    setErrorMessage('The pig specified in the URL doesn\'t exist');
+                    setErrorMessage(t('The pig specified in the URL doesn\'t exist'));
                     setRemovedFromSession(true);
                 } else {
                     // Watch the database for the workflow
@@ -41,14 +43,14 @@ export function PigPage() {
                         if (value.val()) {
                             setPigs((prev) => ({ ...prev, [key]: value.val() }));
                         } else {
-                            setErrorMessage('You\'ve been removed from the session');
+                            setErrorMessage(t('You\'ve been removed from the session'));
                             setRemovedFromSession(true);
                         }
                     });
                 }
             });
         }
-    }, [boardKey, key, history]);
+    }, [boardKey, key, history, t]);
 
     useEffect(() => {
         // Check if the params in the URL for the board key and the pig key exist in the database
@@ -56,10 +58,10 @@ export function PigPage() {
             if (boardExists) {
                 initApp();
             } else {
-                setErrorMessage('The board specified in the URL doesn\'t exist');
+                setErrorMessage(t('The board specified in the URL doesn\'t exist'));
             }
         });
-    }, [boardKey, key, history, initApp]);
+    }, [boardKey, key, history, initApp, t]);
 
     return (
         <div className="pig">

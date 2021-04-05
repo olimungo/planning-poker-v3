@@ -1,5 +1,6 @@
 import './results.handler.css';
 import { useContext, useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { Result, AppTheme } from "../../../../components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +10,7 @@ type Story = { key: number, estimate: string, duration: string };
 
 export function ResultsHandler() {
     const appContext = useContext(AppContext);
+    const { t } = useTranslation();
     const [stories, setStories] = useState<Story[]>([]);
 
     useEffect(() => {
@@ -44,9 +46,9 @@ export function ResultsHandler() {
     }
 
     const handleClick = () => {
-        const subject = 'Planning poker estimations';
+        const subject = `Planning Poker: ${t('estimations')}`;
         const message = stories.reduce((previous, story, index) => {
-            return previous + `Story ${index + 1}: ${story.estimate} (${story.duration})\n`;
+            return previous + `${t('Story')} ${index + 1}: ${story.estimate} (${story.duration})\n`;
         }, '');
 
         window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(message));
@@ -54,7 +56,7 @@ export function ResultsHandler() {
 
     return (
         <div className="results">
-            <div className="results--story">{'/* stories */'}</div>
+            <div className="results--story">{`/* ${t('stories')} */`}</div>
             <div className="results--header">
                 <div className="results--header-story">#</div>
                 <div className="results--header-estimate">&gt; | &lt;</div>

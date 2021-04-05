@@ -1,0 +1,44 @@
+{
+    "fr": {
+        "translation": {
+            "The pig specified in the URL doesn't exist": "Le cochon spécifié dans l'URL n'existe pas",
+            "You've been removed from the session": "Vous avez été éjecté de la session",
+            "The board specified in the URL doesn't exist": "Le tableau spécifié dans l'URL n'existe pas",
+            "**deck-type": "**type-jeu-de-carte",
+            "fibonacci-like": "à-la-fibonacci",
+            "animals": "animaux",
+            "sizes": "tailles",
+            "stories": "histoires",
+            "Story": "Histoire",
+            "Display your name and gravatar picture": "Affichez votre nom et votre photo gravatar",
+            "Enter your name": "Entrez votre nom",
+            "Enter your email address": "Entrez votre adresse de courrier électronique"
+        },
+        "state": {
+            "REGISTRATION": "ENREGISTREMENT",
+            "DISCUSSION": "DISCUSSION",
+            "VOTE": "VOTE",
+            "FINAL ESTIMATE": "ESTIMATION FINALE",
+            "FINAL RESULTS": "RÉSULTATS FINAUX"
+        },
+        "action-button": {
+            "START": "DÉMARRER",
+            "VOTE": "VOTER",
+            "RE-VOTE": "RE-VOTER",
+            "END": "FIN"
+        },
+        "form": {
+            "CANCEL": "ANNULER",
+            "Remove": "Retirer",
+            "from the session?": "de la session ?"
+        },
+        "overview": {
+            "start": "démarrage",
+            "end": "fin",
+            "duration": "durée",
+            "stories": "histoires",
+            "story": "histoire",
+            "round": "tour"
+        }
+    }
+}

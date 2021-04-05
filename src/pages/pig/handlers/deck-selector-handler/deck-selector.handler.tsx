@@ -21,7 +21,6 @@ export function DeckSelectorHandler(props: Props) {
     const handleChange = (value: number) => {
         if (appContext.boardKey) {
             saveDeckType(appContext.boardKey, value);
-            console.log('000')
             onChange(value);
         }
     };

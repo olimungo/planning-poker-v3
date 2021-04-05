@@ -1,17 +1,19 @@
 import './overview-story.css';
+import { useTranslation } from 'react-i18next';
 
 type Props = { story: number | null, round: number | null, stories: number | null };
 
 export function OverviewStory(props: Props) {
     const { story, round, stories } = props;
+    const { t } = useTranslation();
 
     return (
         <div className="overview-story">
             {
                 stories
-                    ? `$ stories ${stories}`
+                    ? `$ ${t('overview:stories')} ${stories}`
                     : story
-                        ? `$ story ${story} > round ${round}`
+                        ? `$ ${t('overview:story')} ${story} > ${t('overview:round')} ${round}`
                         : ''
             }
         </div>

@@ -1,4 +1,5 @@
 import './deck-type.css';
+import { useTranslation } from 'react-i18next';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../pages';
 
@@ -9,6 +10,7 @@ export enum DeckType { FIBONACCI, ANIMALS, SIZES };
 export function DeckSelector(props: Props) {
     const { deckType, onChange } = props;
     const appContext = useContext(AppContext);
+    const { t } = useTranslation();
     const [isScrumMaster, setIsScrumMaster] = useState(false);
 
     useEffect(() => {
@@ -29,13 +31,13 @@ export function DeckSelector(props: Props) {
             {
                 isScrumMaster
                     ? <div>
-                        <h1>**deck-type</h1>
+                        <h1>{t('**deck-type')}</h1>
                         <div className="container">
                             <ul>
                                 <li>
                                     <input data-type={DeckType.FIBONACCI} type="radio" id="fibonacci" name="selector"
                                         onChange={handleChange} checked={deckType === DeckType.FIBONACCI} />
-                                    <label htmlFor="fibonacci">{'{ fibonacci-like }'}</label>
+                                    <label htmlFor="fibonacci">{`{ ${t('fibonacci-like')} }`}</label>
 
                                     <div className="check"></div>
                                 </li>
@@ -43,7 +45,7 @@ export function DeckSelector(props: Props) {
                                 <li>
                                     <input data-type={DeckType.ANIMALS} type="radio" id="animals" name="selector"
                                         onChange={handleChange} checked={deckType === DeckType.ANIMALS} />
-                                    <label htmlFor="animals">{'{ animals }'}</label>
+                                    <label htmlFor="animals">{`{ ${t('animals')} }`}</label>
 
                                     <div className="check"></div>
                                 </li>
@@ -51,7 +53,7 @@ export function DeckSelector(props: Props) {
                                 <li>
                                     <input data-type={DeckType.SIZES} type="radio" id="sizes" name="selector"
                                         onChange={handleChange} checked={deckType === DeckType.SIZES} />
-                                    <label htmlFor="sizes">{'{ sizes }'}</label>
+                                    <label htmlFor="sizes">{`{ ${t('sizes')} }`}</label>
 
                                     <div className="check"></div>
                                 </li>

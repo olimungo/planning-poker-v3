@@ -1,10 +1,12 @@
 import './form.css';
 import { useState, useEffect, FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = { name?: string, email?: string, onOk: Function, onCancel: Function };
 
 export function Form(props: Props) {
     const { name, email, onOk, onCancel } = props;
+    const { t } = useTranslation();
     const [nameForm, setNameForm] = useState('');
     const [emailForm, setEmailForm] = useState('');
 
@@ -26,23 +28,23 @@ export function Form(props: Props) {
     };
 
     return (
-        <form className="email-form" onSubmit={handleSubmit}>
-            <h1>Display your name and gravatar picture</h1>
+        <form className="badge-form" onSubmit={handleSubmit}>
+            <h1>{t('Display your name and gravatar picture')}</h1>
 
-            <div className="email-form--input">
-                <input type="text" placeholder="Enter your name"
+            <div className="badge-form--input">
+                <input type="text" placeholder={t('Enter your name')}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNameForm(event.currentTarget.value)}
                     value={nameForm}
                     autoFocus />
 
-                <input type="text" placeholder="Enter your email address"
+                <input type="text" placeholder={t('Enter your email address')}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmailForm(event.currentTarget.value)}
                     value={emailForm} />
             </div>
 
-            <div className="email-form--buttons">
+            <div className="badge-form--buttons">
                 <input type="submit" value="/ OK /" />
-                <button onClick={() => onCancel()}>/ CANCEL /</button>
+                <button onClick={() => onCancel()}>/ {t('form:CANCEL')} /</button>
             </div>
         </form>
     );
