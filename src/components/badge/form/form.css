@@ -1,4 +1,4 @@
-.email-form {
+.badge-form {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -10,25 +10,26 @@
     text-align: center;
     padding: 1.5rem 2rem;
     border: solid .1rem #1d8a2c;
+    z-index: 50;
 }
 
-.email-form h1 {
+.badge-form h1 {
     color: #6bae6f;
     font-size: 1.2rem;
     margin: 0 0 1.5rem 0;
 }
 
-.email-form--input {
+.badge-form--input {
     display: flex;
     flex-direction: column;
 }
 
-.email-form--buttons {
+.badge-form--buttons {
     text-align: end;
     margin-top: 1rem;
 }
 
-.email-form input[type='text'] {
+.badge-form input[type='text'] {
     border-radius: 1rem;
     border: none;
     padding: .2rem .8rem;
@@ -36,7 +37,7 @@
     margin-bottom: 1rem;
 }
 
-.email-form input[type='submit'], .email-form button {
+.badge-form input[type='submit'], .badge-form button {
     width: 5rem;
     background-color: transparent;
     border: none;
@@ -48,14 +49,14 @@
     font-size: 1.1rem;
 }
 
-.email-form input[type='submit']:hover, .email-form button:hover {
-    background-color: rgba(0,0,0,.3);
+.badge-form input[type='submit']:hover, .badge-form button:hover {
+    background-color: rgba(0, 0, 0, .3);
 }
 
-.email-form input[type='submit']:focus, .email-form button:focus, .email-form input[type='text']:focus {
+.badge-form input[type='submit']:focus, .badge-form button:focus, .badge-form input[type='text']:focus {
     outline: none;
 }
 
-.email-form input[type='text']:focus {
+.badge-form input[type='text']:focus {
     border-color: #1d8a2c;
 }

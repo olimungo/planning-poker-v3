@@ -30,6 +30,8 @@ export function ProgressBar(props: Props) {
             }, frameRate);
 
             setTimer(interval);
+
+            return () => clearInterval(interval);
         }
     }, [duration, close]);
 

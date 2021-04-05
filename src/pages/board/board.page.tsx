@@ -5,7 +5,6 @@ import {
     QrCode,
     EWorkflowState,
     ErrorMessage,
-    AppFooter,
     WorkflowState,
     WorkflowBlock,
     getWorkflowStateFromString,
@@ -13,7 +12,7 @@ import {
 } from '../../components';
 import { useCallback, useEffect, useState } from 'react';
 import { PigsListHandler, WorkflowHandler } from './handlers';
-import { AppContext, OverviewHandler, PigType, ResultsHandler, WorkflowType, workflowTypeInit } from '../common';
+import { AppContext, OverviewHandler, PigType, AppFooterHandler, ResultsHandler, WorkflowType, workflowTypeInit } from '../common';
 import { createBoardKey, checkBoardExists, getWorkflowRef, getPigsRef, lockBoard, getLock } from '../services';
 
 export function BoardPage() {
@@ -110,7 +109,7 @@ export function BoardPage() {
                     <ResultsHandler />
                 </WorkflowBlock>
 
-                <AppFooter hideToggle={true} />
+                <AppFooterHandler hideToggle={true} />
 
                 <ErrorMessage message={errorMessage} />
 

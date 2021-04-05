@@ -10,6 +10,7 @@
     text-align: center;
     padding: 1.5rem 2rem;
     border: solid .1rem #ef8e26;
+    z-index: 50;
 }
 
 .remove-pig-form h1 {
@@ -22,7 +23,6 @@
     text-align: end;
     margin-top: 1rem;
 }
-
 
 .remove-pig-form input[type='submit'], .remove-pig-form button {
     width: 5rem;
@@ -37,7 +37,7 @@
 }
 
 .remove-pig-form input[type='submit']:hover, .remove-pig-form button:hover {
-    background-color: rgba(0,0,0,.3);
+    background-color: rgba(0, 0, 0, .3);
 }
 
 .remove-pig-form input[type='submit']:focus, .remove-pig-form button:focus {

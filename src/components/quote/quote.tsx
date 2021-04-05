@@ -14,26 +14,36 @@ export function Quote() {
 
             setIndex(idx + 1);
             setQuote(quotes[idx]);
+
+            if (window.location.hostname === 'localhost') {
+                setHidden(true);
+            }
         }
     }, [index]);
 
     const handleCloseQuote = () => setHidden(true);
 
     return (
-        <div className={`quote ${hidden ? 'quote--hidden' : ''}`}>
-            <div className="quote--number">
-                Agile Manifesto Principle #{index}<br />
-            </div>
+        <div>
+            {
+                !hidden
+                    ? <div className="quote">
+                        <div className="quote--number">
+                            Agile Manifesto Principle #{index}<br />
+                        </div>
 
-            <div className="quote--quote">
-                {quote}
-            </div>
+                        <div className="quote--quote">
+                            {quote}
+                        </div>
 
-            <div className="quote--a">
-                <a href="https://agilemanifesto.org">https://agilemanifesto.org</a>
-            </div>
+                        <div className="quote--a">
+                            <a href="https://agilemanifesto.org">https://agilemanifesto.org</a>
+                        </div>
 
-            <ProgressBar duration={10000} onClose={handleCloseQuote} />
+                        <ProgressBar duration={10000} onClose={handleCloseQuote} />
+                    </div>
+                    : ''
+            }
         </div>
     );
 }
