@@ -3,9 +3,9 @@ import { useParams, useHistory } from 'react-router-dom';
 import { WorkflowState, WorkflowBlock, EWorkflowState, getWorkflowStateFromString, ErrorMessage, Quote, AppTheme, DeckType } from '../../components';
 import { useCallback, useEffect, useState } from 'react';
 import { AppHeaderHandler, CardsDeckHandler, DeckSelectorHandler } from './handlers';
-import { AppContext, PigType, OverviewHandler, ResultsHandler, workflowTypeInit, WorkflowType } from '../common';
+import { AppContext, PigType, AppFooterHandler, OverviewHandler, ResultsHandler, workflowTypeInit, WorkflowType } from '../common';
 import { createPig, checkPigExists, checkBoardExists, getPigRef, getWorkflowRef } from '../services';
-import { AppFooterHandler, WorkflowActionsHandler } from '../board';
+import { WorkflowActionsHandler } from '../board';
 import { useTranslation } from 'react-i18next';
 
 export function PigPage() {

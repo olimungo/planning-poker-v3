@@ -5,6 +5,7 @@ export * from './badge';
 export * from './cards-deck';
 export * from './deck-type';
 export * from './error-message';
+export * from './language-selector';
 export * from './progress-bar';
 export * from './qr-code';
 export * from './quote';

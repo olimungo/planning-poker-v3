@@ -18,6 +18,10 @@
   padding: .5rem 1rem;
 }
 
+.app-footer--child {
+  width: 33%;
+}
+
 .app-footer--icon {
   font-size: 2rem;
   border-radius: .5rem;
@@ -39,9 +43,15 @@
 .app-footer--switch {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
-.app-footer--switch-label {
-  margin-right: 1rem;
-  font-size: 1.4rem;
+.app-footer--centered {
+  text-align: center;
+  align-self: center;
+}
+
+.app-footer--align-right {
+  text-align: right;
+  align-self: center;
 }
